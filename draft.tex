@@ -157,28 +157,43 @@ urlcolor=blue}
 \begin{document}
 \raggedright
 \thispagestyle{empty}
-{\Large\bfseries\sffamily Template to prepare preprints and manuscripts
-using markdown and github actions}
+{\Large\bfseries\sffamily NCBITaxonomy.jl - rapid biological names
+finding and reconciliation}
 \vskip 5em
 
 %
 \href{https://orcid.org/0000-0002-0735-5184}{Timothée\,Poisot}%
 %
-\,\textsuperscript{1,2,‡}\quad %
-Peregrin\,Took%
+\,\textsuperscript{1,2}\quad %
+\href{https://orcid.org/0000-0002-0965-1649}{Rory\,Gibb}%
 %
 \,\textsuperscript{3,4}\quad %
-Merriadoc\,Brandybuck%
+\href{https://orcid.org/0000-0002-4308-6321}{Sadie J.\,Ryan}%
 %
-\,\textsuperscript{5,4,‡}
+\,\textsuperscript{5,6,7}\quad %
+\href{https://orcid.org/0000-0001-6960-8434}{Colin J.\,Carlson}%
+%
+\,\textsuperscript{8,9}
 
-\textsuperscript{1}\,Université de
-Montréal\quad \textsuperscript{2}\,Québec Centre for Biodiversity
-Sciences\quad \textsuperscript{3}\,Inn of the Prancing
-Pony\quad \textsuperscript{4}\,Fellowship of the
-Ring\quad \textsuperscript{5}\,Green Dragon Inn
+\textsuperscript{1}\,Université de Montréal, Départment de Sciences
+Biologiques, Montréal QC, Canada\quad \textsuperscript{2}\,Québec Centre
+for Biodiversity Science, Montréal, QC,
+Canada\quad \textsuperscript{3}\,Centre on Climate Change and Planetary
+Health, London School of Hygiene and Tropical Medicine, London,
+UK\quad \textsuperscript{4}\,Centre for Mathematical Modelling of
+Infectious Diseases, London School of Hygiene and Tropical Medicine,
+London, UK\quad \textsuperscript{5}\,Emerging Pathogens Institute,
+University of Florida, Gainesville, FL, United States of
+America\quad \textsuperscript{6}\,School of Life Sciences, University of
+KwaZulu-Natal, Durban, South Africa\quad \textsuperscript{7}\,Department
+of Geography, University of Florida, Gainesville, FL, United States of
+America\quad \textsuperscript{8}\,Department of Microbiology and
+Immunology, Georgetown University Medical Center, Georgetown University,
+Washington, D.C., United States of
+America\quad \textsuperscript{9}\,Center for Global Health Science and
+Security, Georgetown University Medical Center, Georgetown University,
+Washington, D.C., United States of America
 
-\textsuperscript{‡}\,These authors contributed equally to the work\\
 
 \textbf{Correspondance to:}\\
 Timothée Poisot --- \texttt{timothee.poisot@umontreal.ca}\\
@@ -191,17 +206,23 @@ Last revision: \emph{\today}
 \thispagestyle{empty}
 
 \vfill
+\texttt{NCBITaxonomy.jl} is a package designed to facilitate the
+reconciliation and cleaning of taxonomic names, using a local copy of
+the NCBI taxonomic backbone (Federhen 2012, Schoch et al. 2020); The
+basic search functions are coupled with quality-of-life functions
+including case-insensitive search and custom fuzzy string matching to
+facilitate the amount of information that can be extracted automatically
+while allowing efficient manual curation and inspection of results.
+\texttt{NCBITaxonomy.jl} works with version 1.6 of the Julia programming
+language (Bezanson et al. 2017), and relies on the Apache Arrow format
+to store a local copy of the NCBI raw taxonomy files. The design of
+\texttt{NCBITaxonomy.jl} has been inspired by similar efforts, like the
+R package \texttt{taxadb} (Norman et al. 2020), which provides an
+offline alternative to packages like \texttt{taxize} (Chamberlain and
+Szöcs 2013).
 
 
-        {\bfseries Purpose:}\,This template provides a series of scripts
-to render a markdown document into an interactive website and a series
-of PDFs.\\%
-        {\bfseries Motivation:}\,It makes collaborating on text with
-GitHub easier, and means that we never need to think about the
-output.\\%
-        {\bfseries Internals:}\,GitHub actions and a series of python
-scritpts. The markdown is handled with \texttt{pandoc}.\\%
-    
+
 \vfill
 
 \clearpage
@@ -210,18 +231,18 @@ scritpts. The markdown is handled with \texttt{pandoc}.\\%
 
 \texttt{NCBITaxonomy.jl} is a package designed to facilitate the
 reconciliation and cleaning of taxonomic names, using a local copy of
-the NCBI taxonomic backbone (Federhen 2012; Schoch \emph{et al.} 2020);
-The basic search functions are coupled with quality-of-life functions
+the NCBI taxonomic backbone (Federhen 2012, Schoch et al. 2020); The
+basic search functions are coupled with quality-of-life functions
 including case-insensitive search and custom fuzzy string matching to
 facilitate the amount of information that can be extracted automatically
 while allowing efficient manual curation and inspection of results.
 \texttt{NCBITaxonomy.jl} works with version 1.6 of the Julia programming
-language (Bezanson \emph{et al.} 2017), and relies on the Apache Arrow
-format to store a local copy of the NCBI raw taxonomy files. The design
-of \texttt{NCBITaxonomy.jl} has been inspired by similar efforts, like
-the R package \texttt{taxadb} (Norman \emph{et al.} 2020), which
-provides an offline alternative to packages like \texttt{taxize}
-(Chamberlain \& Szöcs 2013).
+language (Bezanson et al. 2017), and relies on the Apache Arrow format
+to store a local copy of the NCBI raw taxonomy files. The design of
+\texttt{NCBITaxonomy.jl} has been inspired by similar efforts, like the
+R package \texttt{taxadb} (Norman et al. 2020), which provides an
+offline alternative to packages like \texttt{taxize} (Chamberlain and
+Szöcs 2013).
 
 \hypertarget{statement-of-need}{%
 \section{Statement of need}\label{statement-of-need}}
@@ -241,8 +262,7 @@ synonym. Taxonomic nomenclature also changes regularly, with groups
 being split, merged, or moved to a new position in the tree of life;
 this is, notably, a common occurrence with viral taxonomy, each
 subsequent version of which can differ markedly from the last; compare,
-\emph{e.g} Lefkowitz \emph{et al.} (2018) to Walker \emph{et al.}
-(2020).
+\emph{e.g} Lefkowitz et al. (2018) to Walker et al. (2020).
 
 To add to the complexity, one must also consider that most taxa names
 are at some point manually typed, which has the potential to introduce
@@ -252,11 +272,11 @@ names of the bacterial isolate known as \emph{Myxococcus
 llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogochensis}, or of
 the crowned slaty flycatcher \emph{Griseotyrannus
 aurantioatrocristatus}. These mistakes are more likely when dealing with
-hyper-diverse samples, like plant census (Dauncey \emph{et al.} 2016;
-Wagner 2016; Conti \emph{et al.} 2021). In addition to binomial names,
-the same species can be known by many vernacular (common) names, which
-are language or even region-specific: \emph{Ovis aries}, for example,
-has valid English vernaculars including lamb, sheep, wild sheep, and
+hyper-diverse samples, like plant census (Dauncey et al. 2016, Wagner
+2016, Conti et al. 2021). In addition to binomial names, the same
+species can be known by many vernacular (common) names, which are
+language or even region-specific: \emph{Ovis aries}, for example, has
+valid English vernaculars including lamb, sheep, wild sheep, and
 domestic sheep.
 
 All these considerations are actually important when matching species
@@ -273,9 +293,9 @@ A package with the ability to handle the sources of errors outlined
 above, and especially while provide an authoritative classification, can
 accelerate the work of consuming large volumes of biodiversity data. For
 example, this package was used in the process of developing the
-\emph{CLOVER} database (Gibb \emph{et al.} 2021) of host-virus
-associations, by reconciling the names of viruses and mammals from four
-different sources, where all of the issues described above were present.
+\emph{CLOVER} database (Gibb et al. 2021) of host-virus associations, by
+reconciling the names of viruses and mammals from four different
+sources, where all of the issues described above were present.
 
 \hypertarget{overview-of-functionalities}{%
 \section{Overview of
@@ -483,63 +503,56 @@ to functionalities and usability testing.
 \hypertarget{refs}{}
 \begin{CSLReferences}{1}{0}
 \leavevmode\hypertarget{ref-Bezanson2017JulFre}{}%
-Bezanson, J., Edelman, A., Karpinski, S. \& Shah, V. (2017). Julia: A
-Fresh Approach to Numerical Computing. \emph{SIAM Review}, 59, 65--98.
+Bezanson, J. et al. 2017. Julia: A Fresh Approach to Numerical
+Computing. - SIAM Review 59: 65--98.
 
 \leavevmode\hypertarget{ref-Chamberlain2013TaxTax}{}%
-Chamberlain, S.A. \& Szöcs, E. (2013). Taxize: Taxonomic search and
-retrieval in R. \emph{F1000Research}, 2, 191.
+Chamberlain, S. A. and Szöcs, E. 2013. Taxize: Taxonomic search and
+retrieval in R. - F1000Research 2: 191.
 
 \leavevmode\hypertarget{ref-Conti2021MatAlg}{}%
-Conti, M., Nimis, P.L. \& Martellos, S. (2021). Match Algorithms for
-Scientific Names in FlorItaly, the Portal to the Flora of Italy.
-\emph{Plants}, 10, 974.
+Conti, M. et al. 2021. Match Algorithms for Scientific Names in
+FlorItaly, the Portal to the Flora of Italy. - Plants 10: 974.
 
 \leavevmode\hypertarget{ref-Dauncey2016ComMis}{}%
-Dauncey, E.A., Irving, J., Allkin, R. \& Robinson, N. (2016). Common
-mistakes when using plant names and how to avoid them. \emph{European
-Journal of Integrative Medicine}, 8, 597--601.
+Dauncey, E. A. et al. 2016. Common mistakes when using plant names and
+how to avoid them. - European Journal of Integrative Medicine 8:
+597--601.
 
 \leavevmode\hypertarget{ref-Federhen2012NcbTax}{}%
-Federhen, S. (2012). The NCBI taxonomy database. \emph{Nucleic acids
-research}, 40, D136--D143.
+Federhen, S. 2012. The NCBI taxonomy database. - Nucleic acids research
+40: D136--D143.
 
 \leavevmode\hypertarget{ref-Gibb2021DatPro}{}%
-Gibb, R., Albery, G.F., Becker, D.J., Brierley, L., Connor, R., Dallas,
-T.A., \emph{et al.} (2021). Data proliferation, reconciliation, and
-synthesis in viral ecology. \emph{bioRxiv}, 2021.01.14.426572.
+Gibb, R. et al. 2021. Data proliferation, reconciliation, and synthesis
+in viral ecology. - bioRxiv: 2021.01.14.426572.
 
 \leavevmode\hypertarget{ref-Lefkowitz2018VirTax}{}%
-Lefkowitz, E.J., Dempsey, D.M., Hendrickson, R.C., Orton, R.J., Siddell,
-S.G. \& Smith, D.B. (2018). Virus taxonomy: The database of the
-International Committee on Taxonomy of Viruses (ICTV). \emph{Nucleic
-Acids Research}, 46, D708--D717.
+Lefkowitz, E. J. et al. 2018. Virus taxonomy: The database of the
+International Committee on Taxonomy of Viruses (ICTV). - Nucleic Acids
+Research 46: D708--D717.
 
 \leavevmode\hypertarget{ref-Norman2020TaxHig}{}%
-Norman, K.E.A., Chamberlain, S. \& Boettiger, C. (2020). Taxadb: A
-high-performance local taxonomic database interface. \emph{Methods in
-Ecology and Evolution}, 11, 1153--1159.
+Norman, K. E. A. et al. 2020. Taxadb: A high-performance local taxonomic
+database interface. - Methods in Ecology and Evolution 11: 1153--1159.
 
 \leavevmode\hypertarget{ref-Schoch2020NcbTax}{}%
-Schoch, C.L., Ciufo, S., Domrachev, M., Hotton, C.L., Kannan, S.,
-Khovanskaya, R., \emph{et al.} (2020). NCBI Taxonomy: A comprehensive
-update on curation, resources and tools. \emph{Database}, 2020.
+Schoch, C. L. et al. 2020. NCBI Taxonomy: A comprehensive update on
+curation, resources and tools. - Database in press.
 
 \leavevmode\hypertarget{ref-Shimatani2001MeaSpe}{}%
-Shimatani, K. (2001). On the Measurement of Species Diversity
-Incorporating Species Differences. \emph{Oikos}, 93, 135--147.
+Shimatani, K. 2001. On the Measurement of Species Diversity
+Incorporating Species Differences. - Oikos 93: 135--147.
 
 \leavevmode\hypertarget{ref-Wagner2016RevSof}{}%
-Wagner, V. (2016). A review of software tools for spell-checking taxon
-names in vegetation databases. \emph{Journal of Vegetation Science}, 27,
+Wagner, V. 2016. A review of software tools for spell-checking taxon
+names in vegetation databases. - Journal of Vegetation Science 27:
 1323--1327.
 
 \leavevmode\hypertarget{ref-Walker2020ChaVir}{}%
-Walker, P.J., Siddell, S.G., Lefkowitz, E.J., Mushegian, A.R.,
-Adriaenssens, E.M., Dempsey, D.M., \emph{et al.} (2020). Changes to
-virus taxonomy and the Statutes ratified by the International Committee
-on Taxonomy of Viruses (2020). \emph{Archives of Virology}, 165,
-2737--2748.
+Walker, P. J. et al. 2020. Changes to virus taxonomy and the Statutes
+ratified by the International Committee on Taxonomy of Viruses (2020). -
+Archives of Virology 165: 2737--2748.
 
 \end{CSLReferences}
 
