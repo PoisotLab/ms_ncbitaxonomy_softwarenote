@@ -150,7 +150,7 @@
         "volume": "40"
     },
     {
-        "DOI": "10.1101/2021.01.14.426572",
+        "DOI": "10.1093/biosci/biab080",
         "author": [
             {
                 "family": "Gibb",
@@ -158,11 +158,11 @@
             },
             {
                 "family": "Albery",
-                "given": "Gregory F."
+                "given": "Gregory F"
             },
             {
                 "family": "Becker",
-                "given": "Daniel J."
+                "given": "Daniel J"
             },
             {
                 "family": "Brierley",
@@ -174,48 +174,49 @@
             },
             {
                 "family": "Dallas",
-                "given": "Tad A."
+                "given": "Tad A"
             },
             {
                 "family": "Eskew",
-                "given": "Evan A."
+                "given": "Evan A"
             },
             {
                 "family": "Farrell",
-                "given": "Maxwell J."
+                "given": "Maxwell J"
             },
             {
                 "family": "Rasmussen",
-                "given": "Angela L."
+                "given": "Angela L"
             },
             {
                 "family": "Ryan",
-                "given": "Sadie J."
+                "given": "Sadie J"
             },
             {
                 "family": "Sweeny",
-                "given": "Amy R."
+                "given": "Amy"
             },
             {
                 "family": "Carlson",
-                "given": "Colin J."
+                "given": "Colin J"
             },
             {
                 "family": "Poisot",
-                "given": "Timothee"
+                "given": "Timoth\u00e9e"
             }
         ],
-        "container-title": "bioRxiv",
+        "container-title": "BioScience",
         "id": "Gibb2021DatPro",
         "issued": {
             "date-parts": [
                 [
-                    2021
+                    2021,
+                    8,
+                    25
                 ]
             ]
         },
-        "page": "2021.01.14.426572",
-        "title": "Data proliferation, reconciliation, and synthesis in viral ecology",
+        "title": "Data Proliferation, Reconciliation, and Synthesis in Viral Ecology",
         "type": "article-journal"
     },
     {
