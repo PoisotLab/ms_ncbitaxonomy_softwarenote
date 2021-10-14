@@ -1,18 +1,3 @@
-`NCBITaxonomy.jl` is a package designed to facilitate the reconciliation and
-cleaning of taxonomic names, using a local copy of the NCBI taxonomic backbone
-[@Federhen2012NcbTax; @Schoch2020NcbTax]; The basic search functions are coupled
-with quality-of-life functions including case-insensitive search and custom
-fuzzy string matching to facilitate the amount of information that can be
-extracted automatically while allowing efficient manual curation and inspection
-of results. `NCBITaxonomy.jl` works with version 1.6 of the Julia programming
-language [@Bezanson2017JulFre], and relies on the Apache Arrow format to store a
-local copy of the NCBI raw taxonomy files. The design of `NCBITaxonomy.jl` has
-been inspired by similar efforts, like the R package `taxadb`
-[@Norman2020TaxHig], which provides an offline alternative to packages like
-`taxize` [@Chamberlain2013TaxTax].
-
-# Statement of need
-
 Unambiguously identifying species is a far more challenging task than it may
 appear. There are a vast number of reasons for this. Different databases keep
 different taxonomic "backbones", *i.e.* different data structures in which names
