@@ -1,269 +1,218 @@
-This template uses `pandoc` (and a few additional python glue scripts) to
-facilitate the production of scientific articles using a standard markdown file.
-The objective is to ensure that standard markdown (with the important exception
-of the `pandoc-crossref` citation markup) will be rendered into an interactive
-website (which allows collaborative annotations with the `hypothes.is`
-platform), a "draft" style PDF (double-spaced, numbered lines, figures at the
-end), and a "preprint" style PDF (with slightly more reader-friendly
-pagination).
+`NCBITaxonomy.jl` is a package designed to facilitate the reconciliation and
+cleaning of taxonomic names, using a local copy of the NCBI taxonomic backbone
+[@Federhen2012NcbTax; @Schoch2020NcbTax]; The basic search functions are coupled
+with quality-of-life functions including case-insensitive search and custom
+fuzzy string matching to facilitate the amount of information that can be
+extracted automatically while allowing efficient manual curation and inspection
+of results. `NCBITaxonomy.jl` works with version 1.6 of the Julia programming
+language [@Bezanson2017JulFre], and relies on the Apache Arrow format to store a
+local copy of the NCBI raw taxonomy files. The design of `NCBITaxonomy.jl` has
+been inspired by similar efforts, like the R package `taxadb`
+[@Norman2020TaxHig], which provides an offline alternative to packages like
+`taxize` [@Chamberlain2013TaxTax].
 
-The core bit of configuration is the `metadata.json` file, which handles
-information about authorship, affiliations, the abstract, keywords, etc. All
-documents will be deployed to `gh-pages` *only* on push events from the `main`
-branch. All of the artifacts will be built when doing pull requests, so you can
-check that merging a branch is *not* going to cause the compilation of the
-documents to fail; indeed, you can download the artifacts produced during the
-run, to check the PDF and html files. The website is only updated from the
-`main` branch.
+# Statement of need
 
-The workflow is *very* GitHub based, and so the manuscript file *is* the
-`README.md` - this is not going to be a huge issue as 90% of the markdown is
-standard, with the exception of the citations and mathematics, so this will
-render (mostly) like a normal README file.
+Unambiguously identifying species is a far more challenging task than it may
+appear. There are a vast number of reasons for this. Different databases keep
+different taxonomic "backbones", *i.e.* different data structures in which names
+are mapped to species, and organised in a hierarchy. Not all names are unique
+identifiers to groups. For example, *Io* can either refer to a genus of plants
+from the aster family, or to a genus of molluscs; the genus *Mus* (of which the
+house mouse *Mus musculus* is a species), contains a sub-genus *also* named
+*Mus*. Conversely, the same species can have several names, which are valid
+synonyms: for example, the domestic cow *Bos taurus* admits *Bos primigenius
+taurus* as a valid synonym. Taxonomic nomenclature also changes regularly, with
+groups being split, merged, or moved to a new position in the tree of life; this
+is, notably, a common occurrence with viral taxonomy, each subsequent version of
+which can differ markedly from the last; compare, *e.g* @Lefkowitz2018VirTax to
+@Walker2020ChaVir.
 
-# Deploying the template
+To add to the complexity, one must also consider that most taxa names are at
+some point manually typed, which has the potential to introduce additional
+mistakes in raw data; it is likely to expect that such mistakes may arise when
+attempting to write down the (perfectly valid) names of the bacterial isolate
+known as *Myxococcus
+llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogochensis*, or of the
+crowned slaty flycatcher  *Griseotyrannus aurantioatrocristatus*. These mistakes
+are more likely when dealing with hyper-diverse samples, like plant census
+[@Dauncey2016ComMis; @Wagner2016RevSof; @Conti2021MatAlg]. In addition to
+binomial names, the same species can be known by many vernacular (common) names,
+which are language or even region-specific: *Ovis aries*, for example, has valid
+English vernaculars including lamb, sheep, wild sheep, and domestic sheep.
 
-The process of deploying this template has been *greatly* streamlined from
-previous versions:
+All these considerations are actually important when matching species names both
+within and across datasets. Let us consider the following species survey of
+individual fishes, European chub, *Cyprinus cephalus*, *Leuciscus cephalus*,
+*Squalius cephalus*: all are the same species (*S. cephalus*), referred to as
+one of the vernacular (European chub) and two formerly accepted names now
+classified as synonyms. A cautious estimate of diversity based on the
+user-supplied names would give $n=4$ species, when there is in fact only one.
 
-- Click on the "Use this template" button
-- Edit `README.md` with your own text, commit, and push
-- This push will trigger the first build - the builds are only active on the `main` branch (*not* `master`!), and on pull requests
-- Go to `http://you.github.io/repo-name/` to view the html version, and get access to the PDFs
-- Add your references to the `references.bib` file
-- Edit the `metadata.json` file to add the title, abstract, authors
+A package with the ability to handle the sources of errors outlined above, and
+especially while provide an authoritative classification, can accelerate the
+work of consuming large volumes of biodiversity data. For example, this package
+was used in the process of developing the *CLOVER* database [@Gibb2021DatPro] of
+host-virus associations, by reconciling the names of viruses and mammals from
+four different sources, where all of the issues described above were present.
 
-In particular, note that *you do not need* to create a personnal access token to
-deploy to `gh-pages` (from where the website is served).
+# Overview of functionalities
 
-# The metadata file
+An up-to-date version of the documentation for `NCBITaxonomy.jl` can be found
+online at
+[https://docs.ecojulia.org/NCBITaxonomy.jl/stable/](https://docs.ecojulia.org/NCBITaxonomy.jl/stable/),
+including examples and a documentation of every method. The package is released
+under the MIT license. Contributions can be made in the form of issues (bug
+reports, questions, features suggestions) and pull requests. The package can be
+checked out and installed anonymously from the central Julia repository:
 
-## General information
+~~~julia
+using Pkg
 
-The title is a field in the `metadata.json`:
+# This line should go in the Julia configuration file - note that the path
+# will be created if it doesn't exist, and will be used to store the
+# raw taxonomic table
+ENV["NCBITAXONOMY_PATH"] = joinpath(homedir(), "data", "NCBITaxonomy.jl")
 
-~~~json
-{
-    "title": "Preprint template"
-}
+Pkg.add("NCBITaxonomy") # Dowloading the files may take a long time
 ~~~
 
-## Authorship
+The package will download the most recent version of the NCBI taxonomy database,
+and transform in into a set of Apache Arrow files ready for use. Note that the
+`NCBITAXONOMY_PATH` can specified on a per-project basis, and as long as the
+package is not re-built, the local set of tables downloaded from NCBI will not
+change; this way, users can re-run an analysis with a guarantee that the
+underlying taxonomic backbone has not changed.
 
-Authors are listed as objects in the `authors` block. Each author is specified
-as follows:
+## Improved name matching
 
-~~~json
-{
-      "familyname": "Bob",
-      "givennames": "Alice",
-      "email": "alice.bob@u.edu",
-      "orcid": "0000-0000-0000-0001",
-      "affiliations": [
-        "Affiliation 1",
-        "Affiliation 2"
-      ],
-      "status": ["corresponding", "equal"]
-    }
+Name finding is primarily done through the `taxon` function, which admits either
+a unique NCBI identifier (*e.g.* `taxon(36219)` for the bogue *Boops boops*), a
+string (`taxon("Boops boops")`), or a data frame with a restricted list of names
+(see the next section). The `taxon` method has additional arguments to perform
+fuzzy matching in order to catch possible typos (`taxon("Boops bops";
+strict=false)`), to perform a lowercase search (useful when alphanumeric codes
+are part of the taxon name, like for some viruses), and to restrict the the
+search to a specific taxonomic rank.
+
+The lowercase search can be a preferable alternative to fuzzy string matching.
+Consider the string `Adeno-associated virus 3b` - it has three names with equal
+distance (under the Levensthein string distance function):
+
+~~~julia
+julia> similarnames("Adeno-associated virus 3b"; threshold=0.95)
+3-element Vector{Pair{NCBITaxon, Float64}}:
+  Adeno-associated virus - 3 (ncbi:46350) => 0.96
+   Adeno-associated virus 3B (ncbi:68742) => 0.96
+ Adeno-associated virus 3A (ncbi:1406223) => 0.96
 ~~~
 
-The `email` field is recommended for all authors. The `status` field is only
-useful for the corresponding author, and to denote equal contributions. These
-informations are rendered on the initial page. If an `orcid` is given, it will
-be linked on the HTML and PDF versions.
+Depending on the operating system, either of these three names can be returned;
+compare to the output of a case insensitive name search:
 
-Note that there is *no need* to number the affiliations - a small python script
-will take care of this automatically.
-
-## Abstract
-
-This template supports three types of abstracts, indicated in the metadata file
-as `abstract`:
-
-A regular `abstract` is defined as
-
-~~~json
-"abstract": "A very long string"
+~~~julia
+julia> taxon("Adeno-associated virus 3b"; casesensitive=false)
+Adeno-associated virus 3B (ncbi:68742)
 ~~~
 
-An itemized abstract is an array of strings, each representing a bullet point:
+This returns the correct name.
 
-~~~json
-"abstract": [
-    "Point 1",
-    "Point 2"
-]
+## Name matching output and error handling
+
+The `taxon` function will either return a `NCBITaxon` object (made of a `name`
+and `id`), or throw either a `NameHasNoDirectMatch` (with instructions about how
+to possible solve it, using the `similarnames` function), or a
+`NameHasMultipleMatches` (listing the possible valid matches, and suggesting to
+use `alternativetaxa` to find the correct one). Therefore, the common way to
+work with the `taxon` function would be to wrap it in a `try`/`catch` statement:
+
+~~~julia
+try
+  taxon(name)
+  # Additional operations with the matched name
+catch err
+  if isa(err, NameHasNoDirectMatch)
+    # What to do if no match is found
+  elseif isa(err, NameHasMultipleMatches)
+    # What to do if there are multiple matches
+  else
+    # What to do in case of another error that is not NCBITaxonomy specific
+  end
+end
 ~~~
 
-A structured abstract is an object with key-value pairs :
+These functions will not demand any user input in the form of key presses
+(though they can be wrapped in additional code to allow it), as they are
+intended to run on clusters without supervision. The `taxon` function has good
+scaling using muliple threads. For convenience in rapidly getting a taxon for
+demonstration purposes, we also provide a string macro, whereby *e.g.*
+`ncbi"Procyon lotor"` will return the taxon object for the raccoon.
 
-~~~json
-"abstract": {
-    "Location": "Worldwide",
-    "Organisms": "Mammals"
-}
-~~~
+## Name filtering functions
 
-## Citation style
+As the full NCBI names table has over 3 million entries at the time of writing,
+we have provided a number of functions to restrict the scope of names that are
+searched. These are driven by the NCBI *divisions*. For example `nf =
+mammalfilter(true)` will return a data frame containing the names of mammals,
+inclusive of rodents and primates, and can be used with *e.g.* `taxon(nf,
+"Pan")`. This has the dual advantage of making search faster, but also of
+avoiding matching on names that are shared by another taxonomic group (which is
+not an issue with *Pan*, but is an issue with *e.g.* *Io* as mentioned in the
+introduction).
 
-The `citationstyle` key corresponds to the name, with `.csl` ommited, of a CSL
-stylesheet stored in the [citation style language][csl] repository. Note that
-there is no difference between main and dependent styles, the build engine will
-take the correct steps to get the correct style. The default is
-`"citationstyle": "ecology-letters"`. There is a longer section about references
-management later on.
+Note that the use of a restricted list of names can have significant performance
+consequences: compare, for example, the time taken to return the taxon *Pan* (ID
+9596) in the entire database, in all mammals, and in all primates:
 
-[csl]: https://github.com/citation-style-language/
-# References management
+| Names list           | Fuzzy matching | Time (ms) | Allocations | Memory allocated |
+| -------------------- | :------------: | --------- | ----------- | ---------------- |
+| all                  |       no       | 23        | 34          | 2 KiB            |
+|                      |      yes       | 105       | 2580        | 25 MiB           |
+| `mammalfilter(true)` |       no       | 0.55      | 32          | 2 KiB            |
+|                      |      yes       | 1.9       | 551         | 286 KiB          |
+| `primatefilter()`    |       no       | 0.15      | 33          | 2 KiB            |
+|                      |      yes       | 0.3       | 92          | 27 KiB           |
 
-The references are managed by `pandoc`. Note that we *do not* use
-`pandoc-citeproc`, which was an external module for older `pandoc` versions.
-References *must* be stored in a `references.bib` file, and that it would make
-sense to order it alphabetically by key.
+Clearly, the optimal search strategy is to (i) rely on name filters to ensure
+that search are conducted within the appropriate NCBI division, and (ii) only
+rely on fuzzy matching when the strict or lowercase match fails to return a
+name, as fuzzy matching can result in order of magnitude more run time and
+memory footprint. These numbers were obtained on a single Intel i7-8665U CPU (@
+(1.90GHz). Using `"chimpanzees"` as the search string (the NCBI recognized
+vernacular for *Pan*) gave qualitatively similar results, suggesting that there
+is no performance cost associated with working with synonyms or verncular input
+data.
 
-We use [Zotero](https://www.zotero.org/) for references management, and for the
-lab's manuscripts, we work from folders in a shared library (with a folder for
-every manuscript).
+## Quality of life functions
 
-It is recommedned to use the [Better
-BibTeX](https://retorque.re/zotero-better-bibtex/) plugin for citation key
-generations, and auto-export of the shared library to the `references.bib` file.
-We use a citation key format meant to convey information on the author (first
-author full name), date (complet year), and title (first three letters of the
-first two non-stop words). It must be set in the Better BibTeX preferences as
-(you might need to remove the line changes):
+In order to facilitate working with names, we provide the `authority` function
+(gives the full taxonomic authority for a name), `synonyms` (to get alternative
+valid names), `vernacular` (for English common names), and `rank` (for the
+taxonomic rank).
 
-~~~
-[auth:fold]
-[year]
-[title:fold:nopunctordash:skipwords:lower:select=1,1:substring=1,3:capitalize]
-[title:fold:nopunctordash:skipwords:lower:select=2,2:substring=1,3:capitalize]
-~~~
+## Taxonomic lineages navigation
 
-It is a good idea to configure Better BibTeX to auto-export on change, and to
-remove a lot of fields that are not strictly speaking required for references.
-The list of fields we usually ignore is:
+The `children` function will return all nodes that are directly descended from a
+taxon; the `descendants` function will recursively apply this function to all
+descendants of these nodes, until only terminal leaves are reached. The `parent`
+function is an "upwards" equivalent, giving that taxon from which a taxon
+descents; the `lineage` function chains calls to `parent` until either
+`taxon(1)` (the taxonomy root) or an arbitrary ancestor is reached.
 
-~~~
-abstract,copyright,annotation,file,pmid,month,shorttitle,keywords
-~~~
+The `taxonomicdistance` function (and its in-place equivalent,
+`taxonomicdistance!`, which uses memory-efficient re-allocation if the user
+needs to change the distance between taxonomic ranks) uses the
+@Shimatani2001MeaSpe approach to reconstruct a matrix of distances based on
+taxonomy, which can serve as a rough proxy when no phylogenies are available.
 
-The citations are done using the normal markdown syntax, where
-`@Elton1927AniEco` produces @Elton1927AniEco, and `[@Camerano1880EquViv]`
-produces [@Camerano1880EquViv].
-
-# Figures, Tables, and other floats
-
-Note that you can wrap the text of legends for both figures and tables. This
-avoids the issue of having very long lines.
-
-## Mathematics
-
-The following equation
-
-$$J'(p) = \frac{1}{\text{log}(S)}\times\left(-\sum p \times \text{log}(p)\right)$$ {#eq:eq1}
-
-is produced using
-
-~~~latex
-$$J'(p) = \frac{1}{\text{log}(S)}\times ... $$ {#eq:eq1}
-~~~
-
-and can be referenced using `@eq:eq1`, which will result in @eq:eq1. Note that
-because we use `pandoc-crossref`, the label "eq." will be generated
-automatically.
-
-## Tables
-
-Table legends go on the line after the table itself. To generate a reference to
-the table, use `{#tbl:id}` -- then, in the text, you can use `{@tbl:id}` to
-refer to the table. For example, the table below is @tbl:id. You can remove the
-*table* in front by using `!@tbl:id`, or force it to be capitalized with
-`\*tbl:id`.
-
-| Sepal.Length | Sepal.Width | Petal.Length | Petal.Width | Species |
-|-------------:|------------:|-------------:|------------:|:--------|
-|          5.1 |         3.5 |          1.4 |         0.2 | setosa  |
-|          5.0 |         3.6 |          1.4 |         0.2 | setosa  |
-|          5.4 |         3.9 |          1.7 |         0.4 | setosa  |
-
-Table: This is a table, and its identifier is `id` -- we can refer to it using
-`{@tbl:id}`. Note that even if the table legend is written below the table
-itself, it will appear on top in the PDF document. {#tbl:id}
-
-# Figures
-
-Figures can have a legend -- all figures *must* be in the `figures/` folder of
-the project, as it is also used for the website. We recommend to use good
-resolution images, rather than PDFs, or at least to have multiple versions
-available.
-
-~~~
-![This is the legend of the figure...](figures/figure.png){#fig:figure}
-~~~
-
-![This is the legend of the figure, which will be shown in the margin in
-preprint mode, and underneath the figure in draft mode. The legend can contain
-references, etc. It is advised to use a resolution of at least 600dpi for the
-figures.](figures/figure.png){#fig:figure}
-
-We can now use `@fig:figure` to refer to @fig:figure.
-
-# Example text
-
-Connectance, defined as the ratio of realized interactions on the total number
-of potential interactions, is one of the most common descriptor of network
-structure. In a bipartite network with $T$ species at the top, and $B$ at the
-bottom, having a total of $L$ interactions, it is defined as $Co = L/(T\times
-B)$. Connectance has a lower bound, as the network cannot have fewer
-interactions that the number of species in its more speciose level -- the
-minimal connectance is therefore $c_m = \text{max}(T,B)$. This makes the
-connectance of networks of different sizes difficult to compare, especially
-since bipartite networks tends to have a low connectance. For this reason, we
-used a corrected version of connectance, defined as
-
-$$Co^\star=\frac{L-c_m}{T\times B-c_m} \,.$${#eq:cstar}
-
-## This is a subsection
-
-This takes values between 0 (the network has the minimal number of interactions)
-and 1 (all species are connected), but is robust to variations in species
-richness.
-
-## This is another subsection
-
-This takes values between 0 (the network has the minimal number of interactions)
-and 1 (all species are connected), but is robust to variations in species
-richness.
-
-## Some non-standard maths
-
-The phylogenetic reconstruction of $\hat{\mathscr{L}}$ and $\hat{\mathscr{R}}$
-has an associated uncertainty, represented by the breadth of the uniform
-distribution associated to each of their entries. Therefore, we can use this
-information to assemble a *probabilistic* metaweb in the sense of
-@Poisot2016StrPro, *i.e.* in which every interaction is represented as a single,
-independent, Bernoulli event of probability $p$.
-
-Specifically, we have adopted the following approach. For every entry in
-$\hat{\mathscr{L}}$ and $\hat{\mathscr{R}}$, we draw a value from its
-distribution. This results in one instance of the possible left
-($\hat{\mathscr{l}}$) and right ($\hat{\mathscr{r}}$) subspaces for the Canadian
-metaweb. These can be multiplied, to produce one matrix of real values. Because
-the entries in $\hat{\mathscr{l}}$ and $\hat{\mathscr{r}}$ are in the same space
-where $\mathscr{L}$ and $\mathscr{R}$ were originally predicted, it follows that
-the threshold $\rho$ estimated for the European metaweb also applies. We use
-this information to produce one random Canadian metaweb, $N =
-\hat{\mathscr{L}}$$\hat{\mathscr{R}}' \ge \rho$.
-
-Because the intervals around some trait values can be broad [in fact, probably
-broader than what they would actually be, see *e.g.* @Garland1999IntPhy], we
-repeat the above process $2\times 10^5$ times, which results in a probabilistic
-metaweb $P$, where the probability of an interaction (here conveying our degree
-of trust that it exists given the inferred trait distributions) is given by the
-number of times where it appears across all random draws $N$, divided by the
-number of samples. An interaction with $P_{i,j} = 1$ means that these two
-species were predicted to interact in all $2\times 10^5$ random draws, etc..
-
+**Acknowledgements:** This work was supported by funding to the Viral Emergence
+Research Initiative (VERENA) consortium including NSF BII 2021909 and a grant
+from Institut de Valorisation des Données (IVADO), by the NSERC Discovery Grants
+and Discovery Acceleration Supplement programs, and by a donation from the
+Courtois Foundation. Benchmarking of this package on distributed systems was
+enabled by support provided by Calcul Québec (`www.calculquebec.ca`) and Compute
+Canada (`www.computecanada.ca`). TP wrote the initial code, TP and CJC
+contributed to API design, and all authors contributed to functionalities and
+usability testing.
 
 # References
