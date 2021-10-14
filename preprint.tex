@@ -286,24 +286,6 @@ Szöcs 2013).
 \makebox[0pt][l]{\colorRule[CCCCCC]{2.0\textwidth}{0.5pt}}
 \vskip 2em
 
-\texttt{NCBITaxonomy.jl} is a package designed to facilitate the
-reconciliation and cleaning of taxonomic names, using a local copy of
-the NCBI taxonomic backbone (Federhen 2012, Schoch et al. 2020); The
-basic search functions are coupled with quality-of-life functions
-including case-insensitive search and custom fuzzy string matching to
-facilitate the amount of information that can be extracted automatically
-while allowing efficient manual curation and inspection of results.
-\texttt{NCBITaxonomy.jl} works with version 1.6 of the Julia programming
-language (Bezanson et al. 2017), and relies on the Apache Arrow format
-to store a local copy of the NCBI raw taxonomy files. The design of
-\texttt{NCBITaxonomy.jl} has been inspired by similar efforts, like the
-R package \texttt{taxadb} (Norman et al. 2020), which provides an
-offline alternative to packages like \texttt{taxize} (Chamberlain and
-Szöcs 2013).
-
-\hypertarget{statement-of-need}{%
-\section{Statement of need}\label{statement-of-need}}
-
 Unambiguously identifying species is a far more challenging task than it
 may appear. There are a vast number of reasons for this. Different
 databases keep different taxonomic ``backbones,'' \emph{i.e.} different
