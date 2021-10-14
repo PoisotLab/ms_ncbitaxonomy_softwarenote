@@ -1,46 +1,52 @@
 {
-  "title": "Template to prepare preprints and manuscripts using markdown and github actions",
+  "title": "NCBITaxonomy.jl - rapid biological names finding and reconciliation",
   "authors": [
     {
       "affiliations": [
-        "Université de Montréal",
-        "Québec Centre for Biodiversity Sciences"
+        "Université de Montréal, Départment de Sciences Biologiques, Montréal QC, Canada",
+        "Québec Centre for Biodiversity Science, Montréal, QC, Canada"
       ],
       "familyname": "Poisot",
       "givennames": "Timothée",
       "email": "timothee.poisot@umontreal.ca",
       "orcid": "0000-0002-0735-5184",
-      "status": ["corresponding", "equal"]
+      "status": ["corresponding"]
     },
     {
       "affiliations": [
-        "Inn of the Prancing Pony",
-        "Fellowship of the Ring"
+        "Centre on Climate Change and Planetary Health, London School of Hygiene and Tropical Medicine, London, UK",
+        "Centre for Mathematical Modelling of Infectious Diseases, London School of Hygiene and Tropical Medicine, London, UK"
       ],
-      "familyname": "Took",
-      "givennames": "Peregrin",
-      "email": "pippin@took.shire"
+      "familyname": "Gibb",
+      "givennames": "Rory",
+      "orcid": "0000-0002-0965-1649"
     },
     {
       "affiliations": [
-        "Green Dragon Inn",
-        "Fellowship of the Ring"
+        "Emerging Pathogens Institute, University of Florida, Gainesville, FL, United States of America",
+        "School of Life Sciences, University of KwaZulu-Natal, Durban, South Africa",
+        "Department of Geography, University of Florida, Gainesville, FL, United States of America"
       ],
-      "familyname": "Brandybuck",
-      "givennames": "Merriadoc",
-      "email": "merry@fellowship.ring",
-      "status": ["equal"]
+      "familyname": "Ryan",
+      "givennames": "Sadie J.",
+      "orcid": "0000-0002-4308-6321"
+    },
+    {
+      "affiliations": [
+        "Department of Microbiology and Immunology, Georgetown University Medical Center, Georgetown University, Washington, D.C., United States of America",
+        "Center for Global Health Science and Security, Georgetown University Medical Center, Georgetown University, Washington, D.C., United States of America"
+      ],
+      "familyname": "Carlson",
+      "givennames": "Colin J.",
+      "orcid": "0000-0001-6960-8434"
     }
   ],
-  "abstract": {
-    "Purpose": "This template provides a series of scripts to render a markdown document into an interactive website and a series of PDFs.",
-    "Motivation": "It makes collaborating on text with GitHub easier, and means that we never need to think about the output.",
-    "Internals": "GitHub actions and a series of python scritpts. The markdown is handled with `pandoc`."
-  },
+  "abstract": "`NCBITaxonomy.jl` is a package designed to facilitate the reconciliation and cleaning of taxonomic names, using a local copy of the NCBI taxonomic backbone [@Federhen2012NcbTax; @Schoch2020NcbTax]; The basic search functions are coupled with quality-of-life functions including case-insensitive search and custom fuzzy string matching to facilitate the amount of information that can be extracted automatically while allowing efficient manual curation and inspection of results. `NCBITaxonomy.jl` works with version 1.6 of the Julia programming language [@Bezanson2017JulFre], and relies on the Apache Arrow format to store a local copy of the NCBI raw taxonomy files. The design of `NCBITaxonomy.jl` has been inspired by similar efforts, like the R package `taxadb` [@Norman2020TaxHig], which provides an offline alternative to packages like `taxize` [@Chamberlain2013TaxTax].",
   "keywords": [
-    "pandoc",
-    "pandoc-crossref",
-    "github actions"
+    "biodiversity",
+    "taxonomy",
+    "NCBI",
+    "fuzzy matching"
   ],
-  "citationstyle": "ecology-letters"
+  "citationstyle": "ecography"
 }
