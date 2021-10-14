@@ -1,119 +1,513 @@
 [
     {
-        "DOI": "10.1002/jez.1400610202",
+        "DOI": "10.1137/141000671",
         "author": [
             {
-                "family": "Allee",
-                "given": "W. C."
+                "family": "Bezanson",
+                "given": "J."
             },
             {
-                "family": "Bowen",
-                "given": "Edith S."
-            }
-        ],
-        "container-title": "Journal of Experimental Zoology",
-        "id": "Allee1932StuAni",
-        "issue": "2",
-        "issued": {
-            "date-parts": [
-                [
-                    1932,
-                    2
-                ]
-            ]
-        },
-        "page": "185-207",
-        "title": "Studies in animal aggregations: Mass protection against colloidal silver among goldfishes",
-        "type": "article-journal",
-        "volume": "61"
-    },
-    {
-        "author": [
-            {
-                "family": "Camerano",
-                "given": "Lorenzo"
-            }
-        ],
-        "container-title": "Atti Della R. Accad. Delle Sci. Torino",
-        "id": "Camerano1880EquViv",
-        "issued": {
-            "date-parts": [
-                [
-                    1880
-                ]
-            ]
-        },
-        "page": "393-414",
-        "title": "Dell\u2019equilibrio dei viventi merce la reciproca distruzione",
-        "type": "article-journal",
-        "volume": "15"
-    },
-    {
-        "author": [
-            {
-                "family": "Elton",
-                "given": "Charles S"
-            }
-        ],
-        "id": "Elton1927AniEco",
-        "issued": {
-            "date-parts": [
-                [
-                    1927
-                ]
-            ]
-        },
-        "publisher": "University of Chicago Press",
-        "title": "Animal ecology",
-        "type": "book"
-    },
-    {
-        "author": [
-            {
-                "family": "Fahrenholz",
-                "given": "H."
-            }
-        ],
-        "container-title": "Zool. Anz.",
-        "id": "Fahrenholz1913EctUnd",
-        "issued": {
-            "date-parts": [
-                [
-                    1913
-                ]
-            ]
-        },
-        "page": "371-374",
-        "title": "Ectoparasiten und abstammungslehre",
-        "type": "article-journal",
-        "volume": "41"
-    },
-    {
-        "DOI": "10.1111/j.1096-3642.1935.tb01680.x",
-        "author": [
-            {
-                "family": "Nicholson",
-                "given": "A. J."
+                "family": "Edelman",
+                "given": "A."
             },
             {
-                "family": "Bailey",
-                "given": "V. A."
+                "family": "Karpinski",
+                "given": "S."
+            },
+            {
+                "family": "Shah",
+                "given": "V."
             }
         ],
-        "container-title": "Proceedings of the Zoological Society of London",
-        "id": "Nicholson1935BalAni",
-        "issue": "3",
+        "container-title": "SIAM Review",
+        "id": "Bezanson2017JulFre",
+        "issue": "1",
         "issued": {
             "date-parts": [
                 [
-                    1935,
-                    9
+                    2017
                 ]
             ]
         },
-        "page": "551-598",
-        "title": "The Balance of Animal Populations.Part I.",
+        "page": "65-98",
+        "title": "Julia: A Fresh Approach to Numerical Computing",
         "type": "article-journal",
-        "volume": "105"
+        "volume": "59"
+    },
+    {
+        "DOI": "10.12688/f1000research.2-191.v2",
+        "PMCID": "PMC3901538",
+        "author": [
+            {
+                "family": "Chamberlain",
+                "given": "Scott A."
+            },
+            {
+                "family": "Sz\u00f6cs",
+                "given": "Eduard"
+            }
+        ],
+        "container-title": "F1000Research",
+        "id": "Chamberlain2013TaxTax",
+        "issued": {
+            "date-parts": [
+                [
+                    2013
+                ]
+            ]
+        },
+        "page": "191",
+        "title": "Taxize: Taxonomic search and retrieval in R",
+        "type": "article-journal",
+        "volume": "2"
+    },
+    {
+        "author": [
+            {
+                "family": "Conti",
+                "given": "Matteo"
+            },
+            {
+                "family": "Nimis",
+                "given": "Pier Luigi"
+            },
+            {
+                "family": "Martellos",
+                "given": "Stefano"
+            }
+        ],
+        "container-title": "Plants",
+        "id": "Conti2021MatAlg",
+        "issue": "5",
+        "issued": {
+            "date-parts": [
+                [
+                    2021
+                ]
+            ]
+        },
+        "page": "974",
+        "publisher": "Multidisciplinary Digital Publishing Institute",
+        "title": "Match Algorithms for Scientific Names in FlorItaly, the Portal to the Flora of Italy",
+        "type": "article-journal",
+        "volume": "10"
+    },
+    {
+        "author": [
+            {
+                "family": "Dauncey",
+                "given": "E. A."
+            },
+            {
+                "family": "Irving",
+                "given": "J."
+            },
+            {
+                "family": "Allkin",
+                "given": "R."
+            },
+            {
+                "family": "Robinson",
+                "given": "N."
+            }
+        ],
+        "container-title": "European Journal of Integrative Medicine",
+        "id": "Dauncey2016ComMis",
+        "issue": "5",
+        "issued": {
+            "date-parts": [
+                [
+                    2016
+                ]
+            ]
+        },
+        "page": "597-601",
+        "title": "Common mistakes when using plant names and how to avoid them.",
+        "type": "article-journal",
+        "volume": "8"
+    },
+    {
+        "author": [
+            {
+                "family": "Federhen",
+                "given": "Scott"
+            }
+        ],
+        "container-title": "Nucleic acids research",
+        "id": "Federhen2012NcbTax",
+        "issue": "D1",
+        "issued": {
+            "date-parts": [
+                [
+                    2012
+                ]
+            ]
+        },
+        "page": "D136-D143",
+        "publisher": "Oxford University Press",
+        "title": "The NCBI taxonomy database",
+        "type": "article-journal",
+        "volume": "40"
+    },
+    {
+        "DOI": "10.1101/2021.01.14.426572",
+        "author": [
+            {
+                "family": "Gibb",
+                "given": "Rory"
+            },
+            {
+                "family": "Albery",
+                "given": "Gregory F."
+            },
+            {
+                "family": "Becker",
+                "given": "Daniel J."
+            },
+            {
+                "family": "Brierley",
+                "given": "Liam"
+            },
+            {
+                "family": "Connor",
+                "given": "Ryan"
+            },
+            {
+                "family": "Dallas",
+                "given": "Tad A."
+            },
+            {
+                "family": "Eskew",
+                "given": "Evan A."
+            },
+            {
+                "family": "Farrell",
+                "given": "Maxwell J."
+            },
+            {
+                "family": "Rasmussen",
+                "given": "Angela L."
+            },
+            {
+                "family": "Ryan",
+                "given": "Sadie J."
+            },
+            {
+                "family": "Sweeny",
+                "given": "Amy R."
+            },
+            {
+                "family": "Carlson",
+                "given": "Colin J."
+            },
+            {
+                "family": "Poisot",
+                "given": "Timothee"
+            }
+        ],
+        "container-title": "bioRxiv",
+        "id": "Gibb2021DatPro",
+        "issued": {
+            "date-parts": [
+                [
+                    2021
+                ]
+            ]
+        },
+        "page": "2021.01.14.426572",
+        "title": "Data proliferation, reconciliation, and synthesis in viral ecology",
+        "type": "article-journal"
+    },
+    {
+        "DOI": "10.1093/nar/gkx932",
+        "author": [
+            {
+                "family": "Lefkowitz",
+                "given": "Elliot J"
+            },
+            {
+                "family": "Dempsey",
+                "given": "Donald M"
+            },
+            {
+                "family": "Hendrickson",
+                "given": "Robert Curtis"
+            },
+            {
+                "family": "Orton",
+                "given": "Richard J"
+            },
+            {
+                "family": "Siddell",
+                "given": "Stuart G"
+            },
+            {
+                "family": "Smith",
+                "given": "Donald B"
+            }
+        ],
+        "container-title": "Nucleic Acids Research",
+        "id": "Lefkowitz2018VirTax",
+        "issue": "D1",
+        "issued": {
+            "date-parts": [
+                [
+                    2018
+                ]
+            ]
+        },
+        "page": "D708-D717",
+        "title": "Virus taxonomy: The database of the International Committee on Taxonomy of Viruses (ICTV)",
+        "type": "article-journal",
+        "volume": "46"
+    },
+    {
+        "DOI": "10.1111/2041-210X.13440",
+        "author": [
+            {
+                "family": "Norman",
+                "given": "Kari E. A."
+            },
+            {
+                "family": "Chamberlain",
+                "given": "Scott"
+            },
+            {
+                "family": "Boettiger",
+                "given": "Carl"
+            }
+        ],
+        "container-title": "Methods in Ecology and Evolution",
+        "id": "Norman2020TaxHig",
+        "issue": "9",
+        "issued": {
+            "date-parts": [
+                [
+                    2020
+                ]
+            ]
+        },
+        "page": "1153-1159",
+        "title": "Taxadb: A high-performance local taxonomic database interface",
+        "type": "article-journal",
+        "volume": "11"
+    },
+    {
+        "author": [
+            {
+                "family": "Schoch",
+                "given": "Conrad L."
+            },
+            {
+                "family": "Ciufo",
+                "given": "Stacy"
+            },
+            {
+                "family": "Domrachev",
+                "given": "Mikhail"
+            },
+            {
+                "family": "Hotton",
+                "given": "Carol L."
+            },
+            {
+                "family": "Kannan",
+                "given": "Sivakumar"
+            },
+            {
+                "family": "Khovanskaya",
+                "given": "Rogneda"
+            },
+            {
+                "family": "Leipe",
+                "given": "Detlef"
+            },
+            {
+                "family": "Mcveigh",
+                "given": "Richard"
+            },
+            {
+                "family": "O\u2019Neill",
+                "given": "Kathleen"
+            },
+            {
+                "family": "Robbertse",
+                "given": "Barbara"
+            }
+        ],
+        "container-title": "Database",
+        "id": "Schoch2020NcbTax",
+        "issued": {
+            "date-parts": [
+                [
+                    2020
+                ]
+            ]
+        },
+        "publisher": "Oxford Academic",
+        "title": "NCBI Taxonomy: A comprehensive update on curation, resources and tools",
+        "type": "article-journal",
+        "volume": "2020"
+    },
+    {
+        "author": [
+            {
+                "family": "Shimatani",
+                "given": "Kenichiro"
+            }
+        ],
+        "container-title": "Oikos",
+        "id": "Shimatani2001MeaSpe",
+        "issue": "1",
+        "issued": {
+            "date-parts": [
+                [
+                    2001
+                ]
+            ]
+        },
+        "page": "135-147",
+        "publisher": "[Nordic Society Oikos, Wiley]",
+        "title": "On the Measurement of Species Diversity Incorporating Species Differences",
+        "type": "article-journal",
+        "volume": "93"
+    },
+    {
+        "author": [
+            {
+                "family": "Wagner",
+                "given": "Viktoria"
+            }
+        ],
+        "container-title": "Journal of Vegetation Science",
+        "id": "Wagner2016RevSof",
+        "issue": "6",
+        "issued": {
+            "date-parts": [
+                [
+                    2016
+                ]
+            ]
+        },
+        "page": "1323-1327",
+        "publisher": "Wiley Online Library",
+        "title": "A review of software tools for spell-checking taxon names in vegetation databases",
+        "type": "article-journal",
+        "volume": "27"
+    },
+    {
+        "DOI": "10.1007/s00705-020-04752-x",
+        "author": [
+            {
+                "family": "Walker",
+                "given": "Peter J."
+            },
+            {
+                "family": "Siddell",
+                "given": "Stuart G."
+            },
+            {
+                "family": "Lefkowitz",
+                "given": "Elliot J."
+            },
+            {
+                "family": "Mushegian",
+                "given": "Arcady R."
+            },
+            {
+                "family": "Adriaenssens",
+                "given": "Evelien M."
+            },
+            {
+                "family": "Dempsey",
+                "given": "Donald M."
+            },
+            {
+                "family": "Dutilh",
+                "given": "Bas E."
+            },
+            {
+                "family": "Harrach",
+                "given": "Bal\u00e1zs"
+            },
+            {
+                "family": "Harrison",
+                "given": "Robert L."
+            },
+            {
+                "family": "Hendrickson",
+                "given": "R. Curtis"
+            },
+            {
+                "family": "Junglen",
+                "given": "Sandra"
+            },
+            {
+                "family": "Knowles",
+                "given": "Nick J."
+            },
+            {
+                "family": "Kropinski",
+                "given": "Andrew M."
+            },
+            {
+                "family": "Krupovic",
+                "given": "Mart"
+            },
+            {
+                "family": "Kuhn",
+                "given": "Jens H."
+            },
+            {
+                "family": "Nibert",
+                "given": "Max"
+            },
+            {
+                "family": "Orton",
+                "given": "Richard J."
+            },
+            {
+                "family": "Rubino",
+                "given": "Luisa"
+            },
+            {
+                "family": "Sabanadzovic",
+                "given": "Sead"
+            },
+            {
+                "family": "Simmonds",
+                "given": "Peter"
+            },
+            {
+                "family": "Smith",
+                "given": "Donald B."
+            },
+            {
+                "family": "Varsani",
+                "given": "Arvind"
+            },
+            {
+                "family": "Zerbini",
+                "given": "Francisco Murilo"
+            },
+            {
+                "family": "Davison",
+                "given": "Andrew J."
+            }
+        ],
+        "container-title": "Archives of Virology",
+        "id": "Walker2020ChaVir",
+        "issue": "11",
+        "issued": {
+            "date-parts": [
+                [
+                    2020
+                ]
+            ]
+        },
+        "page": "2737-2748",
+        "title": "Changes to virus taxonomy and the Statutes ratified by the International Committee on Taxonomy of Viruses (2020)",
+        "type": "article-journal",
+        "volume": "165"
     }
 ]
