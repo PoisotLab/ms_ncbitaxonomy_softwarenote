@@ -208,362 +208,275 @@ scritpts. The markdown is handled with \texttt{pandoc}.\\%
 \linenumbers
 \pagestyle{normal}
 
-This template uses \texttt{pandoc} (and a few additional python glue
-scripts) to facilitate the production of scientific articles using a
-standard markdown file. The objective is to ensure that standard
-markdown (with the important exception of the \texttt{pandoc-crossref}
-citation markup) will be rendered into an interactive website (which
-allows collaborative annotations with the \texttt{hypothes.is}
-platform), a ``draft'' style PDF (double-spaced, numbered lines, figures
-at the end), and a ``preprint'' style PDF (with slightly more
-reader-friendly pagination).
+\texttt{NCBITaxonomy.jl} is a package designed to facilitate the
+reconciliation and cleaning of taxonomic names, using a local copy of
+the NCBI taxonomic backbone (\textbf{Federhen2012NcbTax?};
+\textbf{Schoch2020NcbTax?}); The basic search functions are coupled with
+quality-of-life functions including case-insensitive search and custom
+fuzzy string matching to facilitate the amount of information that can
+be extracted automatically while allowing efficient manual curation and
+inspection of results. \texttt{NCBITaxonomy.jl} works with version 1.6
+of the Julia programming language (\textbf{Bezanson2017JulFre?}), and
+relies on the Apache Arrow format to store a local copy of the NCBI raw
+taxonomy files. The design of \texttt{NCBITaxonomy.jl} has been inspired
+by similar efforts, like the R package \texttt{taxadb}
+(\textbf{Norman2020TaxHig?}), which provides an offline alternative to
+packages like \texttt{taxize} (\textbf{Chamberlain2013TaxTax?}).
 
-The core bit of configuration is the \texttt{metadata.json} file, which
-handles information about authorship, affiliations, the abstract,
-keywords, etc. All documents will be deployed to \texttt{gh-pages}
-\emph{only} on push events from the \texttt{main} branch. All of the
-artifacts will be built when doing pull requests, so you can check that
-merging a branch is \emph{not} going to cause the compilation of the
-documents to fail; indeed, you can download the artifacts produced
-during the run, to check the PDF and html files. The website is only
-updated from the \texttt{main} branch.
+\hypertarget{statement-of-need}{%
+\section{Statement of need}\label{statement-of-need}}
 
-The workflow is \emph{very} GitHub based, and so the manuscript file
-\emph{is} the \texttt{README.md} - this is not going to be a huge issue
-as 90\% of the markdown is standard, with the exception of the citations
-and mathematics, so this will render (mostly) like a normal README file.
+Unambiguously identifying species is a far more challenging task than it
+may appear. There are a vast number of reasons for this. Different
+databases keep different taxonomic ``backbones,'' \emph{i.e.} different
+data structures in which names are mapped to species, and organised in a
+hierarchy. Not all names are unique identifiers to groups. For example,
+\emph{Io} can either refer to a genus of plants from the aster family,
+or to a genus of molluscs; the genus \emph{Mus} (of which the house
+mouse \emph{Mus musculus} is a species), contains a sub-genus
+\emph{also} named \emph{Mus}. Conversely, the same species can have
+several names, which are valid synonyms: for example, the domestic cow
+\emph{Bos taurus} admits \emph{Bos primigenius taurus} as a valid
+synonym. Taxonomic nomenclature also changes regularly, with groups
+being split, merged, or moved to a new position in the tree of life;
+this is, notably, a common occurrence with viral taxonomy, each
+subsequent version of which can differ markedly from the last; compare,
+\emph{e.g} (\textbf{Lefkowitz2018VirTax?}) to
+(\textbf{Walker2020ChaVir?}).
 
-\hypertarget{deploying-the-template}{%
-\section{Deploying the template}\label{deploying-the-template}}
+To add to the complexity, one must also consider that most taxa names
+are at some point manually typed, which has the potential to introduce
+additional mistakes in raw data; it is likely to expect that such
+mistakes may arise when attempting to write down the (perfectly valid)
+names of the bacterial isolate known as \emph{Myxococcus
+llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogochensis}, or of
+the crowned slaty flycatcher \emph{Griseotyrannus
+aurantioatrocristatus}. These mistakes are more likely when dealing with
+hyper-diverse samples, like plant census (\textbf{Dauncey2016ComMis?};
+\textbf{Wagner2016RevSof?}; \textbf{Conti2021MatAlg?}). In addition to
+binomial names, the same species can be known by many vernacular
+(common) names, which are language or even region-specific: \emph{Ovis
+aries}, for example, has valid English vernaculars including lamb,
+sheep, wild sheep, and domestic sheep.
 
-The process of deploying this template has been \emph{greatly}
-streamlined from previous versions:
+All these considerations are actually important when matching species
+names both within and across datasets. Let us consider the following
+species survey of individual fishes, European chub, \emph{Cyprinus
+cephalus}, \emph{Leuciscus cephalus}, \emph{Squalius cephalus}: all are
+the same species (\emph{S. cephalus}), referred to as one of the
+vernacular (European chub) and two formerly accepted names now
+classified as synonyms. A cautious estimate of diversity based on the
+user-supplied names would give \(n=4\) species, when there is in fact
+only one.
 
-\begin{itemize}
-\tightlist
-\item
-  Click on the ``Use this template'' button
-\item
-  Edit \texttt{README.md} with your own text, commit, and push
-\item
-  This push will trigger the first build - the builds are only active on
-  the \texttt{main} branch (\emph{not} \texttt{master}!), and on pull
-  requests
-\item
-  Go to \texttt{http://you.github.io/repo-name/} to view the html
-  version, and get access to the PDFs
-\item
-  Add your references to the \texttt{references.bib} file
-\item
-  Edit the \texttt{metadata.json} file to add the title, abstract,
-  authors
-\end{itemize}
+A package with the ability to handle the sources of errors outlined
+above, and especially while provide an authoritative classification, can
+accelerate the work of consuming large volumes of biodiversity data. For
+example, this package was used in the process of developing the
+\emph{CLOVER} database (\textbf{Gibb2021DatPro?}) of host-virus
+associations, by reconciling the names of viruses and mammals from four
+different sources, where all of the issues described above were present.
 
-In particular, note that \emph{you do not need} to create a personnal
-access token to deploy to \texttt{gh-pages} (from where the website is
-served).
+\hypertarget{overview-of-functionalities}{%
+\section{Overview of
+functionalities}\label{overview-of-functionalities}}
 
-\hypertarget{the-metadata-file}{%
-\section{The metadata file}\label{the-metadata-file}}
-
-\hypertarget{general-information}{%
-\subsection{General information}\label{general-information}}
-
-The title is a field in the \texttt{metadata.json}:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{\{}
-    \DataTypeTok{"title"}\FunctionTok{:} \StringTok{"Preprint template"}
-\FunctionTok{\}}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{authorship}{%
-\subsection{Authorship}\label{authorship}}
-
-Authors are listed as objects in the \texttt{authors} block. Each author
-is specified as follows:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{\{}
-      \DataTypeTok{"familyname"}\FunctionTok{:} \StringTok{"Bob"}\FunctionTok{,}
-      \DataTypeTok{"givennames"}\FunctionTok{:} \StringTok{"Alice"}\FunctionTok{,}
-      \DataTypeTok{"email"}\FunctionTok{:} \StringTok{"alice.bob@u.edu"}\FunctionTok{,}
-      \DataTypeTok{"orcid"}\FunctionTok{:} \StringTok{"0000{-}0000{-}0000{-}0001"}\FunctionTok{,}
-      \DataTypeTok{"affiliations"}\FunctionTok{:} \OtherTok{[}
-        \StringTok{"Affiliation 1"}\OtherTok{,}
-        \StringTok{"Affiliation 2"}
-      \OtherTok{]}\FunctionTok{,}
-      \DataTypeTok{"status"}\FunctionTok{:} \OtherTok{[}\StringTok{"corresponding"}\OtherTok{,} \StringTok{"equal"}\OtherTok{]}
-    \FunctionTok{\}}
-\end{Highlighting}
-\end{Shaded}
-
-The \texttt{email} field is recommended for all authors. The
-\texttt{status} field is only useful for the corresponding author, and
-to denote equal contributions. These informations are rendered on the
-initial page. If an \texttt{orcid} is given, it will be linked on the
-HTML and PDF versions.
-
-Note that there is \emph{no need} to number the affiliations - a small
-python script will take care of this automatically.
-
-\hypertarget{abstract}{%
-\subsection{Abstract}\label{abstract}}
-
-This template supports three types of abstracts, indicated in the
-metadata file as \texttt{abstract}:
-
-A regular \texttt{abstract} is defined as
+An up-to-date version of the documentation for \texttt{NCBITaxonomy.jl}
+can be found online at
+\url{https://docs.ecojulia.org/NCBITaxonomy.jl/stable/}, including
+examples and a documentation of every method. The package is released
+under the MIT license. Contributions can be made in the form of issues
+(bug reports, questions, features suggestions) and pull requests. The
+package can be checked out and installed anonymously from the central
+Julia repository:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ErrorTok{"abstract":} \ErrorTok{"A} \ErrorTok{very} \ErrorTok{long} \ErrorTok{string"}
+\KeywordTok{using}\NormalTok{ Pkg}
+
+\CommentTok{\# This line should go in the Julia configuration file {-} note that the path}
+\CommentTok{\# will be created if it doesn\textquotesingle{}t exist, and will be used to store the}
+\CommentTok{\# raw taxonomic table}
+\ConstantTok{ENV}\NormalTok{[}\StringTok{"NCBITAXONOMY\_PATH"}\NormalTok{] }\OperatorTok{=}\NormalTok{ joinpath(homedir()}\OperatorTok{,} \StringTok{"data"}\OperatorTok{,} \StringTok{"NCBITaxonomy.jl"}\NormalTok{)}
+
+\NormalTok{Pkg.add(}\StringTok{"NCBITaxonomy"}\NormalTok{) }\CommentTok{\# Dowloading the files may take a long time}
 \end{Highlighting}
 \end{Shaded}
 
-An itemized abstract is an array of strings, each representing a bullet
-point:
+The package will download the most recent version of the NCBI taxonomy
+database, and transform in into a set of Apache Arrow files ready for
+use. Note that the \texttt{NCBITAXONOMY\_PATH} can specified on a
+per-project basis, and as long as the package is not re-built, the local
+set of tables downloaded from NCBI will not change; this way, users can
+re-run an analysis with a guarantee that the underlying taxonomic
+backbone has not changed.
+
+\hypertarget{improved-name-matching}{%
+\subsection{Improved name matching}\label{improved-name-matching}}
+
+Name finding is primarily done through the \texttt{taxon} function,
+which admits either a unique NCBI identifier (\emph{e.g.}
+\texttt{taxon(36219)} for the bogue \emph{Boops boops}), a string
+(\texttt{taxon("Boops\ boops")}), or a data frame with a restricted list
+of names (see the next section). The \texttt{taxon} method has
+additional arguments to perform fuzzy matching in order to catch
+possible typos (\texttt{taxon("Boops\ bops";\ strict=false)}), to
+perform a lowercase search (useful when alphanumeric codes are part of
+the taxon name, like for some viruses), and to restrict the the search
+to a specific taxonomic rank.
+
+The lowercase search can be a preferable alternative to fuzzy string
+matching. Consider the string \texttt{Adeno-associated\ virus\ 3b} - it
+has three names with equal distance (under the Levensthein string
+distance function):
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ErrorTok{"abstract":} \OtherTok{[}
-    \StringTok{"Point 1"}\OtherTok{,}
-    \StringTok{"Point 2"}
-\OtherTok{]}
+\NormalTok{julia}\OperatorTok{\textgreater{}}\NormalTok{ similarnames(}\StringTok{"Adeno{-}associated virus 3b"}\OperatorTok{;}\NormalTok{ threshold}\OperatorTok{=}\FloatTok{0.95}\NormalTok{)}
+\FloatTok{3}\OperatorTok{{-}}\NormalTok{element }\DataTypeTok{Vector}\NormalTok{\{}\DataTypeTok{Pair}\NormalTok{\{NCBITaxon}\OperatorTok{,} \DataTypeTok{Float64}\NormalTok{\}\}}\OperatorTok{:}
+\NormalTok{  Adeno}\OperatorTok{{-}}\NormalTok{associated virus }\OperatorTok{{-}} \FloatTok{3}\NormalTok{ (ncbi}\OperatorTok{:}\FloatTok{46350}\NormalTok{) }\OperatorTok{=\textgreater{}} \FloatTok{0.96}
+\NormalTok{   Adeno}\OperatorTok{{-}}\NormalTok{associated virus }\FloatTok{3}\NormalTok{B (ncbi}\OperatorTok{:}\FloatTok{68742}\NormalTok{) }\OperatorTok{=\textgreater{}} \FloatTok{0.96}
+\NormalTok{ Adeno}\OperatorTok{{-}}\NormalTok{associated virus }\FloatTok{3}\NormalTok{A (ncbi}\OperatorTok{:}\FloatTok{1406223}\NormalTok{) }\OperatorTok{=\textgreater{}} \FloatTok{0.96}
 \end{Highlighting}
 \end{Shaded}
 
-A structured abstract is an object with key-value pairs :
+Depending on the operating system, either of these three names can be
+returned; compare to the output of a case insensitive name search:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ErrorTok{"abstract":} \FunctionTok{\{}
-    \DataTypeTok{"Location"}\FunctionTok{:} \StringTok{"Worldwide"}\FunctionTok{,}
-    \DataTypeTok{"Organisms"}\FunctionTok{:} \StringTok{"Mammals"}
-\FunctionTok{\}}
+\NormalTok{julia}\OperatorTok{\textgreater{}}\NormalTok{ taxon(}\StringTok{"Adeno{-}associated virus 3b"}\OperatorTok{;}\NormalTok{ casesensitive}\OperatorTok{=}\ExtensionTok{false}\NormalTok{)}
+\NormalTok{Adeno}\OperatorTok{{-}}\NormalTok{associated virus }\FloatTok{3}\NormalTok{B (ncbi}\OperatorTok{:}\FloatTok{68742}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{citation-style}{%
-\subsection{Citation style}\label{citation-style}}
+This returns the correct name.
 
-The \texttt{citationstyle} key corresponds to the name, with
-\texttt{.csl} ommited, of a CSL stylesheet stored in the
-\href{https://github.com/citation-style-language/}{citation style
-language} repository. Note that there is no difference between main and
-dependent styles, the build engine will take the correct steps to get
-the correct style. The default is
-\texttt{"citationstyle":\ "ecology-letters"}. There is a longer section
-about references management later on.
+\hypertarget{name-matching-output-and-error-handling}{%
+\subsection{Name matching output and error
+handling}\label{name-matching-output-and-error-handling}}
 
-\hypertarget{references-management}{%
-\section{References management}\label{references-management}}
-
-The references are managed by \texttt{pandoc}. Note that we \emph{do
-not} use \texttt{pandoc-citeproc}, which was an external module for
-older \texttt{pandoc} versions. References \emph{must} be stored in a
-\texttt{references.bib} file, and that it would make sense to order it
-alphabetically by key.
-
-We use \href{https://www.zotero.org/}{Zotero} for references management,
-and for the lab's manuscripts, we work from folders in a shared library
-(with a folder for every manuscript).
-
-It is recommedned to use the
-\href{https://retorque.re/zotero-better-bibtex/}{Better BibTeX} plugin
-for citation key generations, and auto-export of the shared library to
-the \texttt{references.bib} file. We use a citation key format meant to
-convey information on the author (first author full name), date (complet
-year), and title (first three letters of the first two non-stop words).
-It must be set in the Better BibTeX preferences as (you might need to
-remove the line changes):
-
-\begin{verbatim}
-[auth:fold]
-[year]
-[title:fold:nopunctordash:skipwords:lower:select=1,1:substring=1,3:capitalize]
-[title:fold:nopunctordash:skipwords:lower:select=2,2:substring=1,3:capitalize]
-\end{verbatim}
-
-It is a good idea to configure Better BibTeX to auto-export on change,
-and to remove a lot of fields that are not strictly speaking required
-for references. The list of fields we usually ignore is:
-
-\begin{verbatim}
-abstract,copyright,annotation,file,pmid,month,shorttitle,keywords
-\end{verbatim}
-
-The citations are done using the normal markdown syntax, where
-\texttt{@Elton1927AniEco} produces Elton (1927), and
-\texttt{{[}@Camerano1880EquViv{]}} produces (Camerano 1880).
-
-\hypertarget{figures-tables-and-other-floats}{%
-\section{Figures, Tables, and other
-floats}\label{figures-tables-and-other-floats}}
-
-Note that you can wrap the text of legends for both figures and tables.
-This avoids the issue of having very long lines.
-
-\hypertarget{mathematics}{%
-\subsection{Mathematics}\label{mathematics}}
-
-The following equation
-
-\begin{equation}\protect\hypertarget{eq:eq1}{}{J'(p) = \frac{1}{\text{log}(S)}\times\left(-\sum p \times \text{log}(p)\right)}\label{eq:eq1}\end{equation}
-
-is produced using
+The \texttt{taxon} function will either return a \texttt{NCBITaxon}
+object (made of a \texttt{name} and \texttt{id}), or throw either a
+\texttt{NameHasNoDirectMatch} (with instructions about how to possible
+solve it, using the \texttt{similarnames} function), or a
+\texttt{NameHasMultipleMatches} (listing the possible valid matches, and
+suggesting to use \texttt{alternativetaxa} to find the correct one).
+Therefore, the common way to work with the \texttt{taxon} function would
+be to wrap it in a \texttt{try}/\texttt{catch} statement:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\SpecialStringTok{$$J\textquotesingle{}(p) = }\SpecialCharTok{\textbackslash{}frac}\SpecialStringTok{\{1\}\{}\SpecialCharTok{\textbackslash{}text}\NormalTok{\{log\}}\SpecialStringTok{(S)\}}\SpecialCharTok{\textbackslash{}times}\SpecialStringTok{ ... $$}\NormalTok{ \{\#eq:eq1\}}
+\KeywordTok{try}
+\NormalTok{  taxon(name)}
+  \CommentTok{\# Additional operations with the matched name}
+\KeywordTok{catch}\NormalTok{ err}
+  \KeywordTok{if}\NormalTok{ isa(err}\OperatorTok{,}\NormalTok{ NameHasNoDirectMatch)}
+    \CommentTok{\# What to do if no match is found}
+  \KeywordTok{elseif}\NormalTok{ isa(err}\OperatorTok{,}\NormalTok{ NameHasMultipleMatches)}
+    \CommentTok{\# What to do if there are multiple matches}
+  \KeywordTok{else}
+    \CommentTok{\# What to do in case of another error that is not NCBITaxonomy specific}
+  \KeywordTok{end}
+\KeywordTok{end}
 \end{Highlighting}
 \end{Shaded}
 
-and can be referenced using \texttt{@eq:eq1}, which will result in
-eq.~\ref{eq:eq1}. Note that because we use \texttt{pandoc-crossref}, the
-label ``eq.'' will be generated automatically.
+These functions will not demand any user input in the form of key
+presses (though they can be wrapped in additional code to allow it), as
+they are intended to run on clusters without supervision. The
+\texttt{taxon} function has good scaling using muliple threads. For
+convenience in rapidly getting a taxon for demonstration purposes, we
+also provide a string macro, whereby \emph{e.g.}
+\texttt{ncbi"Procyon\ lotor"} will return the taxon object for the
+raccoon.
 
-\hypertarget{tables}{%
-\subsection{Tables}\label{tables}}
+\hypertarget{name-filtering-functions}{%
+\subsection{Name filtering functions}\label{name-filtering-functions}}
 
-Table legends go on the line after the table itself. To generate a
-reference to the table, use \texttt{\{\#tbl:id\}} -- then, in the text,
-you can use \texttt{\{@tbl:id\}} to refer to the table. For example, the
-table below is tbl.~\ref{tbl:id}. You can remove the \emph{table} in
-front by using \texttt{!@tbl:id}, or force it to be capitalized with
-\texttt{\textbackslash{}*tbl:id}.
+As the full NCBI names table has over 3 million entries at the time of
+writing, we have provided a number of functions to restrict the scope of
+names that are searched. These are driven by the NCBI \emph{divisions}.
+For example \texttt{nf\ =\ mammalfilter(true)} will return a data frame
+containing the names of mammals, inclusive of rodents and primates, and
+can be used with \emph{e.g.} \texttt{taxon(nf,\ "Pan")}. This has the
+dual advantage of making search faster, but also of avoiding matching on
+names that are shared by another taxonomic group (which is not an issue
+with \emph{Pan}, but is an issue with \emph{e.g.} \emph{Io} as mentioned
+in the introduction).
 
-\hypertarget{tbl:id}{}
-\begin{longtable}[]{@{}rrrrl@{}}
-\caption{\label{tbl:id}This is a table, and its identifier is
-\texttt{id} -- we can refer to it using \texttt{\{@tbl:id\}}. Note that
-even if the table legend is written below the table itself, it will
-appear on top in the PDF document.}\tabularnewline
+Note that the use of a restricted list of names can have significant
+performance consequences: compare, for example, the time taken to return
+the taxon \emph{Pan} (ID 9596) in the entire database, in all mammals,
+and in all primates:
+
+\begin{longtable}[]{@{}lclll@{}}
 \toprule
-Sepal.Length & Sepal.Width & Petal.Length & Petal.Width &
-Species\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-Sepal.Length & Sepal.Width & Petal.Length & Petal.Width &
-Species\tabularnewline
+Names list & Fuzzy matching & Time (ms) & Allocations & Memory
+allocated\tabularnewline
 \midrule
 \endhead
-5.1 & 3.5 & 1.4 & 0.2 & setosa\tabularnewline
-5.0 & 3.6 & 1.4 & 0.2 & setosa\tabularnewline
-5.4 & 3.9 & 1.7 & 0.4 & setosa\tabularnewline
+all & no & 23 & 34 & 2 KiB\tabularnewline
+& yes & 105 & 2580 & 25 MiB\tabularnewline
+\texttt{mammalfilter(true)} & no & 0.55 & 32 & 2 KiB\tabularnewline
+& yes & 1.9 & 551 & 286 KiB\tabularnewline
+\texttt{primatefilter()} & no & 0.15 & 33 & 2 KiB\tabularnewline
+& yes & 0.3 & 92 & 27 KiB\tabularnewline
 \bottomrule
 \end{longtable}
 
-\hypertarget{figures}{%
-\section{Figures}\label{figures}}
+Clearly, the optimal search strategy is to (i) rely on name filters to
+ensure that search are conducted within the appropriate NCBI division,
+and (ii) only rely on fuzzy matching when the strict or lowercase match
+fails to return a name, as fuzzy matching can result in order of
+magnitude more run time and memory footprint. These numbers were
+obtained on a single Intel i7-8665U CPU (@ (1.90GHz). Using
+\texttt{"chimpanzees"} as the search string (the NCBI recognized
+vernacular for \emph{Pan}) gave qualitatively similar results,
+suggesting that there is no performance cost associated with working
+with synonyms or verncular input data.
 
-Figures can have a legend -- all figures \emph{must} be in the
-\texttt{figures/} folder of the project, as it is also used for the
-website. We recommend to use good resolution images, rather than PDFs,
-or at least to have multiple versions available.
+\hypertarget{quality-of-life-functions}{%
+\subsection{Quality of life functions}\label{quality-of-life-functions}}
 
-\begin{verbatim}
-![This is the legend of the figure...](figures/figure.png){#fig:figure}
-\end{verbatim}
+In order to facilitate working with names, we provide the
+\texttt{authority} function (gives the full taxonomic authority for a
+name), \texttt{synonyms} (to get alternative valid names),
+\texttt{vernacular} (for English common names), and \texttt{rank} (for
+the taxonomic rank).
 
-\begin{figure}
-\hypertarget{fig:figure}{%
-\centering
-\includegraphics{figures/figure.png}
-\caption{This is the legend of the figure, which will be shown in the
-margin in preprint mode, and underneath the figure in draft mode. The
-legend can contain references, etc. It is advised to use a resolution of
-at least 600dpi for the figures.}\label{fig:figure}
-}
-\end{figure}
+\hypertarget{taxonomic-lineages-navigation}{%
+\subsection{Taxonomic lineages
+navigation}\label{taxonomic-lineages-navigation}}
 
-We can now use \texttt{@fig:figure} to refer to fig.~\ref{fig:figure}.
+The \texttt{children} function will return all nodes that are directly
+descended from a taxon; the \texttt{descendants} function will
+recursively apply this function to all descendants of these nodes, until
+only terminal leaves are reached. The \texttt{parent} function is an
+``upwards'' equivalent, giving that taxon from which a taxon descents;
+the \texttt{lineage} function chains calls to \texttt{parent} until
+either \texttt{taxon(1)} (the taxonomy root) or an arbitrary ancestor is
+reached.
 
-\hypertarget{example-text}{%
-\section{Example text}\label{example-text}}
+The \texttt{taxonomicdistance} function (and its in-place equivalent,
+\texttt{taxonomicdistance!}, which uses memory-efficient re-allocation
+if the user needs to change the distance between taxonomic ranks) uses
+the (\textbf{Shimatani2001MeaSpe?}) approach to reconstruct a matrix of
+distances based on taxonomy, which can serve as a rough proxy when no
+phylogenies are available.
 
-Connectance, defined as the ratio of realized interactions on the total
-number of potential interactions, is one of the most common descriptor
-of network structure. In a bipartite network with \(T\) species at the
-top, and \(B\) at the bottom, having a total of \(L\) interactions, it
-is defined as \(Co = L/(T\times B)\). Connectance has a lower bound, as
-the network cannot have fewer interactions that the number of species in
-its more speciose level -- the minimal connectance is therefore
-\(c_m = \text{max}(T,B)\). This makes the connectance of networks of
-different sizes difficult to compare, especially since bipartite
-networks tends to have a low connectance. For this reason, we used a
-corrected version of connectance, defined as
-
-\begin{equation}\protect\hypertarget{eq:cstar}{}{Co^\star=\frac{L-c_m}{T\times B-c_m} \,.}\label{eq:cstar}\end{equation}
-
-\hypertarget{this-is-a-subsection}{%
-\subsection{This is a subsection}\label{this-is-a-subsection}}
-
-This takes values between 0 (the network has the minimal number of
-interactions) and 1 (all species are connected), but is robust to
-variations in species richness.
-
-\hypertarget{this-is-another-subsection}{%
-\subsection{This is another
-subsection}\label{this-is-another-subsection}}
-
-This takes values between 0 (the network has the minimal number of
-interactions) and 1 (all species are connected), but is robust to
-variations in species richness.
-
-\hypertarget{some-non-standard-maths}{%
-\subsection{Some non-standard maths}\label{some-non-standard-maths}}
-
-The phylogenetic reconstruction of \(\hat{\mathscr{L}}\) and
-\(\hat{\mathscr{R}}\) has an associated uncertainty, represented by the
-breadth of the uniform distribution associated to each of their entries.
-Therefore, we can use this information to assemble a
-\emph{probabilistic} metaweb in the sense of
-(\textbf{Poisot2016StrPro?}), \emph{i.e.} in which every interaction is
-represented as a single, independent, Bernoulli event of probability
-\(p\).
-
-Specifically, we have adopted the following approach. For every entry in
-\(\hat{\mathscr{L}}\) and \(\hat{\mathscr{R}}\), we draw a value from
-its distribution. This results in one instance of the possible left
-(\(\hat{\mathscr{l}}\)) and right (\(\hat{\mathscr{r}}\)) subspaces for
-the Canadian metaweb. These can be multiplied, to produce one matrix of
-real values. Because the entries in \(\hat{\mathscr{l}}\) and
-\(\hat{\mathscr{r}}\) are in the same space where \(\mathscr{L}\) and
-\(\mathscr{R}\) were originally predicted, it follows that the threshold
-\(\rho\) estimated for the European metaweb also applies. We use this
-information to produce one random Canadian metaweb,
-\(N = \hat{\mathscr{L}}\)\(\hat{\mathscr{R}}' \ge \rho\).
-
-Because the intervals around some trait values can be broad (in fact,
-probably broader than what they would actually be, see \emph{e.g.}
-\textbf{Garland1999IntPhy?}), we repeat the above process
-\(2\times 10^5\) times, which results in a probabilistic metaweb \(P\),
-where the probability of an interaction (here conveying our degree of
-trust that it exists given the inferred trait distributions) is given by
-the number of times where it appears across all random draws \(N\),
-divided by the number of samples. An interaction with \(P_{i,j} = 1\)
-means that these two species were predicted to interact in all
-\(2\times 10^5\) random draws, etc..
+\textbf{Acknowledgements:} This work was supported by funding to the
+Viral Emergence Research Initiative (VERENA) consortium including NSF
+BII 2021909 and a grant from Institut de Valorisation des Données
+(IVADO), by the NSERC Discovery Grants and Discovery Acceleration
+Supplement programs, and by a donation from the Courtois Foundation.
+Benchmarking of this package on distributed systems was enabled by
+support provided by Calcul Québec (\texttt{www.calculquebec.ca}) and
+Compute Canada (\texttt{www.computecanada.ca}). TP wrote the initial
+code, TP and CJC contributed to API design, and all authors contributed
+to functionalities and usability testing.
 
 \hypertarget{references}{%
-\section*{References}\label{references}}
-\addcontentsline{toc}{section}{References}
-
-\hypertarget{refs}{}
-\begin{CSLReferences}{1}{0}
-\leavevmode\hypertarget{ref-Camerano1880EquViv}{}%
-Camerano, L. (1880). Dell'equilibrio dei viventi merce la reciproca
-distruzione. \emph{Atti Della R. Accad. Delle Sci. Torino}, 15,
-393--414.
-
-\leavevmode\hypertarget{ref-Elton1927AniEco}{}%
-Elton, C.S. (1927). \emph{Animal ecology}. University of Chicago Press.
-
-\end{CSLReferences}
+\section{References}\label{references}}
 
 \end{document}
