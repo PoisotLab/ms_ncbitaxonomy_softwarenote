@@ -19,7 +19,7 @@ differ markedly from the last; compare, *e.g* @Lefkowitz2018VirTax to
 @Walker2020ChaVir, where entire viral sub-trees were split, re-organized, and
 created within just two years. These taxonomic changes have profound
 implications for the way we perceive biodiversity at global scales
-[@Meier2009BioRes], to the point were taxonomic revisions should sometimes be
+[@Dikow2009BioRes], to the point were taxonomic revisions should sometimes be
 actively conducted to improve *e.g.* conservation outcomes
 [@Melville2021RetApp].
 
