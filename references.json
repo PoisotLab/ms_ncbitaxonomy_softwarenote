@@ -1,5 +1,33 @@
 [
     {
+        "DOI": "10.1016/j.chb.2011.04.004",
+        "author": [
+            {
+                "family": "Barchard",
+                "given": "Kimberly"
+            },
+            {
+                "family": "Pace",
+                "given": "Larry"
+            }
+        ],
+        "container-title": "Computers in Human Behavior",
+        "id": "Barchard2011PreHum",
+        "issued": {
+            "date-parts": [
+                [
+                    2011,
+                    9,
+                    1
+                ]
+            ]
+        },
+        "page": "1834-1839",
+        "title": "Preventing human error: The impact of data entry methods on data accuracy and statistical results",
+        "type": "article-journal",
+        "volume": "27"
+    },
+    {
         "DOI": "10.1137/141000671",
         "author": [
             {
@@ -25,7 +53,9 @@
         "issued": {
             "date-parts": [
                 [
-                    2017
+                    2017,
+                    1,
+                    1
                 ]
             ]
         },
@@ -52,7 +82,9 @@
         "issued": {
             "date-parts": [
                 [
-                    2013
+                    2013,
+                    10,
+                    28
                 ]
             ]
         },
@@ -253,7 +285,9 @@
         "issued": {
             "date-parts": [
                 [
-                    2018
+                    2018,
+                    1,
+                    4
                 ]
             ]
         },
@@ -261,6 +295,169 @@
         "title": "Virus taxonomy: The database of the International Committee on Taxonomy of Viruses (ICTV)",
         "type": "article-journal",
         "volume": "46"
+    },
+    {
+        "author": [
+            {
+                "family": "Meier",
+                "given": "Rudolf"
+            }
+        ],
+        "id": "Meier2009BioRes",
+        "issued": {
+            "date-parts": [
+                [
+                    2009,
+                    1,
+                    1
+                ]
+            ]
+        },
+        "page": "323-345",
+        "title": "Biodiversity Research Based on Taxonomic Revisions - A Tale of Unrealized Opportunities -",
+        "type": "chapter"
+    },
+    {
+        "DOI": "10.1371/journal.pbio.3001210",
+        "author": [
+            {
+                "family": "Melville",
+                "given": "Jane"
+            },
+            {
+                "family": "Chapple",
+                "given": "David G."
+            },
+            {
+                "family": "Keogh",
+                "given": "J. Scott"
+            },
+            {
+                "family": "Sumner",
+                "given": "Joanna"
+            },
+            {
+                "family": "Amey",
+                "given": "Andrew"
+            },
+            {
+                "family": "Bowles",
+                "given": "Phil"
+            },
+            {
+                "family": "Brennan",
+                "given": "Ian G."
+            },
+            {
+                "family": "Couper",
+                "given": "Patrick"
+            },
+            {
+                "family": "Donnellan",
+                "given": "Stephen C."
+            },
+            {
+                "family": "Doughty",
+                "given": "Paul"
+            },
+            {
+                "family": "Edwards",
+                "given": "Danielle L."
+            },
+            {
+                "family": "Ellis",
+                "given": "Ryan J."
+            },
+            {
+                "family": "Esquerr\u00e9",
+                "given": "Damien"
+            },
+            {
+                "family": "Fenker",
+                "given": "J\u00e9ssica"
+            },
+            {
+                "family": "Gardner",
+                "given": "Michael G."
+            },
+            {
+                "family": "Georges",
+                "given": "Arthur"
+            },
+            {
+                "family": "Haines",
+                "given": "Margaret L."
+            },
+            {
+                "family": "Hoskin",
+                "given": "Conrad J."
+            },
+            {
+                "family": "Hutchinson",
+                "given": "Mark"
+            },
+            {
+                "family": "Moritz",
+                "given": "Craig"
+            },
+            {
+                "family": "Nankivell",
+                "given": "James"
+            },
+            {
+                "family": "Oliver",
+                "given": "Paul"
+            },
+            {
+                "family": "Pav\u00f3n-V\u00e1zquez",
+                "given": "Carlos J."
+            },
+            {
+                "family": "Pepper",
+                "given": "Mitzy"
+            },
+            {
+                "family": "Rabosky",
+                "given": "Daniel L."
+            },
+            {
+                "family": "Sanders",
+                "given": "Kate"
+            },
+            {
+                "family": "Shea",
+                "given": "Glenn"
+            },
+            {
+                "family": "Singhal",
+                "given": "Sonal"
+            },
+            {
+                "family": "Wilmer",
+                "given": "Jessica Worthington"
+            },
+            {
+                "family": "Tingley",
+                "given": "Reid"
+            }
+        ],
+        "container-title": "PLOS Biology",
+        "id": "Melville2021RetApp",
+        "issue": "6",
+        "issued": {
+            "date-parts": [
+                [
+                    2021,
+                    6,
+                    1
+                ]
+            ]
+        },
+        "page": "e3001210",
+        "publisher": "Public Library of Science",
+        "title": "A return-on-investment approach for prioritization of rigorous taxonomic research needed to inform responses to the biodiversity crisis",
+        "type": "article-journal",
+        "volume": "19"
     },
     {
         "DOI": "10.1111/2041-210X.13440",
@@ -351,6 +548,7 @@
         "volume": "2020"
     },
     {
+        "URL": "http://www.jstor.org/stable/3547217",
         "author": [
             {
                 "family": "Shimatani",
@@ -502,7 +700,9 @@
         "issued": {
             "date-parts": [
                 [
-                    2020
+                    2020,
+                    11,
+                    1
                 ]
             ]
         },
