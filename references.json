@@ -65,6 +65,85 @@
         "volume": "59"
     },
     {
+        "DOI": "10.1128/mbio.02985-21",
+        "author": [
+            {
+                "family": "Carlson",
+                "given": "Colin J."
+            },
+            {
+                "family": "Gibb",
+                "given": "Rory J."
+            },
+            {
+                "family": "Albery",
+                "given": "Gregory F."
+            },
+            {
+                "family": "Brierley",
+                "given": "Liam"
+            },
+            {
+                "family": "Connor",
+                "given": "Ryan P."
+            },
+            {
+                "family": "Dallas",
+                "given": "Tad A."
+            },
+            {
+                "family": "Eskew",
+                "given": "Evan A."
+            },
+            {
+                "family": "Fagre",
+                "given": "Anna C."
+            },
+            {
+                "family": "Farrell",
+                "given": "Maxwell J."
+            },
+            {
+                "family": "Frank",
+                "given": "Hannah K."
+            },
+            {
+                "family": "Muylaert",
+                "given": "Renata L."
+            },
+            {
+                "family": "Poisot",
+                "given": "Timoth\u00e9e"
+            },
+            {
+                "family": "Rasmussen",
+                "given": "Angela L."
+            },
+            {
+                "family": "Ryan",
+                "given": "Sadie J."
+            },
+            {
+                "family": "Seifert",
+                "given": "Stephanie N."
+            }
+        ],
+        "container-title": "mBio",
+        "id": "Carlson2022GloVir",
+        "issued": {
+            "date-parts": [
+                [
+                    2022,
+                    3,
+                    1
+                ]
+            ]
+        },
+        "publisher": "American Society for Microbiology",
+        "title": "The Global Virome in One Network (VIRION): An Atlas of Vertebrate-Virus Associations",
+        "type": "article-journal"
+    },
+    {
         "DOI": "10.12688/f1000research.2-191.v2",
         "PMCID": "PMC3901538",
         "author": [

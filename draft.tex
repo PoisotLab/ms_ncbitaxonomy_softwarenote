@@ -272,23 +272,34 @@ taxonomy; and as a result of the estimated error in any data entry
 exercice, which other fields estimate at up to about 5\% (Barchard and
 Pace 2011).
 
-All these considerations are actually important when matching species
-names both within and across datasets. Let us consider the following
-species survey of individual fishes, European chub, \emph{Cyprinus
-cephalus}, \emph{Leuciscus cephalus}, \emph{Squalius cephalus}: all are
+All these considerations become important when matching species names
+both within and across datasets. Let us consider the hypothetical
+species survey of riverine fishes: European chub, \emph{Cyprinus
+cephalus}, \emph{Leuciscus cephalus}, \emph{Squalius cephalus}. All are
 the same species (\emph{S. cephalus}), referred to as one of the
 vernacular (European chub) and two formerly accepted names now
-classified as synonyms. A cautious estimate of diversity based on the
-user-supplied names would give \(n=4\) species, when there is in fact
-only one.
+classified as synonyms (but still present in the litterature). A
+cautious estimate of diversity based on the user-supplied names would
+give \(n=4\) species, when there is in fact only one. When the size of
+biodiversity datasets increases, and notably when the taxonomic scope of
+these datasets explodes, including organisms for which ``names'' are a
+fuzzier concept (for example, \emph{Influenza A virus
+(A/Sydney/05/97-like(H3N2))} is a valid name for a common influenza
+strain, although one that lacks a taxonomic rank), the feasibility of
+manual curation decreases.
 
-A package with the ability to handle the sources of errors outlined
-above, and especially while provide an authoritative classification, can
-accelerate the work of consuming large volumes of biodiversity data. For
-example, this package was used in the process of developing the
-\emph{CLOVER} database (Gibb et al. 2021) of host-virus associations, by
+In this manuscript, we describe \texttt{NCBITaxonomy.jl}, a Julia
+package that provides advanced name matching and error handling
+capacities for the reconciliation of taxonomic names to the NCBI
+database. This package was used to facilitate the development of the
+\emph{CLOVER} (Gibb et al. 2021) database of host-virus associations, by
 reconciling the names of viruses and mammals from four different
-sources, where all of the issues described above were present.
+sources, where all of the issues described above were present. More
+recently, it has become part of the automated curation of data for the
+\emph{VIRION} (Carlson et al. 2022) database, which automatically
+curates an up-to-date, authoritative host-mammal network from dozens of
+heterogeneous sources. We describe the core capacities of this package,
+and highlight how it enables safe, high-performance name reconciliation.
 
 \hypertarget{overview-of-functionalities}{%
 \section{Overview of
@@ -300,29 +311,42 @@ can be found online from the EcoJulia documentation hub
 including examples and in-line documentation of every method. The
 package is released under the MIT license. Contributions can be made in
 the form of issues (bug reports, questions, features suggestions) and
-pull requests. The package can be checked out and installed anonymously
-from the central Julia repository:
+pull requests.
+
+In order to achieve good performance, the package will first retrieve
+the latest (as validated by its checksum) NCBI taxonomy backbone, store
+it locally, and pre-process it as a set of Julia data tables. By
+default, the taxonomy will be downloaded to the Julia package
+repository, which is not an ideal solution, and therefore we recommend
+that users set an environment variable to specificy where the data will
+be loaded from (this path will be created if it doesn't exist):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ConstantTok{ENV}\NormalTok{[}\StringTok{"NCBITAXONOMY\_PATH"}\NormalTok{] }\OperatorTok{=}\NormalTok{ joinpath(homedir()}\OperatorTok{,} \StringTok{"data"}\OperatorTok{,} \StringTok{"NCBITaxonomy.jl"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Note that this location can be different for different projects, as the
+package is able to update the taxoonmic backbone (and will indeed prompt
+the user to do so if the taxonomy is more than 90 days old). The package
+can then be checked out and installed anonymously from the central Julia
+repository:
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{using}\NormalTok{ Pkg}
-
-\CommentTok{\# This line should go in the Julia configuration file {-} note that the path}
-\CommentTok{\# will be created if it doesn\textquotesingle{}t exist, and will be used to store the}
-\CommentTok{\# raw taxonomic table}
-\ConstantTok{ENV}\NormalTok{[}\StringTok{"NCBITAXONOMY\_PATH"}\NormalTok{] }\OperatorTok{=}\NormalTok{ joinpath(homedir()}\OperatorTok{,} \StringTok{"data"}\OperatorTok{,} \StringTok{"NCBITaxonomy.jl"}\NormalTok{)}
-
 \NormalTok{Pkg.add(}\StringTok{"NCBITaxonomy"}\NormalTok{) }\CommentTok{\# Dowloading the files may take a long time}
 \end{Highlighting}
 \end{Shaded}
 
-The package will download the most recent version of the NCBI taxonomy
-database, and transform in into a set of Apache Arrow files ready for
-use. Note that the \texttt{NCBITAXONOMY\_PATH} can specified on a
-per-project basis, and as long as the package is not re-built, the local
-set of tables downloaded from NCBI will not change; this way, users can
-re-run an analysis with a guarantee that the underlying taxonomic
-backbone has not changed.
+As long as the package is not re-built, the local set of tables
+downloaded from NCBI will not change; this way, users can re-run an
+analysis with a guarantee that the underlying taxonomic backbone has not
+changed, which is not the case when relying on API queries. In order to
+update the taxonomic backbone, users can call the \texttt{build}
+function of Julia's package manager (\texttt{{]}build\ NCBITaxonomy}),
+which will download the most recent version of all files.
 
 \hypertarget{improved-name-matching}{%
 \subsection{Improved name matching}\label{improved-name-matching}}
@@ -331,12 +355,16 @@ Name finding is primarily done through the \texttt{taxon} function,
 which admits either a unique NCBI identifier (\emph{e.g.}
 \texttt{taxon(36219)} for the bogue \emph{Boops boops}), a string
 (\texttt{taxon("Boops\ boops")}), or a data frame with a restricted list
-of names (see the next section). The \texttt{taxon} method has
-additional arguments to perform fuzzy matching in order to catch
-possible typos (\texttt{taxon("Boops\ bops";\ strict=false)}), to
-perform a lowercase search (useful when alphanumeric codes are part of
-the taxon name, like for some viruses), and to restrict the the search
-to a specific taxonomic rank.
+of names in order to create a name finder function (see the next
+section). The \texttt{taxon} method has additional arguments to perform
+fuzzy matching in order to catch possible typos
+(\texttt{taxon("Boops\ bops";\ strict=false)}), to perform a lowercase
+search (useful when alphanumeric codes are part of the taxon name, like
+for some viruses), and to restrict the the search to a specific
+taxonomic rank. The \texttt{taxon} function also accepts a
+\texttt{preferscientificname} keyword, to prevent matching vernacular
+names; the use of this keyword ought to be informed by knowledge about
+how the data were entered.
 
 The lowercase search can be a preferable alternative to fuzzy string
 matching. Consider the string \texttt{Adeno-associated\ virus\ 3b} - it
@@ -353,8 +381,9 @@ distance function):
 \end{Highlighting}
 \end{Shaded}
 
-Depending on the operating system, either of these three names can be
-returned; compare to the output of a case insensitive name search:
+Depending on the operating system (and specifically whether it is
+case-sensitive), either of these three names can be returned; compare to
+the output of a case insensitive name search:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -369,12 +398,14 @@ This returns the correct name.
 \subsection{Name matching output and error
 handling}\label{name-matching-output-and-error-handling}}
 
-The \texttt{taxon} function will either return a \texttt{NCBITaxon}
-object (made of a \texttt{name} and \texttt{id}), or throw either a
-\texttt{NameHasNoDirectMatch} (with instructions about how to possible
-solve it, using the \texttt{similarnames} function), or a
-\texttt{NameHasMultipleMatches} (listing the possible valid matches, and
-suggesting to use \texttt{alternativetaxa} to find the correct one).
+When it succeeds, \texttt{taxon} will return a \texttt{NCBITaxon} object
+(made of a \texttt{name} string field, and an \texttt{id} numerical
+field). That being said, the package is designed under the assumption
+that ambiguities should yield an error for the user to handle. There are
+two such errors: \texttt{NameHasNoDirectMatch} (with instructions about
+how to possible solve it, using the \texttt{similarnames} function), or
+a \texttt{NameHasMultipleMatches} (listing the possible valid matches,
+and suggesting to use \texttt{alternativetaxa} to find the correct one).
 Therefore, the common way to work with the \texttt{taxon} function would
 be to wrap it in a \texttt{try}/\texttt{catch} statement:
 
@@ -397,10 +428,10 @@ be to wrap it in a \texttt{try}/\texttt{catch} statement:
 
 These functions will not demand any user input in the form of key
 presses (though they can be wrapped in additional code to allow it), as
-they are intended to run on clusters without supervision. The
-\texttt{taxon} function has good scaling using muliple threads. For
-convenience in rapidly getting a taxon for demonstration purposes, we
-also provide a string macro, whereby \emph{e.g.}
+they are intended to run on clusters or virtual machines without
+supervision. The \texttt{taxon} function has good scaling using muliple
+threads. For convenience in rapidly getting a taxon for demonstration
+purposes, we also provide a string macro, whereby \emph{e.g.}
 \texttt{ncbi"Procyon\ lotor"} will return the taxon object for the
 raccoon.
 
@@ -416,12 +447,14 @@ can be used with \emph{e.g.} \texttt{taxon(nf,\ "Pan")}. This has the
 dual advantage of making search faster, but also of avoiding matching on
 names that are shared by another taxonomic group (which is not an issue
 with \emph{Pan}, but is an issue with \emph{e.g.} \emph{Io} as mentioned
-in the introduction).
+in the introduction, or with the common name \emph{Lizard}, which
+fuzzy-matches on the hemipteran genus \emph{Lisarda} rather than the
+class \emph{Lepidosauria}).
 
 Note that the use of a restricted list of names can have significant
 performance consequences: compare, for example, the time taken to return
-the taxon \emph{Pan} (ID 9596) in the entire database, in all mammals,
-and in all primates:
+the taxon \emph{Pan} in the entire database, in all mammals, and in all
+primates:
 
 \begin{longtable}[]{@{}lclll@{}}
 \toprule
@@ -444,8 +477,8 @@ and (ii) only rely on fuzzy matching when the strict or lowercase match
 fails to return a name, as fuzzy matching can result in order of
 magnitude more run time and memory footprint. These numbers were
 obtained on a single Intel i7-8665U CPU (@ (1.90GHz). Using
-\texttt{"chimpanzees"} as the search string (the NCBI recognized
-vernacular for \emph{Pan}) gave qualitatively similar results,
+\texttt{"chimpanzees"} as the search string (one of the NCBI recognized
+vernaculars for \emph{Pan}) gave qualitatively similar results,
 suggesting that there is no performance cost associated with working
 with synonyms or verncular input data.
 
@@ -456,7 +489,8 @@ In order to facilitate working with names, we provide the
 \texttt{authority} function (gives the full taxonomic authority for a
 name), \texttt{synonyms} (to get alternative valid names),
 \texttt{vernacular} (for English common names), and \texttt{rank} (for
-the taxonomic rank).
+the taxonomic rank). These functions are not used in name matching, but
+are often useful in the post-processing of results.
 
 \hypertarget{taxonomic-lineages-navigation}{%
 \subsection{Taxonomic lineages
@@ -466,7 +500,7 @@ The \texttt{children} function will return all nodes that are directly
 descended from a taxon; the \texttt{descendants} function will
 recursively apply this function to all descendants of these nodes, until
 only terminal leaves are reached. The \texttt{parent} function is an
-``upwards'' equivalent, giving that taxon from which a taxon descents;
+``upwards'' equivalent, giving the taxon from which a taxon descends;
 the \texttt{lineage} function chains calls to \texttt{parent} until
 either \texttt{taxon(1)} (the taxonomy root) or an arbitrary ancestor is
 reached.
@@ -476,7 +510,12 @@ The \texttt{taxonomicdistance} function (and its in-place equivalent,
 if the user needs to change the distance between taxonomic ranks) uses
 the Shimatani (2001) approach to reconstruct a matrix of distances based
 on taxonomy, which can serve as a rough proxy when no phylogenies are
-available.
+available. This allows coarse estimations of taxonomic diversity based
+on species lists. The default distance between taxoonmic levels is as in
+Shimatani (2001) (\emph{i.e.} species have a distance of 0, genus of 1,
+family of 2, sbu-classes of 3, and everything else 4), but specific
+scores can be passed for \emph{any} taxonomic level know to the NCBI
+name table.
 
 \textbf{Acknowledgements:} This work was supported by funding to the
 Viral Emergence Research Initiative (VERENA) consortium including NSF
@@ -503,6 +542,10 @@ in Human Behavior 27: 1834--1839.
 \leavevmode\hypertarget{ref-Bezanson2017JulFre}{}%
 Bezanson, J. et al. 2017. Julia: A Fresh Approach to Numerical
 Computing. - SIAM Review 59: 65--98.
+
+\leavevmode\hypertarget{ref-Carlson2022GloVir}{}%
+Carlson, C. J. et al. 2022. The Global Virome in One Network (VIRION):
+An Atlas of Vertebrate-Virus Associations. - mBio in press.
 
 \leavevmode\hypertarget{ref-Chamberlain2013TaxTax}{}%
 Chamberlain, S. A. and Szöcs, E. 2013. Taxize: Taxonomic search and
