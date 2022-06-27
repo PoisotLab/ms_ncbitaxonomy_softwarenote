@@ -240,6 +240,41 @@
     {
         "author": [
             {
+                "family": "Dikow",
+                "given": "Torsten"
+            },
+            {
+                "family": "Meier",
+                "given": "Rudolf"
+            },
+            {
+                "family": "Vaidya",
+                "given": "Gaurav G."
+            },
+            {
+                "family": "Londt",
+                "given": "Jaosn G. H."
+            }
+        ],
+        "container-title": "Diptera Diversity: Status, Challenges and Tools",
+        "id": "Dikow2009BioRes",
+        "issued": {
+            "date-parts": [
+                [
+                    2009,
+                    1,
+                    1
+                ]
+            ]
+        },
+        "page": "323-346",
+        "publisher": "Brill",
+        "title": "Biodiversity Research Based on Taxonomic Revisions - A Tale of Unrealized Opportunities",
+        "type": "chapter"
+    },
+    {
+        "author": [
+            {
                 "family": "Federhen",
                 "given": "Scott"
             }
@@ -374,27 +409,6 @@
         "title": "Virus taxonomy: The database of the International Committee on Taxonomy of Viruses (ICTV)",
         "type": "article-journal",
         "volume": "46"
-    },
-    {
-        "author": [
-            {
-                "family": "Meier",
-                "given": "Rudolf"
-            }
-        ],
-        "id": "Meier2009BioRes",
-        "issued": {
-            "date-parts": [
-                [
-                    2009,
-                    1,
-                    1
-                ]
-            ]
-        },
-        "page": "323-345",
-        "title": "Biodiversity Research Based on Taxonomic Revisions - A Tale of Unrealized Opportunities -",
-        "type": "chapter"
     },
     {
         "DOI": "10.1371/journal.pbio.3001210",
