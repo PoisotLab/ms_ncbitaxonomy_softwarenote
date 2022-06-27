@@ -59,8 +59,8 @@ associations, by reconciling the names of viruses and mammals from four
 different sources, where all of the issues described above were present. More
 recently, it has become part of the automated curation of data for the *VIRION*
 [@Carlson2022GloVir] database, which automatically curates an up-to-date,
-authoritative host-mammal network from dozens of heterogeneous sources. We
-describe the core capacities of this package, and highlight how it enables safe,
+authoritative virome network from dozens of heterogeneous sources. We describe
+the core capacities of this package, and highlight how it enables safe,
 high-performance name reconciliation.
 
 # Overview of functionalities
@@ -101,9 +101,21 @@ when relying on API queries. In order to update the taxonomic backbone, users
 can call the `build` function of Julia's package manager (`]build
 NCBITaxonomy`), which will download the most recent version of all files.
 
+This software note describes version `v0.2.3` of the package (we follow semantic
+versioning), which works on Julia 1.5 upwards. The dependencies are all resolved
+by the package manager at installation, and (on the user-facing side) include
+the `StringDistances.jl` package, allowing users to experiment with different
+string matching methods. As is best practices for Julia packages, a
+`Project.toml` file specifying compatible dependencies versions is distributed
+with the package. The code is covered by unit-tests (with about 98% coverage),
+as well as integration tests as part of the documentation (specifically, a
+use-case detailing how to clean data from a biodiversity survey, and a use-case
+aiming to reconstruct a taxonomic tree for the Lemuriformes).
+
 ## Improved name matching
 
-Name finding is primarily done through the `taxon` function, which admits either
+Name finding, *i.e.* the matching of an arbitrary string to a taxonomic
+identifier, is primarily done through the `taxon` function, which admits either
 a unique NCBI identifier (*e.g.* `taxon(36219)` for the bogue *Boops boops*), a
 string (`taxon("Boops boops")`), or a data frame with a restricted list of names
 in order to create a name finder function (see the next section). The `taxon`
@@ -236,6 +248,18 @@ The default distance between taxoonmic levels is as in @Shimatani2001MeaSpe
 (*i.e.* species have a distance of 0, genus of 1, family of 2, sbu-classes of 3,
 and everything else 4), but specific scores can be passed for *any* taxonomic
 level know to the NCBI name table.
+
+# Conclusion
+
+`NCBITaxonomy.jl` enables rapid, taxonomically-restricted, adaptive matching for
+taxonomic names. By implementing various combinations of search strategies, it
+allows users to (i) optimize the speed of their queries and (ii) avoid usual
+caveats of simple string matching. Through explicit exceptions, it allows to
+write code that will handle the possible edge cases that cannot be solved
+automatically in a way that does not interrupt execution, or requires manual
+input by the user. Given the breadth of the NCBI taxonomy database,
+`NCBITaxonomy.jl` is particularly suited to the name cleaning of large datasets
+of names.
 
 **Acknowledgements:** This work was supported by funding to the Viral Emergence
 Research Initiative (VERENA) consortium including NSF BII 2021909 and a grant
