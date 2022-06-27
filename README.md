@@ -37,20 +37,31 @@ knowledge of the taxonomy; and as a result of the estimated error in any data
 entry exercice, which other fields estimate at up to about 5%
 [@Barchard2011PreHum].
 
-All these considerations are actually important when matching species names both
-within and across datasets. Let us consider the following species survey of
-individual fishes, European chub, *Cyprinus cephalus*, *Leuciscus cephalus*,
-*Squalius cephalus*: all are the same species (*S. cephalus*), referred to as
+All these considerations become important when matching species names both
+within and across datasets. Let us consider the hypothetical species survey of
+riverine fishes: European chub, *Cyprinus cephalus*, *Leuciscus cephalus*,
+*Squalius cephalus*. All are the same species (*S. cephalus*), referred to as
 one of the vernacular (European chub) and two formerly accepted names now
-classified as synonyms. A cautious estimate of diversity based on the
-user-supplied names would give $n=4$ species, when there is in fact only one.
+classified as synonyms (but still present in the litterature). A cautious
+estimate of diversity based on the user-supplied names would give $n=4$ species,
+when there is in fact only one. When the size of biodiversity datasets
+increases, and notably when the taxonomic scope of these datasets explodes,
+including organisms for which "names" are a fuzzier concept (for example,
+*Influenza A virus (A/Sydney/05/97-like(H3N2))* is a valid name for a common
+influenza strain, although one that lacks a taxonomic rank), the feasibility of
+manual curation decreases.
 
-A package with the ability to handle the sources of errors outlined above, and
-especially while provide an authoritative classification, can accelerate the
-work of consuming large volumes of biodiversity data. For example, this package
-was used in the process of developing the *CLOVER* database [@Gibb2021DatPro] of
-host-virus associations, by reconciling the names of viruses and mammals from
-four different sources, where all of the issues described above were present.
+In this manuscript, we describe `NCBITaxonomy.jl`, a Julia package that provides
+advanced name matching and error handling capacities for the reconciliation of
+taxonomic names to the NCBI database. This package was used to facilitate the
+development of the *CLOVER* [@Gibb2021DatPro] database of host-virus
+associations, by reconciling the names of viruses and mammals from four
+different sources, where all of the issues described above were present. More
+recently, it has become part of the automated curation of data for the *VIRION*
+[@Carlson2022GloVir] database, which automatically curates an up-to-date,
+authoritative host-mammal network from dozens of heterogeneous sources. We
+describe the core capacities of this package, and highlight how it enables safe,
+high-performance name reconciliation.
 
 # Overview of functionalities
 
@@ -58,39 +69,51 @@ An up-to-date version of the documentation for `NCBITaxonomy.jl` can be found
 online from the EcoJulia documentation hub [https://docs.ecojulia.org/][docs],
 including examples and in-line documentation of every method. The package is
 released under the MIT license. Contributions can be made in the form of issues
-(bug reports, questions, features suggestions) and pull requests. The package
-can be checked out and installed anonymously from the central Julia repository:
+(bug reports, questions, features suggestions) and pull requests.
 
 [docs]: https://docs.ecojulia.org/NCBITaxonomy.jl/stable/
 
+In order to achieve good performance, the package will first retrieve the latest
+(as validated by its checksum) NCBI taxonomy backbone, store it locally, and
+pre-process it as a set of Julia data tables. By default, the taxonomy will be
+downloaded to the Julia package repository, which is not an ideal solution, and
+therefore we recommend that users set an environment variable to specificy where
+the data will be loaded from (this path will be created if it doesn't exist):
+
+~~~julia
+ENV["NCBITAXONOMY_PATH"] = joinpath(homedir(), "data", "NCBITaxonomy.jl")
+~~~
+
+Note that this location can be different for different projects, as the package
+is able to update the taxoonmic backbone (and will indeed prompt the user to do
+so if the taxonomy is more than 90 days old). The package can then be checked
+out and installed anonymously from the central Julia repository:
+
 ~~~julia
 using Pkg
-
-# This line should go in the Julia configuration file - note that the path
-# will be created if it doesn't exist, and will be used to store the
-# raw taxonomic table
-ENV["NCBITAXONOMY_PATH"] = joinpath(homedir(), "data", "NCBITaxonomy.jl")
-
 Pkg.add("NCBITaxonomy") # Dowloading the files may take a long time
 ~~~
 
-The package will download the most recent version of the NCBI taxonomy database,
-and transform in into a set of Apache Arrow files ready for use. Note that the
-`NCBITAXONOMY_PATH` can specified on a per-project basis, and as long as the
-package is not re-built, the local set of tables downloaded from NCBI will not
-change; this way, users can re-run an analysis with a guarantee that the
-underlying taxonomic backbone has not changed.
+As long as the package is not re-built, the local set of tables downloaded from
+NCBI will not change; this way, users can re-run an analysis with a guarantee
+that the underlying taxonomic backbone has not changed, which is not the case
+when relying on API queries. In order to update the taxonomic backbone, users
+can call the `build` function of Julia's package manager (`]build
+NCBITaxonomy`), which will download the most recent version of all files.
 
 ## Improved name matching
 
 Name finding is primarily done through the `taxon` function, which admits either
 a unique NCBI identifier (*e.g.* `taxon(36219)` for the bogue *Boops boops*), a
 string (`taxon("Boops boops")`), or a data frame with a restricted list of names
-(see the next section). The `taxon` method has additional arguments to perform
-fuzzy matching in order to catch possible typos (`taxon("Boops bops";
-strict=false)`), to perform a lowercase search (useful when alphanumeric codes
-are part of the taxon name, like for some viruses), and to restrict the the
-search to a specific taxonomic rank.
+in order to create a name finder function (see the next section). The `taxon`
+method has additional arguments to perform fuzzy matching in order to catch
+possible typos (`taxon("Boops bops"; strict=false)`), to perform a lowercase
+search (useful when alphanumeric codes are part of the taxon name, like for some
+viruses), and to restrict the the search to a specific taxonomic rank. The
+`taxon` function also accepts a `preferscientificname` keyword, to prevent
+matching vernacular names; the use of this keyword ought to be informed by
+knowledge about how the data were entered.
 
 The lowercase search can be a preferable alternative to fuzzy string matching.
 Consider the string `Adeno-associated virus 3b` - it has three names with equal
@@ -104,8 +127,9 @@ julia> similarnames("Adeno-associated virus 3b"; threshold=0.95)
  Adeno-associated virus 3A (ncbi:1406223) => 0.96
 ~~~
 
-Depending on the operating system, either of these three names can be returned;
-compare to the output of a case insensitive name search:
+Depending on the operating system (and specifically whether it is
+case-sensitive), either of these three names can be returned; compare to the
+output of a case insensitive name search:
 
 ~~~julia
 julia> taxon("Adeno-associated virus 3b"; casesensitive=false)
@@ -116,12 +140,15 @@ This returns the correct name.
 
 ## Name matching output and error handling
 
-The `taxon` function will either return a `NCBITaxon` object (made of a `name`
-and `id`), or throw either a `NameHasNoDirectMatch` (with instructions about how
-to possible solve it, using the `similarnames` function), or a
-`NameHasMultipleMatches` (listing the possible valid matches, and suggesting to
-use `alternativetaxa` to find the correct one). Therefore, the common way to
-work with the `taxon` function would be to wrap it in a `try`/`catch` statement:
+When it succeeds, `taxon` will return a `NCBITaxon` object (made of a `name`
+string field, and an `id` numerical field). That being said, the package is
+designed under the assumption that ambiguities should yield an error for the
+user to handle. There are two such errors: `NameHasNoDirectMatch` (with
+instructions about how to possible solve it, using the `similarnames` function),
+or a `NameHasMultipleMatches` (listing the possible valid matches, and
+suggesting to use `alternativetaxa` to find the correct one). Therefore, the
+common way to work with the `taxon` function would be to wrap it in a
+`try`/`catch` statement:
 
 ~~~julia
 try
@@ -140,10 +167,11 @@ end
 
 These functions will not demand any user input in the form of key presses
 (though they can be wrapped in additional code to allow it), as they are
-intended to run on clusters without supervision. The `taxon` function has good
-scaling using muliple threads. For convenience in rapidly getting a taxon for
-demonstration purposes, we also provide a string macro, whereby *e.g.*
-`ncbi"Procyon lotor"` will return the taxon object for the raccoon.
+intended to run on clusters or virtual machines without supervision. The `taxon`
+function has good scaling using muliple threads. For convenience in rapidly
+getting a taxon for demonstration purposes, we also provide a string macro,
+whereby *e.g.* `ncbi"Procyon lotor"` will return the taxon object for the
+raccoon.
 
 ## Name filtering functions
 
@@ -155,11 +183,12 @@ inclusive of rodents and primates, and can be used with *e.g.* `taxon(nf,
 "Pan")`. This has the dual advantage of making search faster, but also of
 avoiding matching on names that are shared by another taxonomic group (which is
 not an issue with *Pan*, but is an issue with *e.g.* *Io* as mentioned in the
-introduction).
+introduction, or with the common name *Lizard*, which fuzzy-matches on the
+hemipteran genus *Lisarda* rather than the class *Lepidosauria*).
 
 Note that the use of a restricted list of names can have significant performance
-consequences: compare, for example, the time taken to return the taxon *Pan* (ID
-9596) in the entire database, in all mammals, and in all primates:
+consequences: compare, for example, the time taken to return the taxon *Pan* in
+the entire database, in all mammals, and in all primates:
 
 | Names list           | Fuzzy matching | Time (ms) | Allocations | Memory allocated |
 | -------------------- | :------------: | --------- | ----------- | ---------------- |
@@ -175,25 +204,26 @@ that search are conducted within the appropriate NCBI division, and (ii) only
 rely on fuzzy matching when the strict or lowercase match fails to return a
 name, as fuzzy matching can result in order of magnitude more run time and
 memory footprint. These numbers were obtained on a single Intel i7-8665U CPU (@
-(1.90GHz). Using `"chimpanzees"` as the search string (the NCBI recognized
-vernacular for *Pan*) gave qualitatively similar results, suggesting that there
-is no performance cost associated with working with synonyms or verncular input
-data.
+(1.90GHz). Using `"chimpanzees"` as the search string (one of the NCBI
+recognized vernaculars for *Pan*) gave qualitatively similar results, suggesting
+that there is no performance cost associated with working with synonyms or
+verncular input data.
 
 ## Quality of life functions
 
 In order to facilitate working with names, we provide the `authority` function
 (gives the full taxonomic authority for a name), `synonyms` (to get alternative
 valid names), `vernacular` (for English common names), and `rank` (for the
-taxonomic rank).
+taxonomic rank). These functions are not used in name matching, but are often
+useful in the post-processing of results.
 
 ## Taxonomic lineages navigation
 
 The `children` function will return all nodes that are directly descended from a
 taxon; the `descendants` function will recursively apply this function to all
 descendants of these nodes, until only terminal leaves are reached. The `parent`
-function is an "upwards" equivalent, giving that taxon from which a taxon
-descents; the `lineage` function chains calls to `parent` until either
+function is an "upwards" equivalent, giving the taxon from which a taxon
+descends; the `lineage` function chains calls to `parent` until either
 `taxon(1)` (the taxonomy root) or an arbitrary ancestor is reached.
 
 The `taxonomicdistance` function (and its in-place equivalent,
@@ -201,6 +231,11 @@ The `taxonomicdistance` function (and its in-place equivalent,
 needs to change the distance between taxonomic ranks) uses the
 @Shimatani2001MeaSpe approach to reconstruct a matrix of distances based on
 taxonomy, which can serve as a rough proxy when no phylogenies are available.
+This allows coarse estimations of taxonomic diversity based on species lists.
+The default distance between taxoonmic levels is as in @Shimatani2001MeaSpe
+(*i.e.* species have a distance of 0, genus of 1, family of 2, sbu-classes of 3,
+and everything else 4), but specific scores can be passed for *any* taxonomic
+level know to the NCBI name table.
 
 **Acknowledgements:** This work was supported by funding to the Viral Emergence
 Research Initiative (VERENA) consortium including NSF BII 2021909 and a grant
