@@ -5,13 +5,23 @@ are mapped to species, and organised in a hierarchy. Not all names are unique
 identifiers to groups. For example, *Io* can either refer to a genus of plants
 from the aster family, or to a genus of molluscs; the genus *Mus* (of which the
 house mouse *Mus musculus* is a species), contains a sub-genus *also* named
-*Mus*. Conversely, the same species can have several names, which are valid
-synonyms: for example, the domestic cow *Bos taurus* admits *Bos primigenius
-taurus* as a valid synonym. Taxonomic nomenclature also changes regularly, with
-groups being split, merged, or moved to a new position in the tree of life; this
-is, notably, a common occurrence with viral taxonomy, each subsequent version of
-which can differ markedly from the last; compare, *e.g* @Lefkowitz2018VirTax to
-@Walker2020ChaVir.
+*Mus* (within which *Mus musculus* is located). Conversely, the same species can
+have several names, which are valid synonyms: for example, the domestic cow *Bos
+taurus* admits *Bos primigenius taurus* as a valid synonym. In addition to
+binomial names, the same species can be known by many vernacular (common) names,
+which are language or even region-specific: *Ovis aries*, for example, has valid
+English vernaculars including lamb, sheep, wild sheep, and domestic sheep.
+
+Finally, taxonomic nomenclature changes regularly, with groups being split,
+merged, or moved to a new position in the tree of life; this is, notably, a
+common occurrence with viral taxonomy, each subsequent version of which can
+differ markedly from the last; compare, *e.g* @Lefkowitz2018VirTax to
+@Walker2020ChaVir, where entire viral sub-trees were split, re-organized, and
+created within just two years. These taxonomic changes have profound
+implications for the way we perceive biodiversity at global scales
+[@Meier2009BioRes], to the point were taxonomic revisions should sometimes be
+actively conducted to improve *e.g.* conservation outcomes
+[@Melville2021RetApp].
 
 To add to the complexity, one must also consider that most taxa names are at
 some point manually typed, which has the potential to introduce additional
@@ -19,12 +29,13 @@ mistakes in raw data; it is likely to expect that such mistakes may arise when
 attempting to write down the (perfectly valid) names of the bacterial isolate
 known as *Myxococcus
 llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogochensis*, or of the
-crowned slaty flycatcher  *Griseotyrannus aurantioatrocristatus*. These mistakes
-are more likely when dealing with hyper-diverse samples, like plant census
-[@Dauncey2016ComMis; @Wagner2016RevSof; @Conti2021MatAlg]. In addition to
-binomial names, the same species can be known by many vernacular (common) names,
-which are language or even region-specific: *Ovis aries*, for example, has valid
-English vernaculars including lamb, sheep, wild sheep, and domestic sheep.
+crowned slaty flycatcher *Griseotyrannus aurantioatrocristatus*. These mistakes
+are more likely when dealing with hyper-diverse samples (demanding to memorize
+more names), like plant census [@Dauncey2016ComMis; @Wagner2016RevSof;
+@Conti2021MatAlg]; when dealing with multiple investigators with different
+knowledge of the taxonomy; and as a result of the estimated error in any data
+entry exercice, which other fields estimate at up to about 5%
+[@Barchard2011PreHum].
 
 All these considerations are actually important when matching species names both
 within and across datasets. Let us consider the following species survey of
@@ -44,12 +55,13 @@ four different sources, where all of the issues described above were present.
 # Overview of functionalities
 
 An up-to-date version of the documentation for `NCBITaxonomy.jl` can be found
-online at
-[https://docs.ecojulia.org/NCBITaxonomy.jl/stable/](https://docs.ecojulia.org/NCBITaxonomy.jl/stable/),
-including examples and a documentation of every method. The package is released
-under the MIT license. Contributions can be made in the form of issues (bug
-reports, questions, features suggestions) and pull requests. The package can be
-checked out and installed anonymously from the central Julia repository:
+online from the EcoJulia documentation hub [https://docs.ecojulia.org/][docs],
+including examples and in-line documentation of every method. The package is
+released under the MIT license. Contributions can be made in the form of issues
+(bug reports, questions, features suggestions) and pull requests. The package
+can be checked out and installed anonymously from the central Julia repository:
+
+[docs]: https://docs.ecojulia.org/NCBITaxonomy.jl/stable/
 
 ~~~julia
 using Pkg
