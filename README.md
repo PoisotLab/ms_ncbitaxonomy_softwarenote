@@ -65,18 +65,19 @@ high-performance name reconciliation.
 
 # Overview of functionalities
 
-An up-to-date version of the documentation for `NCBITaxonomy.jl` can be found
-online from the EcoJulia documentation hub [https://docs.ecojulia.org/][docs],
-including examples and in-line documentation of every method. The package is
-released under the MIT license. Contributions can be made in the form of issues
-(bug reports, questions, features suggestions) and pull requests.
+An up-to-date version of the documentation for `NCBITaxonomy.jl` can be found in
+the package `git` repository
+([https://github.com/PoisotLab/NCBITaxonomy.jl][docs]), including examples and
+in-line documentation of every method. The package is released under the MIT
+license. Contributions can be made in the form of issues (bug reports,
+questions, features suggestions) and pull requests.
 
-[docs]: https://docs.ecojulia.org/NCBITaxonomy.jl/stable/
+[docs]: https://github.com/PoisotLab/NCBITaxonomy.jl
 
 In order to achieve good performance, the package will first retrieve the latest
 (as validated by its checksum) NCBI taxonomy backbone, store it locally, and
 pre-process it as a set of Julia data tables. By default, the taxonomy will be
-downloaded to the Julia package repository, which is not an ideal solution, and
+downloaded to the user's hoome directory, which is not an ideal solution, and
 therefore we recommend that users set an environment variable to specificy where
 the data will be loaded from (this path will be created if it doesn't exist):
 
@@ -85,7 +86,7 @@ ENV["NCBITAXONOMY_PATH"] = joinpath(homedir(), "data", "NCBITaxonomy.jl")
 ~~~
 
 Note that this location can be different for different projects, as the package
-is able to update the taxoonmic backbone (and will indeed prompt the user to do
+is able to update the taxonomic backbone (and will indeed prompt the user to do
 so if the taxonomy is more than 90 days old). The package can then be checked
 out and installed anonymously from the central Julia repository:
 
@@ -101,7 +102,7 @@ when relying on API queries. In order to update the taxonomic backbone, users
 can call the `build` function of Julia's package manager (`]build
 NCBITaxonomy`), which will download the most recent version of all files.
 
-This software note describes version `v0.2.3` of the package (we follow semantic
+This software note describes version `v0.3.0` of the package (we follow semantic
 versioning), which works on Julia 1.5 upwards. The dependencies are all resolved
 by the package manager at installation, and (on the user-facing side) include
 the `StringDistances.jl` package, allowing users to experiment with different
