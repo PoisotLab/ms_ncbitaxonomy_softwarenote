@@ -6,4 +6,8 @@ affiliations.json
 abstract.json
 .vscode
 .assets/*csl
-author_template.tsv
+Manifest.toml
+filename
+filename.json
+manuscript-metadata.json
+.~lock*
