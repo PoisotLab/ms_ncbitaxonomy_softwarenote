@@ -389,9 +389,9 @@ biological names finding and reconciliation</div>
             <h1 id="overview-of-functionalities">Overview of
             functionalities</h1>
             <p>An up-to-date version of the documentation for
-            <code>NCBITaxonomy.jl</code> can be found online from the
-            EcoJulia documentation hub <a
-            href="https://docs.ecojulia.org/NCBITaxonomy.jl/stable/">https://docs.ecojulia.org/</a>,
+            <code>NCBITaxonomy.jl</code> can be found in the package
+            <code>git</code> repository (<a
+            href="https://github.com/PoisotLab/NCBITaxonomy.jl">https://github.com/PoisotLab/NCBITaxonomy.jl</a>),
             including examples and in-line documentation of every
             method. The package is released under the MIT license.
             Contributions can be made in the form of issues (bug
@@ -401,15 +401,15 @@ biological names finding and reconciliation</div>
             first retrieve the latest (as validated by its checksum)
             NCBI taxonomy backbone, store it locally, and pre-process it
             as a set of Julia data tables. By default, the taxonomy will
-            be downloaded to the Julia package repository, which is not
-            an ideal solution, and therefore we recommend that users set
-            an environment variable to specificy where the data will be
+            be downloaded to the user’s hoome directory, which is not an
+            ideal solution, and therefore we recommend that users set an
+            environment variable to specificy where the data will be
             loaded from (this path will be created if it doesn’t
             exist):</p>
             <div class="sourceCode" id="cb1"><pre
             class="sourceCode julia"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cn">ENV</span>[<span class="st">&quot;NCBITAXONOMY_PATH&quot;</span>] <span class="op">=</span> <span class="fu">joinpath</span>(<span class="fu">homedir</span>(), <span class="st">&quot;data&quot;</span>, <span class="st">&quot;NCBITaxonomy.jl&quot;</span>)</span></code></pre></div>
             <p>Note that this location can be different for different
-            projects, as the package is able to update the taxoonmic
+            projects, as the package is able to update the taxonomic
             backbone (and will indeed prompt the user to do so if the
             taxonomy is more than 90 days old). The package can then be
             checked out and installed anonymously from the central Julia
@@ -426,7 +426,7 @@ biological names finding and reconciliation</div>
             function of Julia’s package manager
             (<code>]build NCBITaxonomy</code>), which will download the
             most recent version of all files.</p>
-            <p>This software note describes version <code>v0.2.3</code>
+            <p>This software note describes version <code>v0.3.0</code>
             of the package (we follow semantic versioning), which works
             on Julia 1.5 upwards. The dependencies are all resolved by
             the package manager at installation, and (on the user-facing
