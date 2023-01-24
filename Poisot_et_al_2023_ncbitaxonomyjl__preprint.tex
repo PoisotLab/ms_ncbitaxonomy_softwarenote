@@ -1,5 +1,6 @@
 %!TEX TS-program = xelatex
-\documentclass[11pt]{article}
+\documentclass[10pt,oneside]{article}
+\usepackage[fontsize=9pt]{scrextend}
 
 \usepackage[english]{babel}
 
@@ -11,6 +12,8 @@
 \usepackage[scaled]{inconsolata}
 
 \usepackage{lastpage}
+
+\usepackage{gensymb}
 
 \usepackage{setspace}
 
@@ -120,7 +123,7 @@ urlcolor=blue}
 \setlength{\cslhangindent}{1.5em}
 \newlength{\csllabelwidth}
 \setlength{\csllabelwidth}{3em}
-\newenvironment{CSLReferences}[3] % #1 hanging-ident, #2 entry spacing
+\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
  {% don't indent paragraphs
   \setlength{\parindent}{0pt}
   % turn on hanging indent if param 1 is 1
@@ -135,79 +138,136 @@ urlcolor=blue}
 \newcommand{\CSLBlock}[1]{#1\hfill\break}
 \newcommand{\CSLLeftMargin}[1]{\parbox[t]{\maxof{\widthof{#1}}{\csllabelwidth}}{#1}}
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth}{#1}}
-\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}\geometry{verbose,letterpaper,tmargin=2.2cm,bmargin=2.2cm,lmargin=2.2cm,rmargin=2.2cm}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}\usepackage[table,dvipsnames]{xcolor}
 
-\usepackage{lineno}
-\usepackage[nolists,noheads]{endfloat}
+\geometry{includemp,
+            letterpaper,
+            top=2.4cm,
+            bottom=2.4cm,
+            left=1.0cm,
+            right=1.0cm,
+            marginparwidth=5cm,
+            marginparsep=1.0cm}
+
+\usepackage[singlelinecheck=off]{caption}
+
+\captionsetup{
+  font={small},
+  labelfont={bf},
+  format=plain,
+  labelsep=quad
+}
+
+\usepackage{floatrow}
+
+\floatsetup[figure]{margins=hangright,
+              facing=no,
+              capposition=beside,
+              capbesideposition={center,outside},
+              floatwidth=\textwidth}
+
+% \floatsetup[table]{margins=hangright,
+%              facing=no,
+%              capposition=beside,
+%              capbesideposition={center,outside},
+%              floatwidth=\textwidth}
 
 \pagestyle{plain}
 
-\tolerance=1
-\emergencystretch=\maxdimen
-\hyphenpenalty=10000
-\hbadness=10000
+\setcounter{secnumdepth}{5}
 
-\doublespacing
+\usepackage{titlesec}
+
+\titleformat{\section}[block]
+{\normalfont\large\sffamily}
+{\thesection}{.5em}{\titlerule\\[.8ex]\bfseries}
+
+\titleformat{\subsection}[runin]
+{\normalfont\fontseries{b}\selectfont\filright\sffamily}
+{\thesubsection.}{.5em}{}
+
+\titleformat{\subsubsection}[runin]
+{\normalfont\itshape\rmfamily\bfseries}{\thesubsubsection}{1em}{}
+
+\fancypagestyle{firstpage}
+{
+   \fancyhf{}
+   \renewcommand{\headrulewidth}{0pt}
+   \fancyfoot[R]{\footnotesize\ccby}
+   \fancyfoot[L]{\footnotesize\sffamily\today}
+}
 
 \fancypagestyle{normal}
 {
   \fancyhf{}
   \fancyfoot[R]{\footnotesize\sffamily\thepage\ of \pageref*{LastPage}}
 }
-\begin{document}
-\raggedright
-\thispagestyle{empty}
-{\Large\bfseries\sffamily NCBITaxonomy.jl - rapid biological names
-finding and reconciliation}
-\vskip 5em
 
+\usepackage{tikz}
+\begin{document}
+\tikz [remember picture, overlay] %
+\node [shift={(-0.6in,1.1cm)},scale=0.2,opacity=0.4] at (current page.south east)[anchor=south east]{\includegraphics{logo}};%
+\pagestyle{normal}
+\thispagestyle{firstpage}
+
+\newcommand{\colorRule}[3][black]{\textcolor[HTML]{#1}{\rule{#2}{#3}}}
+
+\noindent {\LARGE \textbf{\textsf{NCBITaxonomy.jl - rapid biological
+names finding and reconciliation}}}
+
+\medskip
+\begin{flushleft}
+{\small
 %
 \href{https://orcid.org/0000-0002-0735-5184}{Timothée\,Poisot}%
 %
-\,\textsuperscript{1,2}\quad %
+\,\textsuperscript{1,2}, %
 \href{https://orcid.org/0000-0002-0965-1649}{Rory\,Gibb}%
 %
-\,\textsuperscript{3,4,5}\quad %
+\,\textsuperscript{3,4,5}, %
 \href{https://orcid.org/0000-0002-4308-6321}{Sadie J.\,Ryan}%
 %
-\,\textsuperscript{6,7,8}\quad %
+\,\textsuperscript{6,7,8}, %
 \href{https://orcid.org/0000-0001-6960-8434}{Colin J.\,Carlson}%
 %
-\,\textsuperscript{9,10}
-
+\,\textsuperscript{10,9}
+\vskip 1em
 \textsuperscript{1}\,Université de Montréal, Départment de Sciences
-Biologiques, Montréal QC, Canada\quad \textsuperscript{2}\,Québec Centre
-for Biodiversity Science, Montréal, QC,
-Canada\quad \textsuperscript{3}\,Centre on Climate Change and Planetary
-Health, London School of Hygiene and Tropical Medicine, London,
-UK\quad \textsuperscript{4}\,Centre for Mathematical Modelling of
+Biologiques, Montréal QC, Canada; \textsuperscript{10}\,Center for
+Global Health Science and Security, Georgetown University Medical
+Center, Georgetown University, Washington, D.C., United States of
+America; \textsuperscript{2}\,Québec Centre for Biodiversity Science,
+Montréal, QC, Canada; \textsuperscript{3}\,Centre on Climate Change and
+Planetary Health, London School of Hygiene and Tropical Medicine,
+London, UK; \textsuperscript{4}\,Centre for Mathematical Modelling of
 Infectious Diseases, London School of Hygiene and Tropical Medicine,
-London, UK\quad \textsuperscript{5}\,Current address: Centre for
+London, UK; \textsuperscript{5}\,Current address: Centre for
 Biodiversity and Environment Research, University College London,
-London, UK\quad \textsuperscript{6}\,Emerging Pathogens Institute,
+London, UK; \textsuperscript{6}\,Emerging Pathogens Institute,
 University of Florida, Gainesville, FL, United States of
-America\quad \textsuperscript{7}\,School of Life Sciences, University of
-KwaZulu-Natal, Durban, South Africa\quad \textsuperscript{8}\,Department
-of Geography, University of Florida, Gainesville, FL, United States of
-America\quad \textsuperscript{9}\,Department of Microbiology and
-Immunology, Georgetown University Medical Center, Georgetown University,
-Washington, D.C., United States of
-America\quad \textsuperscript{10}\,Center for Global Health Science and
-Security, Georgetown University Medical Center, Georgetown University,
-Washington, D.C., United States of America
-
-
+America; \textsuperscript{7}\,School of Life Sciences, University of
+KwaZulu-Natal, Durban, South Africa; \textsuperscript{8}\,Department of
+Geography, University of Florida, Gainesville, FL, United States of
+America; \textsuperscript{9}\,Department of Microbiology and Immunology,
+Georgetown University Medical Center, Georgetown University, Washington,
+D.C., United States of America\\
+\vskip 1em
 \textbf{Correspondance to:}\\
 Timothée Poisot --- \texttt{timothee.poisot@umontreal.ca}\\
+}
+\end{flushleft}
 
-\vfill
-This work is released by its authors under a CC-BY 4.0 license\hfill\ccby\\
-Last revision: \emph{\today}
+\vskip 2em
+\makebox[0pt][l]{\colorRule[CCCCCC]{2.0\textwidth}{0.5pt}}
+\vskip 2em
+\noindent
 
-\clearpage
-\thispagestyle{empty}
+\marginpar{\vskip 1em\flushright
+{\small{\bfseries Keywords}:\par
+biodiversity\\taxonomy\\NCBI\\fuzzy matching\\}
+}
 
-\vfill
+
 \texttt{NCBITaxonomy.jl} is a package designed to facilitate the
 reconciliation and cleaning of taxonomic names, using a local copy of
 the NCBI taxonomic backbone (Federhen 2012, Schoch et al. 2020); The
@@ -225,15 +285,14 @@ Szöcs 2013).
 
 
 
-\vfill
 
-\clearpage
-\linenumbers
-\pagestyle{normal}
+\vskip 2em
+\makebox[0pt][l]{\colorRule[CCCCCC]{2.0\textwidth}{0.5pt}}
+\vskip 2em
 
 Unambiguously identifying species is a far more challenging task than it
 may appear. There are a vast number of reasons for this. Different
-databases keep different taxonomic ``backbones,'' \emph{i.e.} different
+databases keep different taxonomic ``backbones'', \emph{i.e.} different
 data structures in which names are mapped to species, and organised in a
 hierarchy. Not all names are unique identifiers to groups. For example,
 \emph{Io} can either refer to a genus of plants from the aster family,
@@ -325,7 +384,7 @@ be loaded from (this path will be created if it doesn't exist):
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ConstantTok{ENV}\NormalTok{[}\StringTok{"NCBITAXONOMY\_PATH"}\NormalTok{] }\OperatorTok{=}\NormalTok{ joinpath(homedir()}\OperatorTok{,} \StringTok{"data"}\OperatorTok{,} \StringTok{"NCBITaxonomy.jl"}\NormalTok{)}
+\ConstantTok{ENV}\NormalTok{[}\StringTok{"NCBITAXONOMY\_PATH"}\NormalTok{] }\OperatorTok{=} \FunctionTok{joinpath}\NormalTok{(}\FunctionTok{homedir}\NormalTok{(), }\StringTok{"data"}\NormalTok{, }\StringTok{"NCBITaxonomy.jl"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -337,8 +396,8 @@ repository:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{using}\NormalTok{ Pkg}
-\NormalTok{Pkg.add(}\StringTok{"NCBITaxonomy"}\NormalTok{) }\CommentTok{\# Dowloading the files may take a long time}
+\ImportTok{using} \BuiltInTok{Pkg}
+\BuiltInTok{Pkg}\NormalTok{.}\FunctionTok{add}\NormalTok{(}\StringTok{"NCBITaxonomy"}\NormalTok{) }\CommentTok{\# Dowloading the files may take a long time}
 \end{Highlighting}
 \end{Shaded}
 
@@ -389,8 +448,8 @@ distance function):
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{julia}\OperatorTok{\textgreater{}}\NormalTok{ similarnames(}\StringTok{"Adeno{-}associated virus 3b"}\OperatorTok{;}\NormalTok{ threshold}\OperatorTok{=}\FloatTok{0.95}\NormalTok{)}
-\FloatTok{3}\OperatorTok{{-}}\NormalTok{element }\DataTypeTok{Vector}\NormalTok{\{}\DataTypeTok{Pair}\NormalTok{\{NCBITaxon}\OperatorTok{,} \DataTypeTok{Float64}\NormalTok{\}\}}\OperatorTok{:}
+\NormalTok{julia}\OperatorTok{\textgreater{}} \FunctionTok{similarnames}\NormalTok{(}\StringTok{"Adeno{-}associated virus 3b"}\NormalTok{; threshold}\OperatorTok{=}\FloatTok{0.95}\NormalTok{)}
+\FloatTok{3}\OperatorTok{{-}}\NormalTok{element }\DataTypeTok{Vector}\NormalTok{\{}\DataTypeTok{Pair}\NormalTok{\{NCBITaxon, }\DataTypeTok{Float64}\NormalTok{\}\}}\OperatorTok{:}
 \NormalTok{  Adeno}\OperatorTok{{-}}\NormalTok{associated virus }\OperatorTok{{-}} \FloatTok{3}\NormalTok{ (ncbi}\OperatorTok{:}\FloatTok{46350}\NormalTok{) }\OperatorTok{=\textgreater{}} \FloatTok{0.96}
 \NormalTok{   Adeno}\OperatorTok{{-}}\NormalTok{associated virus }\FloatTok{3}\NormalTok{B (ncbi}\OperatorTok{:}\FloatTok{68742}\NormalTok{) }\OperatorTok{=\textgreater{}} \FloatTok{0.96}
 \NormalTok{ Adeno}\OperatorTok{{-}}\NormalTok{associated virus }\FloatTok{3}\NormalTok{A (ncbi}\OperatorTok{:}\FloatTok{1406223}\NormalTok{) }\OperatorTok{=\textgreater{}} \FloatTok{0.96}
@@ -403,7 +462,7 @@ the output of a case insensitive name search:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{julia}\OperatorTok{\textgreater{}}\NormalTok{ taxon(}\StringTok{"Adeno{-}associated virus 3b"}\OperatorTok{;}\NormalTok{ casesensitive}\OperatorTok{=}\ExtensionTok{false}\NormalTok{)}
+\NormalTok{julia}\OperatorTok{\textgreater{}} \FunctionTok{taxon}\NormalTok{(}\StringTok{"Adeno{-}associated virus 3b"}\NormalTok{; casesensitive}\OperatorTok{=}\ConstantTok{false}\NormalTok{)}
 \NormalTok{Adeno}\OperatorTok{{-}}\NormalTok{associated virus }\FloatTok{3}\NormalTok{B (ncbi}\OperatorTok{:}\FloatTok{68742}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -427,17 +486,17 @@ be to wrap it in a \texttt{try}/\texttt{catch} statement:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{try}
-\NormalTok{  taxon(name)}
+\NormalTok{try}
+  \FunctionTok{taxon}\NormalTok{(name)}
   \CommentTok{\# Additional operations with the matched name}
-\KeywordTok{catch}\NormalTok{ err}
-  \KeywordTok{if}\NormalTok{ isa(err}\OperatorTok{,}\NormalTok{ NameHasNoDirectMatch)}
+\NormalTok{catch err}
+  \ControlFlowTok{if} \FunctionTok{isa}\NormalTok{(err, NameHasNoDirectMatch)}
     \CommentTok{\# What to do if no match is found}
-  \KeywordTok{elseif}\NormalTok{ isa(err}\OperatorTok{,}\NormalTok{ NameHasMultipleMatches)}
+  \ControlFlowTok{elseif} \FunctionTok{isa}\NormalTok{(err, NameHasMultipleMatches)}
     \CommentTok{\# What to do if there are multiple matches}
-  \KeywordTok{else}
+  \ControlFlowTok{else}
     \CommentTok{\# What to do in case of another error that is not NCBITaxonomy specific}
-  \KeywordTok{end}
+  \ControlFlowTok{end}
 \KeywordTok{end}
 \end{Highlighting}
 \end{Shaded}
@@ -472,19 +531,33 @@ performance consequences: compare, for example, the time taken to return
 the taxon \emph{Pan} in the entire database, in all mammals, and in all
 primates:
 
-\begin{longtable}[]{@{}lclll@{}}
-\toprule
-Names list & Fuzzy matching & Time (ms) & Allocations & Memory
-allocated\tabularnewline
-\midrule
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2857}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1286}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1571}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2286}}@{}}
+\toprule()
+\begin{minipage}[b]{\linewidth}\raggedright
+Names list
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Fuzzy matching
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Time (ms)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Allocations
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Memory allocated
+\end{minipage} \\
+\midrule()
 \endhead
-all & no & 23 & 34 & 2 KiB\tabularnewline
-& yes & 105 & 2580 & 25 MiB\tabularnewline
-\texttt{mammalfilter(true)} & no & 0.55 & 32 & 2 KiB\tabularnewline
-& yes & 1.9 & 551 & 286 KiB\tabularnewline
-\texttt{primatefilter()} & no & 0.15 & 33 & 2 KiB\tabularnewline
-& yes & 0.3 & 92 & 27 KiB\tabularnewline
-\bottomrule
+all & no & 23 & 34 & 2 KiB \\
+& yes & 105 & 2580 & 25 MiB \\
+\texttt{mammalfilter(true)} & no & 0.55 & 32 & 2 KiB \\
+& yes & 1.9 & 551 & 286 KiB \\
+\texttt{primatefilter()} & no & 0.15 & 33 & 2 KiB \\
+& yes & 0.3 & 92 & 27 KiB \\
+\bottomrule()
 \end{longtable}
 
 Clearly, the optimal search strategy is to (i) rely on name filters to
@@ -564,76 +637,89 @@ to functionalities and usability testing.
 
 \hypertarget{refs}{}
 \begin{CSLReferences}{1}{0}
-\leavevmode\hypertarget{ref-Barchard2011PreHum}{}%
-Barchard, K. and Pace, L. 2011. Preventing human error: The impact of
-data entry methods on data accuracy and statistical results. - Computers
-in Human Behavior 27: 1834--1839.
+\leavevmode\vadjust pre{\hypertarget{ref-Barchard2011PreHum}{}}%
+Barchard, K. and Pace, L. 2011.
+\href{https://doi.org/10.1016/j.chb.2011.04.004}{Preventing human error:
+The impact of data entry methods on data accuracy and statistical
+results}. - Computers in Human Behavior 27: 1834--1839.
 
-\leavevmode\hypertarget{ref-Bezanson2017JulFre}{}%
-Bezanson, J. et al. 2017. Julia: A Fresh Approach to Numerical
-Computing. - SIAM Review 59: 65--98.
+\leavevmode\vadjust pre{\hypertarget{ref-Bezanson2017JulFre}{}}%
+Bezanson, J. et al. 2017.
+\href{https://doi.org/10.1137/141000671}{Julia: A Fresh Approach to
+Numerical Computing}. - SIAM Review 59: 65--98.
 
-\leavevmode\hypertarget{ref-Carlson2022GloVir}{}%
-Carlson, C. J. et al. 2022. The Global Virome in One Network (VIRION):
-An Atlas of Vertebrate-Virus Associations. - mBio in press.
+\leavevmode\vadjust pre{\hypertarget{ref-Carlson2022GloVir}{}}%
+Carlson, C. J. et al. 2022.
+\href{https://doi.org/10.1128/mbio.02985-21}{The Global Virome in One
+Network (VIRION): An Atlas of Vertebrate-Virus Associations}. - mBio in
+press.
 
-\leavevmode\hypertarget{ref-Chamberlain2013TaxTax}{}%
-Chamberlain, S. A. and Szöcs, E. 2013. Taxize: Taxonomic search and
-retrieval in R. - F1000Research 2: 191.
+\leavevmode\vadjust pre{\hypertarget{ref-Chamberlain2013TaxTax}{}}%
+Chamberlain, S. A. and Szöcs, E. 2013.
+\href{https://doi.org/10.12688/f1000research.2-191.v2}{Taxize: Taxonomic
+search and retrieval in R}. - F1000Research 2: 191.
 
-\leavevmode\hypertarget{ref-Conti2021MatAlg}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-Conti2021MatAlg}{}}%
 Conti, M. et al. 2021. Match Algorithms for Scientific Names in
 FlorItaly, the Portal to the Flora of Italy. - Plants 10: 974.
 
-\leavevmode\hypertarget{ref-Dauncey2016ComMis}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-Dauncey2016ComMis}{}}%
 Dauncey, E. A. et al. 2016. Common mistakes when using plant names and
 how to avoid them. - European Journal of Integrative Medicine 8:
 597--601.
 
-\leavevmode\hypertarget{ref-Dikow2009BioRes}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-Dikow2009BioRes}{}}%
 Dikow, T. et al. 2009. Biodiversity Research Based on Taxonomic
 Revisions - A Tale of Unrealized Opportunities. - In: Diptera Diversity:
 Status, Challenges and Tools. Brill, pp. 323--346.
 
-\leavevmode\hypertarget{ref-Federhen2012NcbTax}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-Federhen2012NcbTax}{}}%
 Federhen, S. 2012. The NCBI taxonomy database. - Nucleic acids research
 40: D136--D143.
 
-\leavevmode\hypertarget{ref-Gibb2021DatPro}{}%
-Gibb, R. et al. 2021. Data Proliferation, Reconciliation, and Synthesis
-in Viral Ecology. - BioScience in press.
+\leavevmode\vadjust pre{\hypertarget{ref-Gibb2021DatPro}{}}%
+Gibb, R. et al. 2021. \href{https://doi.org/10.1093/biosci/biab080}{Data
+Proliferation, Reconciliation, and Synthesis in Viral Ecology}. -
+BioScience in press.
 
-\leavevmode\hypertarget{ref-Lefkowitz2018VirTax}{}%
-Lefkowitz, E. J. et al. 2018. Virus taxonomy: The database of the
-International Committee on Taxonomy of Viruses (ICTV). - Nucleic Acids
-Research 46: D708--D717.
+\leavevmode\vadjust pre{\hypertarget{ref-Lefkowitz2018VirTax}{}}%
+Lefkowitz, E. J. et al. 2018.
+\href{https://doi.org/10.1093/nar/gkx932}{Virus taxonomy: The database
+of the International Committee on Taxonomy of Viruses (ICTV)}. - Nucleic
+Acids Research 46: D708--D717.
 
-\leavevmode\hypertarget{ref-Melville2021RetApp}{}%
-Melville, J. et al. 2021. A return-on-investment approach for
-prioritization of rigorous taxonomic research needed to inform responses
-to the biodiversity crisis. - PLOS Biology 19: e3001210.
+\leavevmode\vadjust pre{\hypertarget{ref-Melville2021RetApp}{}}%
+Melville, J. et al. 2021.
+\href{https://doi.org/10.1371/journal.pbio.3001210}{A
+return-on-investment approach for prioritization of rigorous taxonomic
+research needed to inform responses to the biodiversity crisis}. - PLOS
+Biology 19: e3001210.
 
-\leavevmode\hypertarget{ref-Norman2020TaxHig}{}%
-Norman, K. E. A. et al. 2020. Taxadb: A high-performance local taxonomic
-database interface. - Methods in Ecology and Evolution 11: 1153--1159.
+\leavevmode\vadjust pre{\hypertarget{ref-Norman2020TaxHig}{}}%
+Norman, K. E. A. et al. 2020.
+\href{https://doi.org/10.1111/2041-210X.13440}{Taxadb: A
+high-performance local taxonomic database interface}. - Methods in
+Ecology and Evolution 11: 1153--1159.
 
-\leavevmode\hypertarget{ref-Schoch2020NcbTax}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-Schoch2020NcbTax}{}}%
 Schoch, C. L. et al. 2020. NCBI Taxonomy: A comprehensive update on
 curation, resources and tools. - Database in press.
 
-\leavevmode\hypertarget{ref-Shimatani2001MeaSpe}{}%
-Shimatani, K. 2001. On the Measurement of Species Diversity
-Incorporating Species Differences. - Oikos 93: 135--147.
+\leavevmode\vadjust pre{\hypertarget{ref-Shimatani2001MeaSpe}{}}%
+Shimatani, K. 2001. \href{https://www.jstor.org/stable/3547217}{On the
+Measurement of Species Diversity Incorporating Species Differences}. -
+Oikos 93: 135--147.
 
-\leavevmode\hypertarget{ref-Wagner2016RevSof}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-Wagner2016RevSof}{}}%
 Wagner, V. 2016. A review of software tools for spell-checking taxon
 names in vegetation databases. - Journal of Vegetation Science 27:
 1323--1327.
 
-\leavevmode\hypertarget{ref-Walker2020ChaVir}{}%
-Walker, P. J. et al. 2020. Changes to virus taxonomy and the Statutes
-ratified by the International Committee on Taxonomy of Viruses (2020). -
-Archives of Virology 165: 2737--2748.
+\leavevmode\vadjust pre{\hypertarget{ref-Walker2020ChaVir}{}}%
+Walker, P. J. et al. 2020.
+\href{https://doi.org/10.1007/s00705-020-04752-x}{Changes to virus
+taxonomy and the Statutes ratified by the International Committee on
+Taxonomy of Viruses (2020)}. - Archives of Virology 165: 2737--2748.
 
 \end{CSLReferences}
 

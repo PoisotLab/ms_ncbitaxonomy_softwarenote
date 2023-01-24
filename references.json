@@ -1,6 +1,15 @@
 [
     {
-        "DOI": "10.1016/j.chb.2011.04.004",
+        "issued": {
+            "date-parts": [
+                [
+                    2011,
+                    9,
+                    1
+                ]
+            ]
+        },
+        "container-title": "Computers in Human Behavior",
         "author": [
             {
                 "family": "Barchard",
@@ -11,24 +20,25 @@
                 "given": "Larry"
             }
         ],
-        "container-title": "Computers in Human Behavior",
         "id": "Barchard2011PreHum",
+        "DOI": "10.1016/j.chb.2011.04.004",
+        "volume": "27",
+        "page": "1834-1839",
+        "title": "Preventing human error: The impact of data entry methods on data accuracy and statistical results",
+        "type": "article-journal"
+    },
+    {
+        "issue": "1",
         "issued": {
             "date-parts": [
                 [
-                    2011,
-                    9,
+                    2017,
+                    1,
                     1
                 ]
             ]
         },
-        "page": "1834-1839",
-        "title": "Preventing human error: The impact of data entry methods on data accuracy and statistical results",
-        "type": "article-journal",
-        "volume": "27"
-    },
-    {
-        "DOI": "10.1137/141000671",
+        "container-title": "SIAM Review",
         "author": [
             {
                 "family": "Bezanson",
@@ -47,24 +57,15 @@
                 "given": "V."
             }
         ],
-        "container-title": "SIAM Review",
         "id": "Bezanson2017JulFre",
-        "issue": "1",
-        "issued": {
-            "date-parts": [
-                [
-                    2017,
-                    1,
-                    1
-                ]
-            ]
-        },
+        "DOI": "10.1137/141000671",
+        "volume": "59",
         "page": "65-98",
         "title": "Julia: A Fresh Approach to Numerical Computing",
-        "type": "article-journal",
-        "volume": "59"
+        "type": "article-journal"
     },
     {
+        "publisher": "American Society for Microbiology",
         "DOI": "10.1128/mbio.02985-21",
         "author": [
             {
@@ -113,7 +114,7 @@
             },
             {
                 "family": "Poisot",
-                "given": "Timoth\u00e9e"
+                "given": "Timothée"
             },
             {
                 "family": "Rasmussen",
@@ -128,8 +129,8 @@
                 "given": "Stephanie N."
             }
         ],
-        "container-title": "mBio",
         "id": "Carlson2022GloVir",
+        "title": "The Global Virome in One Network (VIRION): An Atlas of Vertebrate-Virus Associations",
         "issued": {
             "date-parts": [
                 [
@@ -139,25 +140,11 @@
                 ]
             ]
         },
-        "publisher": "American Society for Microbiology",
-        "title": "The Global Virome in One Network (VIRION): An Atlas of Vertebrate-Virus Associations",
+        "container-title": "mBio",
         "type": "article-journal"
     },
     {
-        "DOI": "10.12688/f1000research.2-191.v2",
         "PMCID": "PMC3901538",
-        "author": [
-            {
-                "family": "Chamberlain",
-                "given": "Scott A."
-            },
-            {
-                "family": "Sz\u00f6cs",
-                "given": "Eduard"
-            }
-        ],
-        "container-title": "F1000Research",
-        "id": "Chamberlain2013TaxTax",
         "issued": {
             "date-parts": [
                 [
@@ -167,12 +154,27 @@
                 ]
             ]
         },
+        "container-title": "F1000Research",
+        "author": [
+            {
+                "family": "Chamberlain",
+                "given": "Scott A."
+            },
+            {
+                "family": "Szöcs",
+                "given": "Eduard"
+            }
+        ],
+        "id": "Chamberlain2013TaxTax",
+        "DOI": "10.12688/f1000research.2-191.v2",
+        "volume": "2",
         "page": "191",
         "title": "Taxize: Taxonomic search and retrieval in R",
-        "type": "article-journal",
-        "volume": "2"
+        "type": "article-journal"
     },
     {
+        "publisher": "Multidisciplinary Digital Publishing Institute",
+        "volume": "10",
         "author": [
             {
                 "family": "Conti",
@@ -187,9 +189,10 @@
                 "given": "Stefano"
             }
         ],
-        "container-title": "Plants",
-        "id": "Conti2021MatAlg",
         "issue": "5",
+        "id": "Conti2021MatAlg",
+        "page": "974",
+        "title": "Match Algorithms for Scientific Names in FlorItaly, the Portal to the Flora of Italy",
         "issued": {
             "date-parts": [
                 [
@@ -197,13 +200,11 @@
                 ]
             ]
         },
-        "page": "974",
-        "publisher": "Multidisciplinary Digital Publishing Institute",
-        "title": "Match Algorithms for Scientific Names in FlorItaly, the Portal to the Flora of Italy",
-        "type": "article-journal",
-        "volume": "10"
+        "container-title": "Plants",
+        "type": "article-journal"
     },
     {
+        "volume": "8",
         "author": [
             {
                 "family": "Dauncey",
@@ -222,9 +223,10 @@
                 "given": "N."
             }
         ],
-        "container-title": "European Journal of Integrative Medicine",
-        "id": "Dauncey2016ComMis",
         "issue": "5",
+        "id": "Dauncey2016ComMis",
+        "page": "597-601",
+        "title": "Common mistakes when using plant names and how to avoid them.",
         "issued": {
             "date-parts": [
                 [
@@ -232,12 +234,11 @@
                 ]
             ]
         },
-        "page": "597-601",
-        "title": "Common mistakes when using plant names and how to avoid them.",
-        "type": "article-journal",
-        "volume": "8"
+        "container-title": "European Journal of Integrative Medicine",
+        "type": "article-journal"
     },
     {
+        "publisher": "Brill",
         "author": [
             {
                 "family": "Dikow",
@@ -256,8 +257,9 @@
                 "given": "Jaosn G. H."
             }
         ],
-        "container-title": "Diptera Diversity: Status, Challenges and Tools",
         "id": "Dikow2009BioRes",
+        "page": "323-346",
+        "title": "Biodiversity Research Based on Taxonomic Revisions - A Tale of Unrealized Opportunities",
         "issued": {
             "date-parts": [
                 [
@@ -267,21 +269,22 @@
                 ]
             ]
         },
-        "page": "323-346",
-        "publisher": "Brill",
-        "title": "Biodiversity Research Based on Taxonomic Revisions - A Tale of Unrealized Opportunities",
+        "container-title": "Diptera Diversity: Status, Challenges and Tools",
         "type": "chapter"
     },
     {
+        "publisher": "Oxford University Press",
+        "volume": "40",
         "author": [
             {
                 "family": "Federhen",
                 "given": "Scott"
             }
         ],
-        "container-title": "Nucleic acids research",
-        "id": "Federhen2012NcbTax",
         "issue": "D1",
+        "id": "Federhen2012NcbTax",
+        "page": "D136-D143",
+        "title": "The NCBI taxonomy database",
         "issued": {
             "date-parts": [
                 [
@@ -289,11 +292,8 @@
                 ]
             ]
         },
-        "page": "D136-D143",
-        "publisher": "Oxford University Press",
-        "title": "The NCBI taxonomy database",
-        "type": "article-journal",
-        "volume": "40"
+        "container-title": "Nucleic acids research",
+        "type": "article-journal"
     },
     {
         "DOI": "10.1093/biosci/biab080",
@@ -348,11 +348,11 @@
             },
             {
                 "family": "Poisot",
-                "given": "Timoth\u00e9e"
+                "given": "Timothée"
             }
         ],
-        "container-title": "BioScience",
         "id": "Gibb2021DatPro",
+        "title": "Data Proliferation, Reconciliation, and Synthesis in Viral Ecology",
         "issued": {
             "date-parts": [
                 [
@@ -362,11 +362,21 @@
                 ]
             ]
         },
-        "title": "Data Proliferation, Reconciliation, and Synthesis in Viral Ecology",
+        "container-title": "BioScience",
         "type": "article-journal"
     },
     {
-        "DOI": "10.1093/nar/gkx932",
+        "issue": "D1",
+        "issued": {
+            "date-parts": [
+                [
+                    2018,
+                    1,
+                    4
+                ]
+            ]
+        },
+        "container-title": "Nucleic Acids Research",
         "author": [
             {
                 "family": "Lefkowitz",
@@ -393,25 +403,26 @@
                 "given": "Donald B"
             }
         ],
-        "container-title": "Nucleic Acids Research",
         "id": "Lefkowitz2018VirTax",
-        "issue": "D1",
+        "DOI": "10.1093/nar/gkx932",
+        "volume": "46",
+        "page": "D708-D717",
+        "title": "Virus taxonomy: The database of the International Committee on Taxonomy of Viruses (ICTV)",
+        "type": "article-journal"
+    },
+    {
+        "publisher": "Public Library of Science",
+        "issue": "6",
         "issued": {
             "date-parts": [
                 [
-                    2018,
-                    1,
-                    4
+                    2021,
+                    6,
+                    1
                 ]
             ]
         },
-        "page": "D708-D717",
-        "title": "Virus taxonomy: The database of the International Committee on Taxonomy of Viruses (ICTV)",
-        "type": "article-journal",
-        "volume": "46"
-    },
-    {
-        "DOI": "10.1371/journal.pbio.3001210",
+        "container-title": "PLOS Biology",
         "author": [
             {
                 "family": "Melville",
@@ -462,12 +473,12 @@
                 "given": "Ryan J."
             },
             {
-                "family": "Esquerr\u00e9",
+                "family": "Esquerré",
                 "given": "Damien"
             },
             {
                 "family": "Fenker",
-                "given": "J\u00e9ssica"
+                "given": "Jéssica"
             },
             {
                 "family": "Gardner",
@@ -502,7 +513,7 @@
                 "given": "Paul"
             },
             {
-                "family": "Pav\u00f3n-V\u00e1zquez",
+                "family": "Pavón-Vázquez",
                 "given": "Carlos J."
             },
             {
@@ -534,26 +545,23 @@
                 "given": "Reid"
             }
         ],
-        "container-title": "PLOS Biology",
         "id": "Melville2021RetApp",
-        "issue": "6",
+        "DOI": "10.1371/journal.pbio.3001210",
+        "volume": "19",
+        "page": "e3001210",
+        "title": "A return-on-investment approach for prioritization of rigorous taxonomic research needed to inform responses to the biodiversity crisis",
+        "type": "article-journal"
+    },
+    {
+        "issue": "9",
         "issued": {
             "date-parts": [
                 [
-                    2021,
-                    6,
-                    1
+                    2020
                 ]
             ]
         },
-        "page": "e3001210",
-        "publisher": "Public Library of Science",
-        "title": "A return-on-investment approach for prioritization of rigorous taxonomic research needed to inform responses to the biodiversity crisis",
-        "type": "article-journal",
-        "volume": "19"
-    },
-    {
-        "DOI": "10.1111/2041-210X.13440",
+        "container-title": "Methods in Ecology and Evolution",
         "author": [
             {
                 "family": "Norman",
@@ -568,22 +576,16 @@
                 "given": "Carl"
             }
         ],
-        "container-title": "Methods in Ecology and Evolution",
         "id": "Norman2020TaxHig",
-        "issue": "9",
-        "issued": {
-            "date-parts": [
-                [
-                    2020
-                ]
-            ]
-        },
+        "DOI": "10.1111/2041-210X.13440",
+        "volume": "11",
         "page": "1153-1159",
         "title": "Taxadb: A high-performance local taxonomic database interface",
-        "type": "article-journal",
-        "volume": "11"
+        "type": "article-journal"
     },
     {
+        "publisher": "Oxford Academic",
+        "volume": "2020",
         "author": [
             {
                 "family": "Schoch",
@@ -618,7 +620,7 @@
                 "given": "Richard"
             },
             {
-                "family": "O\u2019Neill",
+                "family": "O’Neill",
                 "given": "Kathleen"
             },
             {
@@ -626,8 +628,8 @@
                 "given": "Barbara"
             }
         ],
-        "container-title": "Database",
         "id": "Schoch2020NcbTax",
+        "title": "NCBI Taxonomy: A comprehensive update on curation, resources and tools",
         "issued": {
             "date-parts": [
                 [
@@ -635,21 +637,11 @@
                 ]
             ]
         },
-        "publisher": "Oxford Academic",
-        "title": "NCBI Taxonomy: A comprehensive update on curation, resources and tools",
-        "type": "article-journal",
-        "volume": "2020"
+        "container-title": "Database",
+        "type": "article-journal"
     },
     {
-        "URL": "http://www.jstor.org/stable/3547217",
-        "author": [
-            {
-                "family": "Shimatani",
-                "given": "Kenichiro"
-            }
-        ],
-        "container-title": "Oikos",
-        "id": "Shimatani2001MeaSpe",
+        "publisher": "[Nordic Society Oikos, Wiley]",
         "issue": "1",
         "issued": {
             "date-parts": [
@@ -658,22 +650,33 @@
                 ]
             ]
         },
+        "container-title": "Oikos",
+        "author": [
+            {
+                "family": "Shimatani",
+                "given": "Kenichiro"
+            }
+        ],
+        "id": "Shimatani2001MeaSpe",
+        "volume": "93",
+        "URL": "https://www.jstor.org/stable/3547217",
         "page": "135-147",
-        "publisher": "[Nordic Society Oikos, Wiley]",
         "title": "On the Measurement of Species Diversity Incorporating Species Differences",
-        "type": "article-journal",
-        "volume": "93"
+        "type": "article-journal"
     },
     {
+        "publisher": "Wiley Online Library",
+        "volume": "27",
         "author": [
             {
                 "family": "Wagner",
                 "given": "Viktoria"
             }
         ],
-        "container-title": "Journal of Vegetation Science",
-        "id": "Wagner2016RevSof",
         "issue": "6",
+        "id": "Wagner2016RevSof",
+        "page": "1323-1327",
+        "title": "A review of software tools for spell-checking taxon names in vegetation databases",
         "issued": {
             "date-parts": [
                 [
@@ -681,14 +684,21 @@
                 ]
             ]
         },
-        "page": "1323-1327",
-        "publisher": "Wiley Online Library",
-        "title": "A review of software tools for spell-checking taxon names in vegetation databases",
-        "type": "article-journal",
-        "volume": "27"
+        "container-title": "Journal of Vegetation Science",
+        "type": "article-journal"
     },
     {
-        "DOI": "10.1007/s00705-020-04752-x",
+        "issue": "11",
+        "issued": {
+            "date-parts": [
+                [
+                    2020,
+                    11,
+                    1
+                ]
+            ]
+        },
+        "container-title": "Archives of Virology",
         "author": [
             {
                 "family": "Walker",
@@ -720,7 +730,7 @@
             },
             {
                 "family": "Harrach",
-                "given": "Bal\u00e1zs"
+                "given": "Balázs"
             },
             {
                 "family": "Harrison",
@@ -787,21 +797,11 @@
                 "given": "Andrew J."
             }
         ],
-        "container-title": "Archives of Virology",
         "id": "Walker2020ChaVir",
-        "issue": "11",
-        "issued": {
-            "date-parts": [
-                [
-                    2020,
-                    11,
-                    1
-                ]
-            ]
-        },
+        "DOI": "10.1007/s00705-020-04752-x",
+        "volume": "165",
         "page": "2737-2748",
         "title": "Changes to virus taxonomy and the Statutes ratified by the International Committee on Taxonomy of Viruses (2020)",
-        "type": "article-journal",
-        "volume": "165"
+        "type": "article-journal"
     }
 ]
