@@ -262,13 +262,13 @@ input by the user. Given the breadth of the NCBI taxonomy database,
 of names.
 
 **Acknowledgements:** This work was supported by funding to the Viral Emergence
-Research Initiative (VERENA) consortium including NSF BII 2021909 and a grant
-from Institut de Valorisation des Données (IVADO), by the NSERC Discovery Grants
-and Discovery Acceleration Supplement programs, and by a donation from the
-Courtois Foundation. Benchmarking of this package on distributed systems was
-enabled by support provided by Calcul Québec (`www.calculquebec.ca`) and Compute
-Canada (`www.computecanada.ca`). TP wrote the initial code, TP and CJC
-contributed to API design, and all authors contributed to functionalities and
-usability testing.
+Research Initiative (VERENA) consortium including NSF BII 2021909 and 2213854
+and a grant from Institut de Valorisation des Données (IVADO), by the NSERC
+Discovery Grants and Discovery Acceleration Supplement programs, and by a
+donation from the Courtois Foundation. Benchmarking of this package on
+distributed systems was enabled by support provided by Calcul Québec
+(`www.calculquebec.ca`) and Compute Canada (`www.computecanada.ca`). TP wrote
+the initial code, TP and CJC contributed to API design, and all authors
+contributed to functionalities and usability testing.
 
 # References
