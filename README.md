@@ -71,23 +71,41 @@ authoritative virome network from dozens of heterogeneous sources. We describe
 the core capacities of this package, and highlight how it enables safe,
 high-performance name reconciliation.
 
-# Relevance and comparison to other tools
+# Design principles and comparison to other tools
 
-`NCBITaxonomy.jl` is built around a series of 
+Based on the author's experience reconciling lists of thousands of biological
+names, `NCBITaxonomy.jl` is built around a series of features that allow (i)
+maximum flexibility when handling names without a direct match, (ii) a bespoke
+exception system to handle failures to match automatically, and (ii) limits to
+the pool of potential names in order to achieve orders-of-magnitude speedups
+when the broad classification of the name to match is known. Adhering to these
+design principles led to a number of choices. A comparison of the features of
+different packages, as infered from their public documentation, is presented in
+@tbl:comparison.
 
 First, we specifically target programmatic (as opposed to command-line) based
 approaches, so that the functionalities of the package can be accessed as part
-of a larger pipeline. This differs from other tools offering access to the NCBI
-taxonomy, such as 
+of a larger pipeline. Second, to speed up the queries, we work from a local
+version of the database, the installation of which is handled at build time by
+the package itself; each project using the package can use its own version of
+the taxonomy by specifying a folder where it is stored through an environmental
+variable. Third, because we *cannot* trust that the names as presented in the
+original data are correct, we offer case-insensitive search (at no time cost)
+and fuzzy-matching (at a significant time cost). Either of these strategies can
+be called only after a case-sensitive, non-fuzzy search yields an exception
+about the lack of a direct match. Finally, in order to achieve a good
+performance even when relying on fuzzy matching, we offer the ability to limit
+the search to specific parts of the taxonomy database. An example of the impact
+of this feature on the performance of the package is presented below.
 
 | Tool              | Lang.    | Library |  CLI  | Local DB | Fuzzy | Case  | Subsets | Ranks | Reference |
 | ----------------- | -------- | :-----: | :---: | :------: | :---: | :---: | :-----: | :---: | --------- |
-| `NCBITaxonomy.jl` | `Julia`  |    ✔️    |       |    ✔️     |   ✔️   |   ✔️   |    ✔️    |   ✔️   |           |
-| `taxadb`          | `R`      |    ✔️    |       |    ✔️     |       |       |    ✔️    |   ✔️   |           |
-| `rentrez`         | `R`      |    ✔️    |       |          |       |       |         |   ✔️   |           |
-| `Taxonkit`        | `Python` |         |   ✔️   |    ✔️     |       |       |         |       |           |
-| `taxopy`          | `Python` |    ✔️    |       |    ✔️     |       |   ✔️   |         |       |           |
-| `NCBI-taxonomist` | `Python` |         |   ✔️   |    ✔️     |       |       |         |       |           |
+| `NCBITaxonomy.jl` | `Julia`  |    ✓    |       |    ✓     |   ✓   |   ✓   |    ✓    |   ✓   |           |
+| `taxadb`          | `R`      |    ✓    |       |    ✓     |       |       |    ✓    |   ✓   |           |
+| `taxopy`          | `Python` |    ✓    |       |    ✓     |       |   ✓   |         |       |           |
+| `rentrez`         | `R`      |    ✓    |       |          |       |       |         |   ✓   |           |
+| `Taxonkit`        | `Python` |         |   ✓   |    ✓     |       |       |         |       |           |
+| `NCBI-taxonomist` | `Python` |         |   ✓   |    ✓     |       |       |         |       |           |
 
 Table: Comparison of core features of packages offering access to the NCBI
 taxonomic backbone. "Library": ability to be called from code. "CLI": ability to
@@ -96,24 +114,27 @@ locally. "Fuzzy": ability to perform fuzzy matching on inputs. "Case": ability
 to perform case-insensitive search. "Subsets": ability to limit the search to a
 subset of the raw database. "Ranks": ability to limit the search to specific
 raxonomi ranks. The features of the various packages have been determined from
-reading their documentation. {#tbl:id}
-
+reading their documentation. {@tbl:id}
 
 # Overview of functionalities
 
 An up-to-date version of the documentation for `NCBITaxonomy.jl` can be found in
-the package `git` repository
-([https://github.com/PoisotLab/NCBITaxonomy.jl][docs]), including examples and
-in-line documentation of every method. The package is released under the MIT
-license. Contributions can be made in the form of issues (bug reports,
-questions, features suggestions) and pull requests.
+the package's *GitHub* repository ([PoisotLab/NCBITaxonomy.jl][pkg]), including
+examples and in-line documentation of every method. The package is released
+under the MIT license. Contributions can be made in the form of issues (bug
+reports, questions, features suggestions) and pull requests, all of which can be
+consulted publicly. Alternatively, the package can be downloaded from its Zenodo
+page (ID [`5825828`][zenodo]), along with a versioned DOI.
 
-[docs]: https://github.com/PoisotLab/NCBITaxonomy.jl
+[pkg]: https://github.com/PoisotLab/NCBITaxonomy.jl
+[zenodo]: https://zenodo.org/record/
+
+## Local file storage
 
 In order to achieve good performance, the package will first retrieve the latest
 (as validated by its checksum) NCBI taxonomy backbone, store it locally, and
 pre-process it as a set of Julia data tables. By default, the taxonomy will be
-downloaded to the user's hoome directory, which is not an ideal solution, and
+downloaded to the user's home directory, which is not an ideal solution, and
 therefore we recommend that users set an environment variable to specificy where
 the data will be loaded from (this path will be created if it doesn't exist):
 
@@ -123,12 +144,13 @@ ENV["NCBITAXONOMY_PATH"] = joinpath(homedir(), "data", "NCBITaxonomy.jl")
 
 Note that this location can be different for different projects, as the package
 is able to update the taxonomic backbone (and will indeed prompt the user to do
-so if the taxonomy is more than 90 days old). The package can then be checked
-out and installed anonymously from the central Julia repository:
+so if the taxonomy is more than 90 days old, as infered from looking at the raw
+files creation timestamp). The package can then be checked out and installed
+anonymously from the central Julia repository:
 
 ~~~julia
 using Pkg
-Pkg.add("NCBITaxonomy") # Dowloading the files may take a long time
+Pkg.add("NCBITaxonomy")
 ~~~
 
 As long as the package is not re-built, the local set of tables downloaded from
@@ -149,7 +171,7 @@ as well as integration tests as part of the documentation (specifically, a
 use-case detailing how to clean data from a biodiversity survey, and a use-case
 aiming to reconstruct a taxonomic tree for the Lemuriformes).
 
-# Improved name matching
+## Improved name matching
 
 Name finding, *i.e.* the matching of an arbitrary string to a taxonomic
 identifier, is primarily done through the `taxon` function, which admits either
@@ -187,7 +209,7 @@ Adeno-associated virus 3B (ncbi:68742)
 
 This returns the correct name.
 
-# Name matching output and error handling
+## Name matching output and error handling
 
 When it succeeds, `taxon` will return a `NCBITaxon` object (made of a `name`
 string field, and an `id` numerical field). That being said, the package is
@@ -222,7 +244,7 @@ getting a taxon for demonstration purposes, we also provide a string macro,
 whereby *e.g.* `ncbi"Procyon lotor"` will return the taxon object for the
 raccoon.
 
-# Name filtering functions
+## Name filtering functions
 
 As the full NCBI names table has over 3 million entries at the time of writing,
 we have provided a number of functions to restrict the scope of names that are
@@ -258,7 +280,7 @@ recognized vernaculars for *Pan*) gave qualitatively similar results, suggesting
 that there is no performance cost associated with working with synonyms or
 verncular input data.
 
-# Quality of life functions
+## Quality of life functions
 
 In order to facilitate working with names, we provide the `authority` function
 (gives the full taxonomic authority for a name), `synonyms` (to get alternative
