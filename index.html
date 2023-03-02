@@ -321,30 +321,38 @@ biological names finding and reconciliation</div>
             region-specific: <em>Ovis aries</em>, for example, has valid
             English vernaculars including lamb, sheep, wild sheep, and
             domestic sheep.</p>
-            <p>Finally, taxonomic nomenclature changes regularly, with
-            groups being split, merged, or moved to a new position in
-            the tree of life; this is, notably, a common occurrence with
-            viral taxonomy, each subsequent version of which can differ
-            markedly from the last; compare, <em>e.g</em> <span
-            class="citation" data-cites="Lefkowitz2018VirTax">Lefkowitz
-            et al. (2018)</span> to <span class="citation"
+            <p>In addition, taxonomic nomenclature changes regularly,
+            with groups being split, merged, or moved to a new position
+            in the tree of life; often, taxonomic revisions lead to
+            these events occuring simultaneously. This is, notably, a
+            common occurrence with viral taxonomy, each subsequent
+            version of which can differ markedly from the last; compare,
+            <em>e.g</em> <span class="citation"
+            data-cites="Lefkowitz2018VirTax">Lefkowitz et al.
+            (2018)</span> to <span class="citation"
             data-cites="Walker2020ChaVir">Walker et al. (2020)</span>,
             where entire viral sub-trees were split, re-organized, and
-            created within just two years. These taxonomic changes have
-            profound implications for the way we perceive biodiversity
-            at global scales <span class="citation"
+            created within just two years. As a consequence any mapping
+            of names to other biological entities can become outdated,
+            and therefore invalid. These taxonomic changes have profound
+            implications for the way we perceive biodiversity at global
+            scales <span class="citation"
             data-cites="Dikow2009BioRes">(Dikow et al. 2009)</span>, to
             the point were taxonomic revisions should sometimes be
             actively conducted to improve <em>e.g.</em> conservation
             outcomes <span class="citation"
             data-cites="Melville2021RetApp">(Melville et al.
             2021)</span>.</p>
-            <p>To add to the complexity, one must also consider that
-            most taxa names are at some point manually typed, which has
-            the potential to introduce additional mistakes in raw data;
-            it is likely to expect that such mistakes may arise when
-            attempting to write down the (perfectly valid) names of the
-            bacterial isolate known as <em>Myxococcus
+            <p>None of these issues, were they to happen in isolation,
+            would be very difficult to deal with. Indeed, performing the
+            lookup for any text string in any database is a trivial
+            operation. But to add to the complexity, one must also
+            consider that most taxa names are at some point manually
+            typed, which has the potential to introduce additional
+            sources of variation in raw data; it is likely to expect
+            that such mistakes may arise when attempting to write down
+            the (perfectly valid) names of the bacterial isolate known
+            as <em>Myxococcus
             llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogochensis</em>,
             or of the crowned slaty flycatcher <em>Griseotyrannus
             aurantioatrocristatus</em>. These mistakes are more likely
@@ -358,7 +366,12 @@ biological names finding and reconciliation</div>
             any data entry exercice, which other fields estimate at up
             to about 5% <span class="citation"
             data-cites="Barchard2011PreHum">(Barchard and Pace
-            2011)</span>.</p>
+            2011)</span>. As a result, the first question one needs to
+            ask when confronted with a string of character that
+            purportedly points to a node in the tree of life is not “to
+            which entry in the taxonomy database is it associated?”, but
+            “is there a mistake in this name that is likely to render a
+            simple lookup invalid?”.</p>
             <p>All these considerations become important when matching
             species names both within and across datasets. Let us
             consider the hypothetical species survey of riverine fishes:
@@ -367,7 +380,7 @@ biological names finding and reconciliation</div>
             species (<em>S. cephalus</em>), referred to as one of the
             vernacular (European chub) and two formerly accepted names
             now classified as synonyms (but still present in the
-            litterature). A cautious estimate of diversity based on the
+            litterature). A simple estimate of diversity based on the
             user-supplied names would give <span
             class="math inline"><em>n</em> = 4</span> species, when
             there is in fact only one. When the size of biodiversity
@@ -395,6 +408,130 @@ biological names finding and reconciliation</div>
             sources. We describe the core capacities of this package,
             and highlight how it enables safe, high-performance name
             reconciliation.</p>
+            <h1 id="relevance-and-comparison-to-other-tools">Relevance
+            and comparison to other tools</h1>
+            <p><code>NCBITaxonomy.jl</code> is built around a series
+            of</p>
+            <p>First, we specifically target programmatic (as opposed to
+            command-line) based approaches, so that the functionalities
+            of the package can be accessed as part of a larger pipeline.
+            This differs from other tools offering access to the NCBI
+            taxonomy, such as</p>
+            <div id="tbl:id">
+            <table style="width:100%;">
+            <caption>Table 1: Comparison of core features of packages
+            offering access to the NCBI taxonomic backbone. “Library”:
+            ability to be called from code. “CLI”: ability to work as a
+            command-line tool. “Local DB”: ability to store a copy of
+            the database locally. “Fuzzy”: ability to perform fuzzy
+            matching on inputs. “Case”: ability to perform
+            case-insensitive search. “Subsets”: ability to limit the
+            search to a subset of the raw database. “Ranks”: ability to
+            limit the search to specific raxonomi ranks. The features of
+            the various packages have been determined from reading their
+            documentation.</caption>
+            <colgroup>
+            <col style="width: 22%" />
+            <col style="width: 10%" />
+            <col style="width: 9%" />
+            <col style="width: 6%" />
+            <col style="width: 10%" />
+            <col style="width: 6%" />
+            <col style="width: 6%" />
+            <col style="width: 9%" />
+            <col style="width: 6%" />
+            <col style="width: 11%" />
+            </colgroup>
+            <thead>
+            <tr class="header">
+            <th>Tool</th>
+            <th>Lang.</th>
+            <th style="text-align: center;">Library</th>
+            <th style="text-align: center;">CLI</th>
+            <th style="text-align: center;">Local DB</th>
+            <th style="text-align: center;">Fuzzy</th>
+            <th style="text-align: center;">Case</th>
+            <th style="text-align: center;">Subsets</th>
+            <th style="text-align: center;">Ranks</th>
+            <th>Reference</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="odd">
+            <td><code>NCBITaxonomy.jl</code></td>
+            <td><code>Julia</code></td>
+            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;">✔️</td>
+            <td></td>
+            </tr>
+            <tr class="even">
+            <td><code>taxadb</code></td>
+            <td><code>R</code></td>
+            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;">✔️</td>
+            <td></td>
+            </tr>
+            <tr class="odd">
+            <td><code>rentrez</code></td>
+            <td><code>R</code></td>
+            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;">✔️</td>
+            <td></td>
+            </tr>
+            <tr class="even">
+            <td><code>Taxonkit</code></td>
+            <td><code>Python</code></td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;"></td>
+            <td></td>
+            </tr>
+            <tr class="odd">
+            <td><code>taxopy</code></td>
+            <td><code>Python</code></td>
+            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;"></td>
+            <td></td>
+            </tr>
+            <tr class="even">
+            <td><code>NCBI-taxonomist</code></td>
+            <td><code>Python</code></td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;"></td>
+            <td></td>
+            </tr>
+            </tbody>
+            </table>
+            </div>
             <h1 id="overview-of-functionalities">Overview of
             functionalities</h1>
             <p>An up-to-date version of the documentation for
@@ -449,7 +586,7 @@ biological names finding and reconciliation</div>
             (specifically, a use-case detailing how to clean data from a
             biodiversity survey, and a use-case aiming to reconstruct a
             taxonomic tree for the Lemuriformes).</p>
-            <h2 id="improved-name-matching">Improved name matching</h2>
+            <h1 id="improved-name-matching">Improved name matching</h1>
             <p>Name finding, <em>i.e.</em> the matching of an arbitrary
             string to a taxonomic identifier, is primarily done through
             the <code>taxon</code> function, which admits either a
@@ -488,8 +625,8 @@ biological names finding and reconciliation</div>
             class="sourceCode julia"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="fu">taxon</span>(<span class="st">&quot;Adeno-associated virus 3b&quot;</span>; casesensitive<span class="op">=</span><span class="cn">false</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Adeno<span class="op">-</span>associated virus <span class="fl">3</span>B (ncbi<span class="op">:</span><span class="fl">68742</span>)</span></code></pre></div>
             <p>This returns the correct name.</p>
-            <h2 id="name-matching-output-and-error-handling">Name
-            matching output and error handling</h2>
+            <h1 id="name-matching-output-and-error-handling">Name
+            matching output and error handling</h1>
             <p>When it succeeds, <code>taxon</code> will return a
             <code>NCBITaxon</code> object (made of a <code>name</code>
             string field, and an <code>id</code> numerical field). That
@@ -527,8 +664,8 @@ biological names finding and reconciliation</div>
             demonstration purposes, we also provide a string macro,
             whereby <em>e.g.</em> <code>ncbi"Procyon lotor"</code> will
             return the taxon object for the raccoon.</p>
-            <h2 id="name-filtering-functions">Name filtering
-            functions</h2>
+            <h1 id="name-filtering-functions">Name filtering
+            functions</h1>
             <p>As the full NCBI names table has over 3 million entries
             at the time of writing, we have provided a number of
             functions to restrict the scope of names that are searched.
@@ -622,8 +759,8 @@ biological names finding and reconciliation</div>
             qualitatively similar results, suggesting that there is no
             performance cost associated with working with synonyms or
             verncular input data.</p>
-            <h2 id="quality-of-life-functions">Quality of life
-            functions</h2>
+            <h1 id="quality-of-life-functions">Quality of life
+            functions</h1>
             <p>In order to facilitate working with names, we provide the
             <code>authority</code> function (gives the full taxonomic
             authority for a name), <code>synonyms</code> (to get
