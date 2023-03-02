@@ -100,12 +100,12 @@ of this feature on the performance of the package is presented below.
 
 | Tool              | Lang.    | Library |  CLI  | Local DB | Fuzzy | Case  | Subsets | Ranks | Reference |
 | ----------------- | -------- | :-----: | :---: | :------: | :---: | :---: | :-----: | :---: | --------- |
-| `NCBITaxonomy.jl` | `Julia`  |    ✓    |       |    ✓     |   ✓   |   ✓   |    ✓    |   ✓   |           |
-| `taxadb`          | `R`      |    ✓    |       |    ✓     |       |       |    ✓    |   ✓   |           |
-| `taxopy`          | `Python` |    ✓    |       |    ✓     |       |   ✓   |         |       |           |
-| `rentrez`         | `R`      |    ✓    |       |          |       |       |         |   ✓   |           |
-| `Taxonkit`        | `Python` |         |   ✓   |    ✓     |       |       |         |       |           |
-| `NCBI-taxonomist` | `Python` |         |   ✓   |    ✓     |       |       |         |       |           |
+| `NCBITaxonomy.jl` | `Julia`  |    +    |       |    +     |   +   |   +   |    +    |   +   |           |
+| `taxadb`          | `R`      |    +    |       |    +     |       |       |    +    |   +   |           |
+| `taxopy`          | `Python` |    +    |       |    +     |       |   +   |         |       |           |
+| `rentrez`         | `R`      |    +    |       |          |       |       |         |   +   |           |
+| `Taxonkit`        | `Python` |         |   +   |    +     |       |       |         |       |           |
+| `NCBI-taxonomist` | `Python` |         |   +   |    +     |       |       |         |       |           |
 
 Table: Comparison of core features of packages offering access to the NCBI
 taxonomic backbone. "Library": ability to be called from code. "CLI": ability to
