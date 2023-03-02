@@ -52,9 +52,12 @@ riverine fishes: European chub, *Cyprinus cephalus*, *Leuciscus cephalus*,
 one of the vernacular (European chub) and two formerly accepted names now
 classified as synonyms (but still present in the litterature). A simple estimate
 of diversity based on the user-supplied names would give $n=4$ species, when
-there is in fact only one. When the size of biodiversity datasets increases, and
-notably when the taxonomic scope of these datasets explodes, including organisms
-for which "names" are a fuzzier concept (for example, *Influenza A virus
+there is in fact only one. Some cases can be more difficult to catch; for
+example, the species *Isoetes minima* is frequently mentionned as *Isœtes
+minima*, because text processing use the "œ" grapheme to mark the "oe"
+diphthong. When the size of biodiversity datasets increases, and notably when
+the taxonomic scope of these datasets explodes, including organisms for which
+"names" are a fuzzier concept (for example, *Influenza A virus
 (A/Sydney/05/97-like(H3N2))* is a valid name for a common influenza strain,
 although one that lacks a taxonomic rank), the feasibility of manual curation
 decreases.

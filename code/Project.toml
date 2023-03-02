@@ -1,4 +1,8 @@
 [deps]
+AbstractTrees = "1520ce14-60c1-5f80-bbc7-55ef81b5835c"
 BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
+Cascadia = "54eefc05-d75b-58de-a785-1a3403f0919f"
+Gumbo = "708ec375-b3d6-5a57-a7ce-8257bf98657a"
+HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
 Harbest = "88b9f9d1-ecd7-45aa-9934-346af437630c"
 NCBITaxonomy = "f88b31d2-eb98-4433-b52d-2dd32bc6efce"
