@@ -112,17 +112,17 @@ package is presented below.
   Tool                Lang.       Library   CLI   Local   Fuzzy   Case   Subsets   Ranks  Reference
                                                    DB                                     
   ------------------- ---------- --------- ----- ------- ------- ------ --------- ------- -----------
-  `NCBITaxonomy.jl`   `Julia`        ✓              ✓       ✓      ✓        ✓        ✓    
+  `NCBITaxonomy.jl`   `Julia`       \+             \+      \+      \+      \+       \+    
 
-  `taxadb`            `R`            ✓              ✓                       ✓        ✓    
+  `taxadb`            `R`           \+             \+                      \+       \+    
 
-  `taxopy`            `Python`       ✓              ✓              ✓                      
+  `taxopy`            `Python`      \+             \+              \+                     
 
-  `rentrez`           `R`            ✓                                               ✓    
+  `rentrez`           `R`           \+                                              \+    
 
-  `Taxonkit`          `Python`               ✓      ✓                                     
+  `Taxonkit`          `Python`              \+     \+                                     
 
-  `NCBI-taxonomist`   `Python`               ✓      ✓                                     
+  `NCBI-taxonomist`   `Python`              \+     \+                                     
   ---------------------------------------------------------------------------------------------------
 
   : Comparison of core features of packages offering access to the NCBI
