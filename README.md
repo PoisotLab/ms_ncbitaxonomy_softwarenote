@@ -12,22 +12,26 @@ binomial names, the same species can be known by many vernacular (common) names,
 which are language or even region-specific: *Ovis aries*, for example, has valid
 English vernaculars including lamb, sheep, wild sheep, and domestic sheep.
 
-Finally, taxonomic nomenclature changes regularly, with groups being split,
-merged, or moved to a new position in the tree of life; this is, notably, a
+In addition, taxonomic nomenclature changes regularly, with groups being split,
+merged, or moved to a new position in the tree of life; often, taxonomic
+revisions lead to these events occuring simultaneously. This is, notably, a
 common occurrence with viral taxonomy, each subsequent version of which can
 differ markedly from the last; compare, *e.g* @Lefkowitz2018VirTax to
 @Walker2020ChaVir, where entire viral sub-trees were split, re-organized, and
-created within just two years. These taxonomic changes have profound
-implications for the way we perceive biodiversity at global scales
-[@Dikow2009BioRes], to the point were taxonomic revisions should sometimes be
-actively conducted to improve *e.g.* conservation outcomes
+created within just two years. As a consequence any mapping of names to other
+biological entities can become outdated, and therefore invalid. These taxonomic
+changes have profound implications for the way we perceive biodiversity at
+global scales [@Dikow2009BioRes], to the point were taxonomic revisions should
+sometimes be actively conducted to improve *e.g.* conservation outcomes
 [@Melville2021RetApp].
 
-To add to the complexity, one must also consider that most taxa names are at
-some point manually typed, which has the potential to introduce additional
-mistakes in raw data; it is likely to expect that such mistakes may arise when
-attempting to write down the (perfectly valid) names of the bacterial isolate
-known as *Myxococcus
+None of these issues, were they to happen in isolation, would be very difficult
+to deal with. Indeed, performing the lookup for any text string in any database
+is a trivial operation. But to add to the complexity, one must also consider
+that most taxa names are at some point manually typed, which has the potential
+to introduce additional sources of variation in raw data; it is likely to expect
+that such mistakes may arise when attempting to write down the (perfectly valid)
+names of the bacterial isolate known as *Myxococcus
 llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogochensis*, or of the
 crowned slaty flycatcher *Griseotyrannus aurantioatrocristatus*. These mistakes
 are more likely when dealing with hyper-diverse samples (demanding to memorize
@@ -35,21 +39,25 @@ more names), like plant census [@Dauncey2016ComMis; @Wagner2016RevSof;
 @Conti2021MatAlg]; when dealing with multiple investigators with different
 knowledge of the taxonomy; and as a result of the estimated error in any data
 entry exercice, which other fields estimate at up to about 5%
-[@Barchard2011PreHum].
+[@Barchard2011PreHum]. As a result, the first question one needs to ask when
+confronted with a string of character that purportedly points to a node in the
+tree of life is not "to which entry in the taxonomy database is it associated?",
+but "is there a mistake in this name that is likely to render a simple lookup
+invalid?".
 
 All these considerations become important when matching species names both
 within and across datasets. Let us consider the hypothetical species survey of
 riverine fishes: European chub, *Cyprinus cephalus*, *Leuciscus cephalus*,
 *Squalius cephalus*. All are the same species (*S. cephalus*), referred to as
 one of the vernacular (European chub) and two formerly accepted names now
-classified as synonyms (but still present in the litterature). A cautious
-estimate of diversity based on the user-supplied names would give $n=4$ species,
-when there is in fact only one. When the size of biodiversity datasets
-increases, and notably when the taxonomic scope of these datasets explodes,
-including organisms for which "names" are a fuzzier concept (for example,
-*Influenza A virus (A/Sydney/05/97-like(H3N2))* is a valid name for a common
-influenza strain, although one that lacks a taxonomic rank), the feasibility of
-manual curation decreases.
+classified as synonyms (but still present in the litterature). A simple estimate
+of diversity based on the user-supplied names would give $n=4$ species, when
+there is in fact only one. When the size of biodiversity datasets increases, and
+notably when the taxonomic scope of these datasets explodes, including organisms
+for which "names" are a fuzzier concept (for example, *Influenza A virus
+(A/Sydney/05/97-like(H3N2))* is a valid name for a common influenza strain,
+although one that lacks a taxonomic rank), the feasibility of manual curation
+decreases.
 
 In this manuscript, we describe `NCBITaxonomy.jl`, a Julia package that provides
 advanced name matching and error handling capacities for the reconciliation of
@@ -62,6 +70,34 @@ recently, it has become part of the automated curation of data for the *VIRION*
 authoritative virome network from dozens of heterogeneous sources. We describe
 the core capacities of this package, and highlight how it enables safe,
 high-performance name reconciliation.
+
+# Relevance and comparison to other tools
+
+`NCBITaxonomy.jl` is built around a series of 
+
+First, we specifically target programmatic (as opposed to command-line) based
+approaches, so that the functionalities of the package can be accessed as part
+of a larger pipeline. This differs from other tools offering access to the NCBI
+taxonomy, such as 
+
+| Tool              | Lang.    | Library |  CLI  | Local DB | Fuzzy | Case  | Subsets | Ranks | Reference |
+| ----------------- | -------- | :-----: | :---: | :------: | :---: | :---: | :-----: | :---: | --------- |
+| `NCBITaxonomy.jl` | `Julia`  |    ✔️    |       |    ✔️     |   ✔️   |   ✔️   |    ✔️    |   ✔️   |           |
+| `taxadb`          | `R`      |    ✔️    |       |    ✔️     |       |       |    ✔️    |   ✔️   |           |
+| `rentrez`         | `R`      |    ✔️    |       |          |       |       |         |   ✔️   |           |
+| `Taxonkit`        | `Python` |         |   ✔️   |    ✔️     |       |       |         |       |           |
+| `taxopy`          | `Python` |    ✔️    |       |    ✔️     |       |   ✔️   |         |       |           |
+| `NCBI-taxonomist` | `Python` |         |   ✔️   |    ✔️     |       |       |         |       |           |
+
+Table: Comparison of core features of packages offering access to the NCBI
+taxonomic backbone. "Library": ability to be called from code. "CLI": ability to
+work as a command-line tool. "Local DB": ability to store a copy of the database
+locally. "Fuzzy": ability to perform fuzzy matching on inputs. "Case": ability
+to perform case-insensitive search. "Subsets": ability to limit the search to a
+subset of the raw database. "Ranks": ability to limit the search to specific
+raxonomi ranks. The features of the various packages have been determined from
+reading their documentation. {#tbl:id}
+
 
 # Overview of functionalities
 
@@ -113,7 +149,7 @@ as well as integration tests as part of the documentation (specifically, a
 use-case detailing how to clean data from a biodiversity survey, and a use-case
 aiming to reconstruct a taxonomic tree for the Lemuriformes).
 
-## Improved name matching
+# Improved name matching
 
 Name finding, *i.e.* the matching of an arbitrary string to a taxonomic
 identifier, is primarily done through the `taxon` function, which admits either
@@ -151,7 +187,7 @@ Adeno-associated virus 3B (ncbi:68742)
 
 This returns the correct name.
 
-## Name matching output and error handling
+# Name matching output and error handling
 
 When it succeeds, `taxon` will return a `NCBITaxon` object (made of a `name`
 string field, and an `id` numerical field). That being said, the package is
@@ -186,7 +222,7 @@ getting a taxon for demonstration purposes, we also provide a string macro,
 whereby *e.g.* `ncbi"Procyon lotor"` will return the taxon object for the
 raccoon.
 
-## Name filtering functions
+# Name filtering functions
 
 As the full NCBI names table has over 3 million entries at the time of writing,
 we have provided a number of functions to restrict the scope of names that are
@@ -222,7 +258,7 @@ recognized vernaculars for *Pan*) gave qualitatively similar results, suggesting
 that there is no performance cost associated with working with synonyms or
 verncular input data.
 
-## Quality of life functions
+# Quality of life functions
 
 In order to facilitate working with names, we provide the `authority` function
 (gives the full taxonomic authority for a name), `synonyms` (to get alternative
