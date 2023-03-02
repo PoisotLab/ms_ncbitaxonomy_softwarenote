@@ -408,20 +408,44 @@ biological names finding and reconciliation</div>
             sources. We describe the core capacities of this package,
             and highlight how it enables safe, high-performance name
             reconciliation.</p>
-            <h1 id="relevance-and-comparison-to-other-tools">Relevance
-            and comparison to other tools</h1>
-            <p><code>NCBITaxonomy.jl</code> is built around a series
-            of</p>
+            <h1
+            id="design-principles-and-comparison-to-other-tools">Design
+            principles and comparison to other tools</h1>
+            <p>Based on the author’s experience reconciling lists of
+            thousands of biological names, <code>NCBITaxonomy.jl</code>
+            is built around a series of features that allow (i) maximum
+            flexibility when handling names without a direct match, (ii)
+            a bespoke exception system to handle failures to match
+            automatically, and (ii) limits to the pool of potential
+            names in order to achieve orders-of-magnitude speedups when
+            the broad classification of the name to match is known.
+            Adhering to these design principles led to a number of
+            choices. A comparison of the features of different packages,
+            as infered from their public documentation, is presented in
+            tbl. <strong>¿tbl:comparison?</strong>.</p>
             <p>First, we specifically target programmatic (as opposed to
             command-line) based approaches, so that the functionalities
             of the package can be accessed as part of a larger pipeline.
-            This differs from other tools offering access to the NCBI
-            taxonomy, such as</p>
-            <div id="tbl:id">
+            Second, to speed up the queries, we work from a local
+            version of the database, the installation of which is
+            handled at build time by the package itself; each project
+            using the package can use its own version of the taxonomy by
+            specifying a folder where it is stored through an
+            environmental variable. Third, because we <em>cannot</em>
+            trust that the names as presented in the original data are
+            correct, we offer case-insensitive search (at no time cost)
+            and fuzzy-matching (at a significant time cost). Either of
+            these strategies can be called only after a case-sensitive,
+            non-fuzzy search yields an exception about the lack of a
+            direct match. Finally, in order to achieve a good
+            performance even when relying on fuzzy matching, we offer
+            the ability to limit the search to specific parts of the
+            taxonomy database. An example of the impact of this feature
+            on the performance of the package is presented below.</p>
             <table style="width:100%;">
-            <caption>Table 1: Comparison of core features of packages
-            offering access to the NCBI taxonomic backbone. “Library”:
-            ability to be called from code. “CLI”: ability to work as a
+            <caption>Comparison of core features of packages offering
+            access to the NCBI taxonomic backbone. “Library”: ability to
+            be called from code. “CLI”: ability to work as a
             command-line tool. “Local DB”: ability to store a copy of
             the database locally. “Fuzzy”: ability to perform fuzzy
             matching on inputs. “Case”: ability to perform
@@ -429,7 +453,7 @@ biological names finding and reconciliation</div>
             search to a subset of the raw database. “Ranks”: ability to
             limit the search to specific raxonomi ranks. The features of
             the various packages have been determined from reading their
-            documentation.</caption>
+            documentation. {tbl. <strong>¿tbl:id?</strong>}</caption>
             <colgroup>
             <col style="width: 22%" />
             <col style="width: 10%" />
@@ -460,59 +484,59 @@ biological names finding and reconciliation</div>
             <tr class="odd">
             <td><code>NCBITaxonomy.jl</code></td>
             <td><code>Julia</code></td>
-            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;">✓</td>
             <td style="text-align: center;"></td>
-            <td style="text-align: center;">✔️</td>
-            <td style="text-align: center;">✔️</td>
-            <td style="text-align: center;">✔️</td>
-            <td style="text-align: center;">✔️</td>
-            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;">✓</td>
+            <td style="text-align: center;">✓</td>
+            <td style="text-align: center;">✓</td>
+            <td style="text-align: center;">✓</td>
+            <td style="text-align: center;">✓</td>
             <td></td>
             </tr>
             <tr class="even">
             <td><code>taxadb</code></td>
             <td><code>R</code></td>
-            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;">✓</td>
             <td style="text-align: center;"></td>
-            <td style="text-align: center;">✔️</td>
-            <td style="text-align: center;"></td>
-            <td style="text-align: center;"></td>
-            <td style="text-align: center;">✔️</td>
-            <td style="text-align: center;">✔️</td>
-            <td></td>
-            </tr>
-            <tr class="odd">
-            <td><code>rentrez</code></td>
-            <td><code>R</code></td>
-            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;">✓</td>
             <td style="text-align: center;"></td>
             <td style="text-align: center;"></td>
-            <td style="text-align: center;"></td>
-            <td style="text-align: center;"></td>
-            <td style="text-align: center;"></td>
-            <td style="text-align: center;">✔️</td>
-            <td></td>
-            </tr>
-            <tr class="even">
-            <td><code>Taxonkit</code></td>
-            <td><code>Python</code></td>
-            <td style="text-align: center;"></td>
-            <td style="text-align: center;">✔️</td>
-            <td style="text-align: center;">✔️</td>
-            <td style="text-align: center;"></td>
-            <td style="text-align: center;"></td>
-            <td style="text-align: center;"></td>
-            <td style="text-align: center;"></td>
+            <td style="text-align: center;">✓</td>
+            <td style="text-align: center;">✓</td>
             <td></td>
             </tr>
             <tr class="odd">
             <td><code>taxopy</code></td>
             <td><code>Python</code></td>
-            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;">✓</td>
             <td style="text-align: center;"></td>
-            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;">✓</td>
             <td style="text-align: center;"></td>
-            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;">✓</td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;"></td>
+            <td></td>
+            </tr>
+            <tr class="even">
+            <td><code>rentrez</code></td>
+            <td><code>R</code></td>
+            <td style="text-align: center;">✓</td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;">✓</td>
+            <td></td>
+            </tr>
+            <tr class="odd">
+            <td><code>Taxonkit</code></td>
+            <td><code>Python</code></td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;">✓</td>
+            <td style="text-align: center;">✓</td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;"></td>
             <td style="text-align: center;"></td>
             <td style="text-align: center;"></td>
             <td></td>
@@ -521,8 +545,8 @@ biological names finding and reconciliation</div>
             <td><code>NCBI-taxonomist</code></td>
             <td><code>Python</code></td>
             <td style="text-align: center;"></td>
-            <td style="text-align: center;">✔️</td>
-            <td style="text-align: center;">✔️</td>
+            <td style="text-align: center;">✓</td>
+            <td style="text-align: center;">✓</td>
             <td style="text-align: center;"></td>
             <td style="text-align: center;"></td>
             <td style="text-align: center;"></td>
@@ -531,23 +555,26 @@ biological names finding and reconciliation</div>
             </tr>
             </tbody>
             </table>
-            </div>
             <h1 id="overview-of-functionalities">Overview of
             functionalities</h1>
             <p>An up-to-date version of the documentation for
-            <code>NCBITaxonomy.jl</code> can be found in the package
-            <code>git</code> repository (<a
-            href="https://github.com/PoisotLab/NCBITaxonomy.jl">https://github.com/PoisotLab/NCBITaxonomy.jl</a>),
+            <code>NCBITaxonomy.jl</code> can be found in the package’s
+            <em>GitHub</em> repository (<a
+            href="https://github.com/PoisotLab/NCBITaxonomy.jl">PoisotLab/NCBITaxonomy.jl</a>),
             including examples and in-line documentation of every
             method. The package is released under the MIT license.
             Contributions can be made in the form of issues (bug
-            reports, questions, features suggestions) and pull
-            requests.</p>
+            reports, questions, features suggestions) and pull requests,
+            all of which can be consulted publicly. Alternatively, the
+            package can be downloaded from its Zenodo page (ID <a
+            href="https://zenodo.org/record/"><code>5825828</code></a>),
+            along with a versioned DOI.</p>
+            <h2 id="local-file-storage">Local file storage</h2>
             <p>In order to achieve good performance, the package will
             first retrieve the latest (as validated by its checksum)
             NCBI taxonomy backbone, store it locally, and pre-process it
             as a set of Julia data tables. By default, the taxonomy will
-            be downloaded to the user’s hoome directory, which is not an
+            be downloaded to the user’s home directory, which is not an
             ideal solution, and therefore we recommend that users set an
             environment variable to specificy where the data will be
             loaded from (this path will be created if it doesn’t
@@ -557,12 +584,13 @@ biological names finding and reconciliation</div>
             <p>Note that this location can be different for different
             projects, as the package is able to update the taxonomic
             backbone (and will indeed prompt the user to do so if the
-            taxonomy is more than 90 days old). The package can then be
-            checked out and installed anonymously from the central Julia
-            repository:</p>
+            taxonomy is more than 90 days old, as infered from looking
+            at the raw files creation timestamp). The package can then
+            be checked out and installed anonymously from the central
+            Julia repository:</p>
             <div class="sourceCode" id="cb2"><pre
             class="sourceCode julia"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Pkg</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">add</span>(<span class="st">&quot;NCBITaxonomy&quot;</span>) <span class="co"># Dowloading the files may take a long time</span></span></code></pre></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">add</span>(<span class="st">&quot;NCBITaxonomy&quot;</span>)</span></code></pre></div>
             <p>As long as the package is not re-built, the local set of
             tables downloaded from NCBI will not change; this way, users
             can re-run an analysis with a guarantee that the underlying
@@ -586,7 +614,7 @@ biological names finding and reconciliation</div>
             (specifically, a use-case detailing how to clean data from a
             biodiversity survey, and a use-case aiming to reconstruct a
             taxonomic tree for the Lemuriformes).</p>
-            <h1 id="improved-name-matching">Improved name matching</h1>
+            <h2 id="improved-name-matching">Improved name matching</h2>
             <p>Name finding, <em>i.e.</em> the matching of an arbitrary
             string to a taxonomic identifier, is primarily done through
             the <code>taxon</code> function, which admits either a
@@ -625,8 +653,8 @@ biological names finding and reconciliation</div>
             class="sourceCode julia"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="fu">taxon</span>(<span class="st">&quot;Adeno-associated virus 3b&quot;</span>; casesensitive<span class="op">=</span><span class="cn">false</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Adeno<span class="op">-</span>associated virus <span class="fl">3</span>B (ncbi<span class="op">:</span><span class="fl">68742</span>)</span></code></pre></div>
             <p>This returns the correct name.</p>
-            <h1 id="name-matching-output-and-error-handling">Name
-            matching output and error handling</h1>
+            <h2 id="name-matching-output-and-error-handling">Name
+            matching output and error handling</h2>
             <p>When it succeeds, <code>taxon</code> will return a
             <code>NCBITaxon</code> object (made of a <code>name</code>
             string field, and an <code>id</code> numerical field). That
@@ -664,8 +692,8 @@ biological names finding and reconciliation</div>
             demonstration purposes, we also provide a string macro,
             whereby <em>e.g.</em> <code>ncbi"Procyon lotor"</code> will
             return the taxon object for the raccoon.</p>
-            <h1 id="name-filtering-functions">Name filtering
-            functions</h1>
+            <h2 id="name-filtering-functions">Name filtering
+            functions</h2>
             <p>As the full NCBI names table has over 3 million entries
             at the time of writing, we have provided a number of
             functions to restrict the scope of names that are searched.
@@ -759,8 +787,8 @@ biological names finding and reconciliation</div>
             qualitatively similar results, suggesting that there is no
             performance cost associated with working with synonyms or
             verncular input data.</p>
-            <h1 id="quality-of-life-functions">Quality of life
-            functions</h1>
+            <h2 id="quality-of-life-functions">Quality of life
+            functions</h2>
             <p>In order to facilitate working with names, we provide the
             <code>authority</code> function (gives the full taxonomic
             authority for a name), <code>synonyms</code> (to get
