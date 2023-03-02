@@ -8,7 +8,7 @@
 reconciliation</title>
     <script src="https://hypothes.is/embed.js" async></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-    integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+        integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
@@ -25,6 +25,10 @@ reconciliation</title>
 
             --width: 820px;
             --inner-space: 1.2em;
+        }
+
+        html {
+            background-color: white;
         }
 
         body {
@@ -207,20 +211,25 @@ reconciliation</title>
             width: 7em;
             display: inline-block;
         }    </style>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css"
-    integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous" />
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js"
-    integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O"
-    crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js"
-    integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF"
-    crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css"
+        integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
+    
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"
+        integrity="sha384-PwRUT/YqbnEjkZO0zZxNqcxACrXe+j766U2amXcgMg5457rve2Y7I6ZJSm2A0mS4"
+        crossorigin="anonymous"></script>
+    
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js"
+        integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             renderMathInElement(document.body, {
                 delimiters: [
-                { left: "$$", right: "$$", display: true },
-                { left: "$", right: "$", display: false }
+                    { left: "$$", right: "$$", display: true },
+                    { left: "$", right: "$", display: false }
                 ]
             });
         });
@@ -257,7 +266,7 @@ biological names finding and reconciliation</div>
             </div>
         </div>
     </header>
-    
+
     <main class="container">
         <section class="abstract">
             <code>NCBITaxonomy.jl</code> is a package designed to
@@ -285,12 +294,12 @@ biological names finding and reconciliation</div>
 
 
             <div class="artifacts">
-                <a href="Poisot_et_al_2023_ncbitaxonomyjl__draft.pdf" title="Draft PDF" target="_blank">Draft</a>
-                <a href="Poisot_et_al_2023_ncbitaxonomyjl__preprint.pdf" title="Preprint PDF" target="_blank">Preprint</a>
-                <a href="Poisot_et_al_2023_ncbitaxonomyjl_.odt" title="OpenDocument (Word)" target="_blank">Libre Office</a>
+                <a href="Poisot_et_al_2023_ncbitaxonomyjl__draft.pdf" title="Draft" target="_blank">Draft</a>
+                <a href="Poisot_et_al_2023_ncbitaxonomyjl__preprint.pdf" title="Preprint" target="_blank">Preprint</a>
+                <a href="Poisot_et_al_2023_ncbitaxonomyjl_.odt" title="OpenDocument" target="_blank">Libre Office</a>
             </div>
         </section>
-        
+
         <article>
             <p>Unambiguously identifying species is a far more
             challenging task than it may appear. There are a vast number
@@ -794,8 +803,20 @@ biological names finding and reconciliation</div>
     </main>
 
     <footer>
-        <div class="container">
-            <h2>Affiliations</h2> 
+                <div class="container">
+            <h2>Supplementary Material</h2>
+            <span class="appendix--list">
+                <a href="appendix/Poisot_et_al_2023_ncbitaxonomyjl__s1.pdf" target="_blank">
+                    <b>1:</b>&nbsp;The metadata configuration file
+                </a><br />
+            </span><span class="appendix--list">
+                <a href="appendix/Poisot_et_al_2023_ncbitaxonomyjl__s2.pdf" target="_blank">
+                    <b>2:</b>&nbsp;Bibliography in supp. mat.
+                </a><br />
+            </span>
+        </div>
+                <div class="container">
+            <h2>Affiliations</h2>
             <sup>1</sup>&nbsp;Université de Montréal, Départment de
             Sciences Biologiques, Montréal QC,
             Canada; <sup>10</sup>&nbsp;Center for Global Health Science
@@ -822,6 +843,7 @@ biological names finding and reconciliation</div>
             
         </div>
     </footer>
-    
+
 </body>
+
 </html>
