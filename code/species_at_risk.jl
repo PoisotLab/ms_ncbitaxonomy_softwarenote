@@ -1,31 +1,41 @@
-using Cascadia, Gumbo, HTTP
-using AbstractTrees
 using NCBITaxonomy
+import Downloads
+import CSV
 
-# List of wildlife species at risk
-wsr_url = "https://laws.justice.gc.ca/eng/acts/s-15.3/page-10.html"
+# Get the CAN-SAR data
+cansar_csv = joinpath(splitpath(@__FILE__)[1:(end-1)]..., "cansar.csv")
 
-# Get the text of the page
-req = HTTP.get(wsr_url)
-str = split(String(req.body), "\r\n")
-filter!(s -> contains(s, "otherLang"), str)
+# DO NOT download the file, it is corrupted
+#Downloads.download("https://osf.io/download/jv5w6/", cansar_csv)
 
-binomialfinder = r"(?:var \.\s?){0}<span class=\"otherLang\" lang=\"la\">(?<genus>\w+)\s{1}(?<species>\w+)<\/span>"
+# Load the data
+CANSAR = CSV.File(cansar_csv)
 
-wsr = sort(unique([m["genus"] * " " * m["species"] for m in collect(eachmatch(binomialfinder, str[1]))]))
+at_risk = unique(CANSAR.species)
 
-ding = 0
-for name in wsr
+no_match = 0
+mis_match = 0
+has_match = 0
+other_error = 0
+
+@profview for name in at_risk
     try
-        tax = taxon(name; casesensitive=true, preferscientific=false)
+        tax = taxon(name; casesensitive=true, preferscientific=true)
+        if tax.name != name
+            mis_match += 1
+        else
+            has_match += 1
+        end
     catch err
-        ding += 1
         if err isa NameHasNoDirectMatch
-            @info "$(name) not found with no direct match"
-            for sn in similarnames(name)
-                @info "\t$(sn)"
-            end
+            no_match += 1
+        else
+            other_error += 1
         end
     end
 end
-@info ding
+
+@info "Correct name: $(has_match)"
+@info "Synonym: $(mis_match)"
+@info "No match: $(no_match)"
+@info "Other error: $(other_error)"

@@ -306,8 +306,8 @@ needs to change the distance between taxonomic ranks) uses the
 @Shimatani2001MeaSpe approach to reconstruct a matrix of distances based on
 taxonomy, which can serve as a rough proxy when no phylogenies are available.
 This allows coarse estimations of taxonomic diversity based on species lists.
-The default distance between taxoonmic levels is as in @Shimatani2001MeaSpe
-(*i.e.* species have a distance of 0, genus of 1, family of 2, sbu-classes of 3,
+The default distance between taxonomic levels is as in @Shimatani2001MeaSpe
+(*i.e.* species have a distance of 0, genus of 1, family of 2, sub-classes of 3,
 and everything else 4), but specific scores can be passed for *any* taxonomic
 level know to the NCBI name table.
 
