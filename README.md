@@ -1,3 +1,5 @@
+# Background
+
 Unambiguously identifying species is a far more challenging task than it may
 appear. There are a vast number of reasons for this. Different databases keep
 different taxonomic "backbones", *i.e.* different data structures in which names
@@ -74,7 +76,7 @@ authoritative virome network from dozens of heterogeneous sources. We describe
 the core capacities of this package, and highlight how it enables safe,
 high-performance name reconciliation.
 
-# Design principles and comparison to other tools
+# Implementation
 
 Based on the author's experience reconciling lists of thousands of biological
 names, `NCBITaxonomy.jl` is built around a series of features that allow (i)
@@ -118,8 +120,6 @@ to perform case-insensitive search. "Subsets": ability to limit the search to a
 subset of the raw database. "Ranks": ability to limit the search to specific
 raxonomi ranks. The features of the various packages have been determined from
 reading their documentation. {@tbl:id}
-
-# Overview of functionalities
 
 An up-to-date version of the documentation for `NCBITaxonomy.jl` can be found in
 the package's *GitHub* repository ([PoisotLab/NCBITaxonomy.jl][pkg]), including
