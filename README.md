@@ -1,18 +1,19 @@
 # Background
 
-Unambiguously identifying species is a far more challenging task than it may
-appear. There are a vast number of reasons for this. Different databases keep
-different taxonomic "backbones", *i.e.* different data structures in which names
-are mapped to species, and organised in a hierarchy. Not all names are unique
-identifiers to groups. For example, *Io* can either refer to a genus of plants
-from the aster family, or to a genus of molluscs; the genus *Mus* (of which the
-house mouse *Mus musculus* is a species), contains a sub-genus *also* named
-*Mus* (within which *Mus musculus* is located). Conversely, the same species can
-have several names, which are valid synonyms: for example, the domestic cow *Bos
-taurus* admits *Bos primigenius taurus* as a valid synonym. In addition to
-binomial names, the same species can be known by many vernacular (common) names,
-which are language or even region-specific: *Ovis aries*, for example, has valid
-English vernaculars including lamb, sheep, wild sheep, and domestic sheep.
+Unambiguously identifying species names in text is a far more challenging task
+than it may appear. There are a vast number of reasons for this. Different
+databases keep different taxonomic "backbones", *i.e.* different data structures
+in which names are mapped to species, and organised in a hierarchy. Not all
+names are unique identifiers to groups. For example, *Io* can either refer to a
+genus of plants from the aster family, or to a genus of molluscs; the genus
+*Mus* (of which the house mouse *Mus musculus* is a species), contains a
+sub-genus *also* named *Mus* (within which *Mus musculus* is located).
+Conversely, the same species can have several names, which are valid synonyms:
+for example, the domestic cow *Bos taurus* admits *Bos primigenius taurus* as a
+valid synonym. In addition to binomial names, the same species can be known by
+many vernacular (common) names, which are language or even region-specific:
+*Ovis aries*, for example, has valid English vernaculars including lamb, sheep,
+wild sheep, and domestic sheep.
 
 In addition, taxonomic nomenclature changes regularly, with groups being split,
 merged, or moved to a new position in the tree of life; often, taxonomic
@@ -23,7 +24,7 @@ differ markedly from the last; compare, *e.g* @Lefkowitz2018VirTax to
 created within just two years. As a consequence any mapping of names to other
 biological entities can become outdated, and therefore invalid. These taxonomic
 changes have profound implications for the way we perceive biodiversity at
-global scales [@Dikow2009BioRes], to the point were taxonomic revisions should
+global scales [@Dikow2009BioRes], to the point where taxonomic revisions should
 sometimes be actively conducted to improve *e.g.* conservation outcomes
 [@Melville2021RetApp].
 
@@ -42,7 +43,7 @@ more names), like plant census [@Dauncey2016ComMis; @Wagner2016RevSof;
 knowledge of the taxonomy; and as a result of the estimated error in any data
 entry exercice, which other fields estimate at up to about 5%
 [@Barchard2011PreHum]. As a result, the first question one needs to ask when
-confronted with a string of character that purportedly points to a node in the
+confronted with a string of characters that purportedly points to a node in the
 tree of life is not "to which entry in the taxonomy database is it associated?",
 but "is there a mistake in this name that is likely to render a simple lookup
 invalid?".
@@ -52,7 +53,7 @@ within and across datasets. Let us consider the hypothetical species survey of
 riverine fishes: European chub, *Cyprinus cephalus*, *Leuciscus cephalus*,
 *Squalius cephalus*. All are the same species (*S. cephalus*), referred to as
 one of the vernacular (European chub) and two formerly accepted names now
-classified as synonyms (but still present in the litterature). A simple estimate
+classified as synonyms (but still present in the literature). A simple estimate
 of diversity based on the user-supplied names would give $n=4$ species, when
 there is in fact only one. Some cases can be more difficult to catch; for
 example, the species *Isoetes minima* is frequently mentionned as *Isœtes
@@ -66,8 +67,12 @@ decreases.
 
 In this manuscript, we describe `NCBITaxonomy.jl`, a Julia package that provides
 advanced name matching and error handling capacities for the reconciliation of
-taxonomic names to the NCBI database. This package was used to facilitate the
-development of the *CLOVER* [@Gibb2021DatPro] database of host-virus
+taxonomic names to the NCBI database. This package works by downloading a local
+copy of the taxonomy database, so that queries can be made rapidly, and that
+subsequent queries will return the same results. The package offers
+functionalities to automatically prompt users to update the local copy of the
+taxononmy database if it becomes outdated. This package was used to facilitate
+the development of the *CLOVER* [@Gibb2021DatPro] database of host-virus
 associations, by reconciling the names of viruses and mammals from four
 different sources, where all of the issues described above were present. More
 recently, it has become part of the automated curation of data for the *VIRION*
@@ -81,7 +86,7 @@ high-performance name reconciliation.
 Based on the author's experience reconciling lists of thousands of biological
 names, `NCBITaxonomy.jl` is built around a series of features that allow (i)
 maximum flexibility when handling names without a direct match, (ii) a bespoke
-exception system to handle failures to match automatically, and (ii) limits to
+exception system to handle failures to match automatically, and (iii) limits to
 the pool of potential names in order to achieve orders-of-magnitude speedups
 when the broad classification of the name to match is known. Adhering to these
 design principles led to a number of choices. A comparison of the features of
@@ -101,7 +106,7 @@ be called only after a case-sensitive, non-fuzzy search yields an exception
 about the lack of a direct match. Finally, in order to achieve a good
 performance even when relying on fuzzy matching, we offer the ability to limit
 the search to specific parts of the taxonomy database. An example of the impact
-of this feature on the performance of the package is presented below.
+of this feature on the performance of the package is presented in Table 1.
 
 | Tool              | Lang.    | Library |  CLI  | Local DB | Fuzzy | Case  | Subsets | Ranks | Reference |
 | ----------------- | -------- | :-----: | :---: | :------: | :---: | :---: | :-----: | :---: | --------- |
@@ -118,7 +123,7 @@ work as a command-line tool. "Local DB": ability to store a copy of the database
 locally. "Fuzzy": ability to perform fuzzy matching on inputs. "Case": ability
 to perform case-insensitive search. "Subsets": ability to limit the search to a
 subset of the raw database. "Ranks": ability to limit the search to specific
-raxonomi ranks. The features of the various packages have been determined from
+taxonomic ranks. The features of the various packages have been determined from
 reading their documentation. {@tbl:id}
 
 An up-to-date version of the documentation for `NCBITaxonomy.jl` can be found in
@@ -184,7 +189,7 @@ in order to create a name finder function (see the next section). The `taxon`
 method has additional arguments to perform fuzzy matching in order to catch
 possible typos (`taxon("Boops bops"; strict=false)`), to perform a lowercase
 search (useful when alphanumeric codes are part of the taxon name, like for some
-viruses), and to restrict the the search to a specific taxonomic rank. The
+viruses), and to restrict the search to a specific taxonomic rank. The
 `taxon` function also accepts a `preferscientificname` keyword, to prevent
 matching vernacular names; the use of this keyword ought to be informed by
 knowledge about how the data were entered.
@@ -218,7 +223,7 @@ When it succeeds, `taxon` will return a `NCBITaxon` object (made of a `name`
 string field, and an `id` numerical field). That being said, the package is
 designed under the assumption that ambiguities should yield an error for the
 user to handle. There are two such errors: `NameHasNoDirectMatch` (with
-instructions about how to possible solve it, using the `similarnames` function),
+instructions about how to possibly solve it, using the `similarnames` function),
 or a `NameHasMultipleMatches` (listing the possible valid matches, and
 suggesting to use `alternativetaxa` to find the correct one). Therefore, the
 common way to work with the `taxon` function would be to wrap it in a
@@ -249,12 +254,12 @@ raccoon.
 
 ## Name filtering functions
 
-As the full NCBI names table has over 3 million entries at the time of writing,
-we have provided a number of functions to restrict the scope of names that are
-searched. These are driven by the NCBI *divisions*. For example `nf =
+As the full NCBI names table holds over 3 million entries at the time of
+writing, we have provided a number of functions to restrict the scope of names
+that are searched. These are driven by the NCBI *divisions*. For example `nf =
 mammalfilter(true)` will return a data frame containing the names of mammals,
 inclusive of rodents and primates, and can be used with *e.g.* `taxon(nf,
-"Pan")`. This has the dual advantage of making search faster, but also of
+"Pan")`. This has the dual advantage of making queries faster, but also of
 avoiding matching on names that are shared by another taxonomic group (which is
 not an issue with *Pan*, but is an issue with *e.g.* *Io* as mentioned in the
 introduction, or with the common name *Lizard*, which fuzzy-matches on the
@@ -274,7 +279,7 @@ the entire database, in all mammals, and in all primates:
 |                      |      yes       | 0.3       | 92          | 27 KiB           |
 
 Clearly, the optimal search strategy is to (i) rely on name filters to ensure
-that search are conducted within the appropriate NCBI division, and (ii) only
+that searches are conducted within the appropriate NCBI division, and (ii) only
 rely on fuzzy matching when the strict or lowercase match fails to return a
 name, as fuzzy matching can result in order of magnitude more run time and
 memory footprint. These numbers were obtained on a single Intel i7-8665U CPU (@
