@@ -322,28 +322,33 @@ not an issue with _Pan_, but is an issue with _e.g._ _Io_ as mentioned in the
 introduction, or with the common name _Lizard_, which fuzzy-matches on the
 hemipteran genus _Lisarda_ rather than the class _Lepidosauria_).
 
+
 Note that the use of a restricted list of names can have significant performance
-consequences: compare, for example, the time taken to return the taxon _Pan_ in
-the entire database, in all mammals, and in all primates:
+consequences. This is illustrated in @benchmark[Tab.]. When possible, the optimal search strategy is to (i) rely on name filters to ensure that searches are conducted within the appropriate NCBI division, and (ii) only rely on fuzzy matching when the strict or lowercase match fails to return a name, as fuzzy matching can result in order of magnitude more run time and memory footprint. 
 
-| Names list           | Fuzzy matching | Time (ms) | Allocations | Memory allocated |
-| -------------------- | :------------: | --------- | ----------- | ---------------- |
-| all                  |       no       | 23        | 34          | 2 KiB            |
-|                      |      yes       | 105       | 2580        | 25 MiB           |
-| `mammalfilter(true)` |       no       | 0.55      | 32          | 2 KiB            |
-|                      |      yes       | 1.9       | 551         | 286 KiB          |
-| `primatefilter()`    |       no       | 0.15      | 33          | 2 KiB            |
-|                      |      yes       | 0.3       | 92          | 27 KiB           |
 
-Clearly, the optimal search strategy is to (i) rely on name filters to ensure
-that searches are conducted within the appropriate NCBI division, and (ii) only
-rely on fuzzy matching when the strict or lowercase match fails to return a
-name, as fuzzy matching can result in order of magnitude more run time and
-memory footprint. These numbers were obtained on a single Intel i7-8665U CPU (@
-(1.90GHz). Using `"chimpanzees"` as the search string (one of the NCBI
-recognized vernaculars for _Pan_) gave qualitatively similar results, suggesting
+#figure(
+  placement: bottom,
+table(
+  columns: 5,
+  table.header(
+    [Names list],
+    [Fuzzy matching],
+    [Time (ms)],
+    [Allocations],
+    [Memory footprint],
+  ),
+  [all], [no], [23], [34], [2 KiB],
+  [], [yes], [105], [2580], [25 MiB],
+  [`mammalfilter(true)`], [no], [0.55], [32], [2 KiB],
+  [], [yes], [1.9], [551], [286 KiB],
+  [`primatefilter(true)`], [no], [0.15], [33], [2 KiB],
+  [], [yes], [0.3], [92], [27 KiB],
+),
+caption: [Time and performance of different search strategies for the string `"chimpanzees"`. These numbers were obtained on a single Intel i7-8665U CPU (1.90GHz). Using `"Pan"` as the search string (for which `"chimpanzees"`is a recognized vernacular) gave qualitatively similar results, suggesting
 that there is no performance cost associated with working with synonyms or
-verncular input data.
+verncular input data.]
+) <benchmark>
 
 == Quality of life functions
 
