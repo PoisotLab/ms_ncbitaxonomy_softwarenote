@@ -42,7 +42,7 @@
       "orcid": "0000-0001-6960-8434"
     }
   ],
-  "abstract": "",
+  "abstract": "`NCBITaxonomy.jl' is a Julia package designed to address the complex challenges of taxonomic name reconciliation using a local copy of the NCBI taxonomic backbone [@Federhen2012NcbTax; @Schoch2020NcbTax]. The package provides advanced name matching capabilities that handle common issues in taxonomic data, including synonyms, homonyms, vernacular names, nomenclatural changes, and typographical errors. Core functionalities include case-insensitive search, customizable fuzzy string matching, and taxonomically-restricted searches. The package implements a robust exception system that explicitly handles ambiguous matches without interrupting workflow execution, enabling automated processing of large datasets. `NCBITaxonomy.jl' works with Julia 1.6 and up, uses Apache Arrow format for efficient local storage. It provides lineage navigation and taxonomic distance functions. The package has been successfully deployed in large-scale projects for automated name reconcilation and cleaning, demonstrating its effectiveness for high-throughput name reconciliation across heterogeneous biological datasets. The design prioritizes programmatic access over command-line usage, making it well-suited for integration into bioinformatics pipelines requiring reliable taxonomic standardization.",
   "keywords": [
     "biodiversity",
     "taxonomy",
