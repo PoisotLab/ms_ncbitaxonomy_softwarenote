@@ -1,4 +1,4 @@
-#set text(size: 12pt, font: "Inter")
+#set text(size: 11pt, font: "Inter")
 
 #text(weight: "regular", size: 25pt)[NCBITaxonomy.jl - rapid biological names finding and reconciliation]
 
@@ -153,39 +153,6 @@ of this feature on the performance of the package is presented in Table 1.
   kind: table
 ): set figure.caption(position: top)
 
-#figure(
-  placement: bottom,
-table(
-  columns: 10,
-  table.header(
-    [Tool],
-    [Lang.],
-    [Library],
-    [CLI],
-    [Local DB],
-    [Fuzzy],
-    [Case],
-    [Subsets],
-    [Ranks],
-    [Reference],
-  ),
-  [`NCBITaxonomy.jl`], [Julia], [#sym.checkmark], [], [#sym.checkmark], [#sym.checkmark], [#sym.checkmark], [#sym.checkmark], [#sym.checkmark], [This paper],
-  [`taxadb`], [R], [#sym.checkmark], [], [#sym.checkmark], [], [], [#sym.checkmark], [#sym.checkmark], [This paper],
-  [`taxopy`], [Python], [#sym.checkmark], [], [#sym.checkmark], [], [#sym.checkmark], [], [], [This paper],
-  [`rentrez`], [R], [#sym.checkmark], [], [], [], [], [], [#sym.checkmark], [This paper],
-  [`TaxonKit`], [Python], [], [#sym.checkmark], [#sym.checkmark], [], [], [], [], [This paper],
-  [`NCBI-taxonomist`], [Python], [], [#sym.checkmark], [#sym.checkmark], [], [], [], [], [This paper],
-),
-caption: [Comparison of core features of packages offering access to the NCBI
-taxonomic backbone. "Library": ability to be called from code. "CLI": ability to
-work as a command-line tool. "Local DB": ability to store a copy of the database
-locally. "Fuzzy": ability to perform fuzzy matching on inputs. "Case": ability
-to perform case-insensitive search. "Subsets": ability to limit the search to a
-subset of the raw database. "Ranks": ability to limit the search to specific
-taxonomic ranks. The features of the various packages have been determined from
-reading their documentation.]
-) <comparison>
-
 An up-to-date version of the documentation for `NCBITaxonomy.jl` can be found in
 the package's _GitHub_ repository (#link("https://github.com/PoisotLab/NCBITaxonomy.jl")[`PoisotLab/NCBITaxonomy.jl`]), including
 examples and in-line documentation of every method. The package is released
@@ -326,30 +293,6 @@ hemipteran genus _Lisarda_ rather than the class _Lepidosauria_).
 Note that the use of a restricted list of names can have significant performance
 consequences. This is illustrated in @benchmark[Tab.]. When possible, the optimal search strategy is to (i) rely on name filters to ensure that searches are conducted within the appropriate NCBI division, and (ii) only rely on fuzzy matching when the strict or lowercase match fails to return a name, as fuzzy matching can result in order of magnitude more run time and memory footprint. 
 
-
-#figure(
-  placement: bottom,
-table(
-  columns: 5,
-  table.header(
-    [Names list],
-    [Fuzzy matching],
-    [Time (ms)],
-    [Allocations],
-    [Memory footprint],
-  ),
-  [all], [no], [23], [34], [2 KiB],
-  [], [yes], [105], [2580], [25 MiB],
-  [`mammalfilter(true)`], [no], [0.55], [32], [2 KiB],
-  [], [yes], [1.9], [551], [286 KiB],
-  [`primatefilter(true)`], [no], [0.15], [33], [2 KiB],
-  [], [yes], [0.3], [92], [27 KiB],
-),
-caption: [Time and performance of different search strategies for the string `"chimpanzees"`. These numbers were obtained on a single Intel i7-8665U CPU (1.90GHz). Using `"Pan"` as the search string (for which `"chimpanzees"`is a recognized vernacular) gave qualitatively similar results, suggesting
-that there is no performance cost associated with working with synonyms or
-verncular input data.]
-) <benchmark>
-
 == Quality of life functions
 
 In order to facilitate working with names, we provide the `authority` function
@@ -400,4 +343,67 @@ distributed systems was enabled by support provided by Calcul Québec
 the initial code, TP and CJC contributed to API design, and all authors
 contributed to functionalities and usability testing. 
 
+#pagebreak()
+
 #bibliography("references.bib", style: "biomed-central")
+
+#pagebreak()
+
+
+#figure(
+  placement: auto,
+table(
+  columns: 10,
+  table.header(
+    [Tool],
+    [Lang.],
+    [Library],
+    [CLI],
+    [Local DB],
+    [Fuzzy],
+    [Case],
+    [Subsets],
+    [Ranks],
+    [Reference],
+  ),
+  [`NCBITaxonomy.jl`], [Julia], [#sym.checkmark], [], [#sym.checkmark], [#sym.checkmark], [#sym.checkmark], [#sym.checkmark], [#sym.checkmark], [This paper],
+  [`taxadb`], [R], [#sym.checkmark], [], [#sym.checkmark], [], [], [#sym.checkmark], [#sym.checkmark], [@Norman2020TaxHig],
+  [`taxopy`], [Python], [#sym.checkmark], [], [#sym.checkmark], [], [#sym.checkmark], [], [], [@TAXOPY],
+  [`rentrez`], [R], [#sym.checkmark], [], [], [], [], [], [#sym.checkmark], [@RENTREZ],
+  [`TaxonKit`], [Python], [], [#sym.checkmark], [#sym.checkmark], [], [], [], [], [@TAXONKIT],
+  [`NCBI-taxonomist`], [Python], [], [#sym.checkmark], [#sym.checkmark], [], [], [], [], [@NCBITAXONOMIST],
+),
+caption: [Comparison of core features of packages offering access to the NCBI
+taxonomic backbone. "Library": ability to be called from code. "CLI": ability to
+work as a command-line tool. "Local DB": ability to store a copy of the database
+locally. "Fuzzy": ability to perform fuzzy matching on inputs. "Case": ability
+to perform case-insensitive search. "Subsets": ability to limit the search to a
+subset of the raw database. "Ranks": ability to limit the search to specific
+taxonomic ranks. The features of the various packages have been determined from
+reading their documentation.]
+) <comparison>
+
+#pagebreak()
+
+#figure(
+  placement: auto,
+table(
+  columns: 5,
+  table.header(
+    [Names list],
+    [Fuzzy matching],
+    [Time (ms)],
+    [Allocations],
+    [Memory footprint],
+  ),
+  [all], [no], [23], [34], [2 KiB],
+  [], [yes], [105], [2580], [25 MiB],
+  [`mammalfilter(true)`], [no], [0.55], [32], [2 KiB],
+  [], [yes], [1.9], [551], [286 KiB],
+  [`primatefilter(true)`], [no], [0.15], [33], [2 KiB],
+  [], [yes], [0.3], [92], [27 KiB],
+),
+caption: [Time and performance of different search strategies for the string `"chimpanzees"`. These numbers were obtained on a single Intel i7-8665U CPU (1.90GHz). Using `"Pan"` as the search string (for which `"chimpanzees"`is a recognized vernacular) gave qualitatively similar results, suggesting
+that there is no performance cost associated with working with synonyms or
+verncular input data.]
+) <benchmark>
