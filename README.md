@@ -331,6 +331,6 @@ donation from the Courtois Foundation. Benchmarking of this package on
 distributed systems was enabled by support provided by Calcul Québec
 (`www.calculquebec.ca`) and Compute Canada (`www.computecanada.ca`). TP wrote
 the initial code, TP and CJC contributed to API design, and all authors
-contributed to functionalities and usability testing.
+contributed to functionalities and usability testing. 
 
 # References
