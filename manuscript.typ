@@ -46,7 +46,7 @@ wild sheep, and domestic sheep.
 
 In addition, taxonomic nomenclature changes regularly, with groups being split,
 merged, or moved to a new position in the tree of life; often, taxonomic
-revisions lead to these events occuring simultaneously. This is, notably, a
+revisions lead to these events occurring simultaneously. This is, notably, a
 common occurrence with viral taxonomy, each subsequent version of which can
 differ markedly from the last; compare, _e.g._ @Lefkowitz2018VirTax to
 @Walker2020ChaVir, where entire viral sub-trees were split, re-organized, and
@@ -70,7 +70,7 @@ are more likely when dealing with hyper-diverse samples (demanding to memorize
 more names), like plant census @Dauncey2016ComMis @Wagner2016RevSof
 @Conti2021MatAlg; when dealing with multiple investigators with different
 knowledge of the taxonomy; and as a result of the estimated error in any data
-entry exercice, which other fields estimate at up to about 5%
+entry exercise, which other fields estimate at up to about 5%
 @Barchard2011PreHum. As a result, the first question one needs to ask when
 confronted with a string of characters that purportedly points to a node in the
 tree of life is not "to which entry in the taxonomy database is it associated?",
@@ -85,7 +85,7 @@ one of the vernacular (European chub) and two formerly accepted names now
 classified as synonyms (but still present in the literature). A simple estimate
 of diversity based on the user-supplied names would give $n=4$ species, when
 there is in fact only one. Some cases can be more difficult to catch; for
-example, the species _Isoetes minima_ is frequently mentionned as _Isœtes
+example, the species _Isoetes minima_ is frequently mentioned as _Isœtes
 minima_, because text processing use the "œ" grapheme to mark the "oe"
 diphthong. When the size of biodiversity datasets increases, and notably when
 the taxonomic scope of these datasets explodes, including organisms for which
@@ -100,7 +100,7 @@ taxonomic names to the NCBI database. This package works by downloading a local
 copy of the taxonomy database, so that queries can be made rapidly, and that
 subsequent queries will return the same results. The package offers
 functionalities to automatically prompt users to update the local copy of the
-taxononmy database if it becomes outdated. This package was used to facilitate
+taxonomy database if it becomes outdated. This package was used to facilitate
 the development of the _CLOVER_ @Gibb2021DatPro database of host-virus
 associations, by reconciling the names of viruses and mammals from four
 different sources, where all of the issues described above were present. More
@@ -119,7 +119,7 @@ exception system to handle failures to match automatically, and (iii) limits to
 the pool of potential names in order to achieve orders-of-magnitude speedups
 when the broad classification of the name to match is known. Adhering to these
 design principles led to a number of choices. A comparison of the features of
-different packages, as infered from their public documentation, is presented in
+different packages, as inferred from their public documentation, is presented in
 @comparison[Tab.].
 
 First, we specifically target programmatic (as opposed to command-line) based
@@ -405,5 +405,5 @@ table(
 ),
 caption: [Time and performance of different search strategies for the string `"chimpanzees"`. These numbers were obtained on a single Intel i7-8665U CPU (1.90GHz). Using `"Pan"` as the search string (for which `"chimpanzees"`is a recognized vernacular) gave qualitatively similar results, suggesting
 that there is no performance cost associated with working with synonyms or
-verncular input data.]
+vernacular input data.]
 ) <benchmark>
